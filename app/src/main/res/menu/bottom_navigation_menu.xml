@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/bn_market"
+        android:title="@string/market"
+        android:icon="@drawable/ic_shopping_cart_black_24dp"
+        android:enabled="true"
+        app:showAsAction="always"
+        />
+    <item android:id="@+id/bn_my_library"
+        android:title="@string/my_library"
+        android:icon="@drawable/ic_photo_library_black_24dp"
+        android:enabled="true"
+        app:showAsAction="always"
+        />
+    <item android:id="@+id/bn_favorites"
+        android:title="@string/favorites"
+        android:icon="@drawable/ic_favorite_black_24dp"
+        android:enabled="true"
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/bn_settings"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:enabled="true"
+        app:showAsAction="always"
+        />
+</menu>

@@ -1,0 +1,13 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="bnm_elevation">2dp</dimen>
+    <dimen name="fragment_padding">16dp</dimen>
+
+    <dimen name="grid_cell_size">85dp</dimen>
+    <dimen name="grid_cell_padding">8dp</dimen>
+    <dimen name="grid_cell_border_width">0dp</dimen>
+
+</resources>

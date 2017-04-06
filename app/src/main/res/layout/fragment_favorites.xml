@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.jufy.myposh.FavoritesFragment">
+
+
+
+    <GridView
+        android:id = "@+id/img_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="3"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideInset"
+        ></GridView>
+
+
+
+</FrameLayout>
