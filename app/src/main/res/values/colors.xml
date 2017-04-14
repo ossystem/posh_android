@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#4A4A4A</color>
-    <color name="colorAccent">#ff4c2a</color>
-
+    <color name="primary">#FFFFFF</color>
+    <color name="primary_dark">#4A4A4A</color>
+    <!--<color name="primary_dark">#FFFFFF</color> -->
+    <color name="accent_light">#fdf5f3</color>
+    <color name="accent">#ff4c2a</color>
+    <color name="divider">#DDDDDD</color>
+    <color name="shadow">#110000AA</color>
     <color name="black_overlay">#66000000</color>
     <color name="bottom_nav_foreground">#ff4c2a</color>
+    <color name="window_background">#FFFFFF</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="shadow_background">#88000000</color>
+    <color name="dark_fab_ripple">#88000000</color>
+    <color name="light_fab_ripple">#99ff4c2a</color>
+    <color name="white_fab_ripple">#99ff4c2a</color>
+    <color name="dark_fab">#ff4c2a</color>
+    <color name="light_fab">#fdf5f3</color>
+    <color name="white_fab">#FFFFFF</color>
+    <color name="dark_fab_fg">#FFFFFF</color>
+    <color name="light_fab_fg">#ff4c2a</color>
+    <color name="white_fab_fg">#ff4c2a</color>
+
+
+    <color name="arc_layout_default_bg_color">#AAAAAA</color>
+    <color name="arc_layout_default_shadow">#000000</color>
 </resources>

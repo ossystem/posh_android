@@ -4,10 +4,23 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="bnm_elevation">2dp</dimen>
+    <dimen name="bnm_shadow_size">8dp</dimen>
     <dimen name="fragment_padding">16dp</dimen>
-
+    <dimen name="settings_row_padding">16dp</dimen>
+    <dimen name="content_margin">4dp</dimen>
+    <dimen name="settings_image_size">72dp</dimen>
     <dimen name="grid_cell_size">85dp</dimen>
     <dimen name="grid_cell_padding">8dp</dimen>
     <dimen name="grid_cell_border_width">0dp</dimen>
+    <dimen name="top_bar_height">160dp</dimen>
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_size_mini">40dp</dimen>
+    <dimen name="fab_border">8dp</dimen>
+    <dimen name="bar_shadow_offset">20dp</dimen>
 
+    <dimen name="arc_layout_default_top_space">8dp</dimen>
+    <dimen name="arc_layout_default_shadow_size">8dp</dimen>
+    <dimen name="arc_layout_default_button_border">8dp</dimen>
+    <dimen name="arc_layout_default_chord_height">22dp</dimen>
+    <dimen name="arc_layout_default_button_spacing">68dp</dimen>
 </resources>

@@ -1,17 +1,19 @@
-package ru.jufy.myposh;
+package ru.jufy.myposh.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
 import android.view.MenuItem;
+
+import ru.jufy.myposh.fragments.FavoritesFragment;
+import ru.jufy.myposh.fragments.LibraryFragment;
+import ru.jufy.myposh.fragments.MarketFragment;
+import ru.jufy.myposh.fragments.SettingsFragment;
+import ru.jufy.myposh.R;
 
 public class MainActivity extends AppCompatActivity {
 

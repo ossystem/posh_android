@@ -1,13 +1,81 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.jufy.myposh.MarketFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="ru.jufy.myposh.fragments.MarketFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/image_recycler"
+        android:paddingTop="80dp"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    <View
+        android:id="@+id/shadow_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Market" />
+        android:background="@color/shadow_background"
+        android:visibility="gone"></View>
 
-</FrameLayout>
+    <ru.jufy.myposh.views.ArcLayout
+        android:id = "@id/arc_layout"
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id = "@+id/fab_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_position = "middle"
+            app:rippleColor="@color/light_fab_ripple"
+            app:backgroundTint="@color/light_fab"
+            android:tint="@color/light_fab_fg"
+            app:srcCompat="@drawable/ic_search_black_24dp"
+            />
+
+    </ru.jufy.myposh.views.ArcLayout>
+
+    <com.ogaclejapan.arclayout.ArcLayout
+        android:id="@+id/search_menu"
+        android:layout_marginTop="44dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:arc_origin="top"
+        app:arc_radius="84dp"
+        app:arc_axisRadius="104dp"
+        app:arc_freeAngle="true"
+
+        android:layout_marginBottom="44dp"
+        app:arc_reverseAngle="false"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        >
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_hashtag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:tint="@color/accent"
+            app:backgroundTint = "@color/primary"
+            app:rippleColor="@color/white_fab_ripple"
+            app:arc_origin="center"
+            app:arc_angle = "130"
+            app:srcCompat="@drawable/hashtag_96" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:tint="@color/accent"
+            app:backgroundTint = "@color/primary"
+            app:rippleColor="@color/white_fab_ripple"
+            app:arc_origin="center"
+            app:arc_angle = "50"
+            app:srcCompat="@drawable/category_96" />
+    </com.ogaclejapan.arclayout.ArcLayout>
+
+</RelativeLayout>

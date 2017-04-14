@@ -8,5 +8,37 @@
         <attr name="metaButtonBarStyle" format="reference" />
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
-
+    <!--
+    <declare-styleable name="ArcBarView">
+        <attr name="bg_color" format="color" />
+        <attr name="shadow_color" format="color" />
+        <attr name="button_bg_color" format="color" />
+        <attr name="icon_tint" format="color" />
+        <attr name="big_icon_size" format="dimension" />
+        <attr name="small_icon_size" format="dimension" />
+        <attr name="shadow_size" format="dimension" />
+        <attr name="button_margin" format="dimension" />
+        <attr name="big_button_size" format="dimension" />
+        <attr name="big_button_border" format="dimension" />
+        <attr name="small_button_size" format="dimension" />
+        <attr name="small_button_border" format="dimension" />
+        <attr name="top_space" format="dimension" />
+    </declare-styleable>
+        -->
+    <declare-styleable name="ArcLayoutLP">
+        <attr name="layout_position">
+            <enum name="middle" value="0" />
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="ArcLayout">
+        <attr name="bg_color" format="color" />
+        <attr name="shadow_color" format="color" />
+        <attr name="chord_height" format="dimension"/>
+        <attr name="top_space" format="dimension" />
+        <attr name="shadow_size" format="dimension" />
+        <attr name="button_border" format="dimension" />
+        <attr name="button_spacing" format="dimension" />
+    </declare-styleable>
 </resources>
