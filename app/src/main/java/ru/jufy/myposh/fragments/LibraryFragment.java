@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.jufy.myposh.R;
+import ru.jufy.myposh.activities.IntentDispatcherActivity;
 import ru.jufy.myposh.adapters.ImageAdapter;
 import ru.jufy.myposh.utils.AnimatorUtils;
 import ru.jufy.myposh.views.ArcBarView;
@@ -33,6 +35,7 @@ public class LibraryFragment extends ImageGridFragment {
 
     ArcLayout arcLayout;
     FloatingActionButton fabAdd;
+    FloatingActionButton fabTakePhoto;
     View shadowBg;
 
 
@@ -45,6 +48,10 @@ public class LibraryFragment extends ImageGridFragment {
         return fragment;
     }
 
+
+    public void onPhotoActivityResult() {
+        
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +66,13 @@ public class LibraryFragment extends ImageGridFragment {
                 onFabClick(view);
             }
         });
-
+        fabTakePhoto = (FloatingActionButton) rootView.findViewById(R.id.fab_take_photo);
+        fabTakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((IntentDispatcherActivity)getContext()).dispatchTakePictureIntent();
+            }
+        });
         shadowBg = rootView.findViewById(R.id.shadow_bg);
         arcLayout =(ArcLayout) rootView.findViewById(R.id.add_menu);
 
@@ -68,6 +81,13 @@ public class LibraryFragment extends ImageGridFragment {
         return rootView;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!(context instanceof IntentDispatcherActivity)) {
+            throw new IllegalArgumentException();
+        }
+    }
 
 
     //--------------- menu animation methods --------------------

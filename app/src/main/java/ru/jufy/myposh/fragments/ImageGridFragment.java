@@ -7,9 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.adapters.ImageAdapter;
 import ru.jufy.myposh.adapters.ImageGridDecoration;
+import ru.jufy.myposh.data.Image;
 import ru.jufy.myposh.data.ImageRepository;
 import ru.jufy.myposh.views.ArcLayout;
 
@@ -20,8 +25,8 @@ import ru.jufy.myposh.views.ArcLayout;
 public class ImageGridFragment extends Fragment {
     protected View rootView;
     protected ImageAdapter adapter;
-    protected RecyclerView imageGrid;
-
+    protected RecyclerView recyclerView;
+    protected List<Image> data;
     protected void setupGrid(ImageRepository imageRepository) {
         //calculate dimens
         Display display = getActivity().getWindowManager().getDefaultDisplay();
@@ -30,7 +35,7 @@ public class ImageGridFragment extends Fragment {
         int width = size.x;
         int rowNumber = 3;
         double imgToSpacingRatio = 2.5;
-
+        data = new ArrayList<Image>(Collections.nCopies(7, new Image()));
         //spacing from screen border to image and from image to image equals unit,
         //image widht/height equals 2.5 units
         double unit = width / (imgToSpacingRatio * rowNumber + rowNumber + 1);
@@ -40,12 +45,19 @@ public class ImageGridFragment extends Fragment {
 
         //grid properties
         int marginTop = ((ArcLayout)rootView.findViewById(R.id.arc_layout)).getPreferredHeight();
-        imageGrid = (RecyclerView) rootView.findViewById(R.id.image_recycler);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.image_recycler);
+        recyclerView.getItemAnimator().setChangeDuration(0);
         GridLayoutManager manager = new GridLayoutManager(getContext(), rowNumber);
-        imageGrid.setLayoutManager(manager);
-        imageGrid.addItemDecoration(new ImageGridDecoration(rowNumber, (int) gridSpacing, true));
-        adapter = new ImageAdapter(getContext(), null,(int)imgSize);
-        imageGrid.setAdapter(adapter);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.addItemDecoration(new ImageGridDecoration(rowNumber, (int) gridSpacing, true));
+
+        adapter = new ImageAdapter(getContext(),
+                data,
+                (int)imgSize, true);
+        recyclerView.setAdapter(adapter);
+
 
     }
+
+
 }

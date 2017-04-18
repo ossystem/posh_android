@@ -20,5 +20,6 @@
     <string name="settings_address_comment">Написать разработчику и задать свой вопрос</string>
     <string name="settings_contacts_label">Контакты</string>
     <string name="settings_contacts_comment">Написать разработчику и задать свой вопрос</string>
-
+    <string name="title_activity_photo_confirm">PhotoConfirmActivity</string>
+    <string name="toast_delete_favorite">Выделите картинку долгим нажатием, чтобы удалить</string>
 </resources>

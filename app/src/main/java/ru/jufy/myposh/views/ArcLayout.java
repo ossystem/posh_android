@@ -1,5 +1,6 @@
 package ru.jufy.myposh.views;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -12,8 +13,10 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
 import android.text.Layout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.ScaleAnimation;
 
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.utils.ScreenUtils;
@@ -64,6 +67,10 @@ public class ArcLayout extends ViewGroup {
 
     //paths
     Path bgPath;
+
+    FloatingActionButton leftFab;
+    FloatingActionButton rightFab;
+    FloatingActionButton middleFab;
 
     public ArcLayout(Context context) {
         super(context);
@@ -195,9 +202,11 @@ public class ArcLayout extends ViewGroup {
 
                 // Compute the frame in which we are placing this child.
                 if (lp.position == LayoutParams.POSITION_LEFT) {
+                    leftFab = (FloatingActionButton) child;
                     leftRadius = child.getMeasuredHeight()/2;
                     calcRect(child, leftX, leftY, holder);
                 } else if (lp.position == LayoutParams.POSITION_RIGHT) {
+                    rightFab = (FloatingActionButton) child;
                     rightRadius = child.getMeasuredHeight()/2;
                     calcRect(child, rightX, rightY, holder);
                 } else {
@@ -296,11 +305,16 @@ public class ArcLayout extends ViewGroup {
         float arcCenterY = middleY + middleRadius * 0.25f - arcRadius;
         bgPath.addCircle(arcCenterX, arcCenterY, arcRadius, Path.Direction.CW);
         bgPath.addCircle(middleX, middleY, middleRadius + buttonBorder, Path.Direction.CW);
+
         if(hasLeftChild()) {
-            bgPath.addCircle(leftX, leftY, leftRadius + buttonBorder, Path.Direction.CW);
+            float scale = leftFab.getScaleX();
+            Log.i(this.getClass().getCanonicalName(), "Left scale: " + String.valueOf(scale) );
+            bgPath.addCircle(leftX, leftY, (leftRadius  + buttonBorder) * scale, Path.Direction.CW);
         }
         if (hasRightChild()) {
-            bgPath.addCircle(rightX, rightY, rightRadius + buttonBorder, Path.Direction.CW);
+            float scale = rightFab.getScaleX();
+            Log.i(this.getClass().getCanonicalName(), "Right scale: " + String.valueOf(scale) );
+            bgPath.addCircle(rightX, rightY, (rightRadius + buttonBorder) * scale, Path.Direction.CW);
         }
         //draw bg
         canvas.drawPath(bgPath, mBgPaint);

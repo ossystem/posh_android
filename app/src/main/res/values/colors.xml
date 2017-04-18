@@ -21,7 +21,7 @@
     <color name="dark_fab_fg">#FFFFFF</color>
     <color name="light_fab_fg">#ff4c2a</color>
     <color name="white_fab_fg">#ff4c2a</color>
-
+    <color name="transparent_white">#CCFFFFFF</color>
 
     <color name="arc_layout_default_bg_color">#AAAAAA</color>
     <color name="arc_layout_default_shadow">#000000</color>

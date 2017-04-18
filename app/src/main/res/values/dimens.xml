@@ -17,7 +17,7 @@
     <dimen name="fab_size_mini">40dp</dimen>
     <dimen name="fab_border">8dp</dimen>
     <dimen name="bar_shadow_offset">20dp</dimen>
-
+    <dimen name="fab_double_margin">32dp</dimen>
     <dimen name="arc_layout_default_top_space">8dp</dimen>
     <dimen name="arc_layout_default_shadow_size">8dp</dimen>
     <dimen name="arc_layout_default_button_border">8dp</dimen>
