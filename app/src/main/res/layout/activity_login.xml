@@ -7,18 +7,119 @@
     tools:context="ru.jufy.myposh.activities.LoginActivity">
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="8dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/button6"
+        <TextView
+            android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login with VK" />
-    </LinearLayout>
+            android:layout_marginBottom="10dp"
+            android:text="Go with your flow"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_cornered_rect"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageViewFb"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitEnd"
+                app:srcCompat="@drawable/fb_icon" />
+
+            <Button
+                android:id="@+id/fb_login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="monospace"
+                android:text="Войти с помощью Facebook"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_cornered_rect"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageViewVk"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                app:srcCompat="@drawable/vk_icon" />
+
+            <Button
+                android:id="@+id/vk_login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="monospace"
+                android:text="Войти с помощью VK"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:background="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/orTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="или"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="top"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center_vertical"
+                android:background="#FFFFFF"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/email_login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="Используя почту"
+            android:textAlignment="center"
+            android:textAllCaps="false" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

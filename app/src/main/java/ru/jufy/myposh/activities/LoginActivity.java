@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        findViewById(R.id.button6).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.vk_login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendVkRequest();
