@@ -1,4 +1,5 @@
 <resources>
+    <integer name="com_vk_sdk_AppId">6126857</integer>
     <string name="app_name">MyPosh</string>
     <string name="action_settings">Settings</string>
 
@@ -16,10 +17,13 @@
     <string name="settings_unbind_comment">Изменить кулон, управляемый с помощью приложения</string>
     <string name="settings_qa_label">Вопросы и ответы</string>
     <string name="settings_qa_comment">Ответы на самые распространенные вопросы</string>
+    <string name="debug_info_label">Debug info</string>
+    <string name="debug_info_comment">Debug info</string>
     <string name="settings_address_label">Адреса магазинов</string>
     <string name="settings_address_comment">Написать разработчику и задать свой вопрос</string>
     <string name="settings_contacts_label">Контакты</string>
     <string name="settings_contacts_comment">Написать разработчику и задать свой вопрос</string>
     <string name="title_activity_photo_confirm">PhotoConfirmActivity</string>
     <string name="toast_delete_favorite">Выделите картинку долгим нажатием, чтобы удалить</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

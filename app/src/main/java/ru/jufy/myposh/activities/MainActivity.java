@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import ru.jufy.myposh.R;
 import ru.jufy.myposh.fragments.FavoritesFragment;
 import ru.jufy.myposh.fragments.LibraryFragment;
 import ru.jufy.myposh.fragments.MarketFragment;
 import ru.jufy.myposh.fragments.SettingsFragment;
-import ru.jufy.myposh.R;
 
 public class MainActivity extends AppCompatActivity implements IntentDispatcherActivity {
 

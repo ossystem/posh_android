@@ -1,13 +1,17 @@
 package ru.jufy.myposh.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.adapters.SettingsAdapter;
 import ru.jufy.myposh.R;
 
@@ -43,8 +47,7 @@ public class SettingsFragment extends Fragment {
 
         adapter = new SettingsAdapter();
         recyclerView.setAdapter(adapter);
+
         return rootView;
     }
-
-
 }
