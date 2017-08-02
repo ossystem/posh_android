@@ -1,7 +1,7 @@
 package ru.jufy.myposh.activities;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.utils.HttpGetAsyncTask;
-import ru.jufy.myposh.utils.JsonParser;
-import ru.jufy.myposh.utils.KulonToken;
+import ru.jufy.myposh.utils.JsonHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         //Perform the doInBackground method, passing in our url
         try {
             String getResult = getRequest.execute(vkRequest).get();
-            String authLink = JsonParser.getSocialAuthLink(getResult);
+            String authLink = JsonHelper.getSocialAuthLink(getResult);
             Intent i = new Intent(this, WebViewActivity.class);
             Bundle b = new Bundle();
             b.putString("link", authLink);
@@ -59,10 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         if (data == null) {
             return;
         }
-        KulonToken token = new KulonToken();
-        token.token = data.getStringExtra("token");
-        token.date = data.getStringExtra("date");
-        if (token.token != null) {
+        if (Activity.RESULT_OK == resultCode) {
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         } else {

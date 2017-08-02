@@ -1,14 +1,23 @@
 package ru.jufy.myposh.utils;
 
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
+import ru.jufy.myposh.MyPoshApplication;
 
 /**
  * Created by BorisDev on 31.07.2017.
  */
 
-public class JsonParser {
+public class JsonHelper {
 
     public static int SOCIAL_AUTH_RSP_DATA_IDX = 0;
 
@@ -44,14 +53,32 @@ public class JsonParser {
             JSONArray valArray = json.toJSONArray(nameArray);
             JSONObject linkArr = valArray.getJSONObject(SOCIAL_AUTH_RSP_DATA_IDX);
 
-            KulonToken result = new KulonToken();
-            result.token = linkArr.getString("token");
-            result.date = linkArr.getString("update_before");
-
-            return result;
+            Date expDate = stringToDate(linkArr.getString("update_before"), "yyyy-MM-dd HH:mm:ss");
+            return new KulonToken(linkArr.getString("token"), expDate);
         } catch (JSONException e) {
             e.printStackTrace();
             return new KulonToken();
         }
+    }
+
+    private static Date stringToDate(String aDate, String aFormat) {
+        if(aDate == null) return null;
+        ParsePosition pos = new ParsePosition(0);
+        SimpleDateFormat simpledateformat = new SimpleDateFormat(aFormat);
+        simpledateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date stringDate = simpledateformat.parse(aDate, pos);
+        return stringDate;
+    }
+
+    public static String convertTokenToJson() {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("token", MyPoshApplication.getCurrentToken().getToken());
+            //data.put("email", "kayashovak@gmail.com");
+            //data.put("password", "katyakv");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return data.toString();
     }
 }
