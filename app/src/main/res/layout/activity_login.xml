@@ -19,6 +19,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/logo" />
+
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
@@ -40,7 +47,8 @@
                 android:id="@+id/imageViewFb"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:scaleType="fitEnd"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 app:srcCompat="@drawable/fb_icon" />
 
             <Button
@@ -48,6 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
                 android:fontFamily="monospace"
                 android:text="Войти с помощью Facebook"
@@ -65,7 +74,8 @@
                 android:id="@+id/imageViewVk"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 app:srcCompat="@drawable/vk_icon" />
 
             <Button
