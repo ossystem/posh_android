@@ -80,6 +80,9 @@ class TimerTaskImpl extends TimerTask {
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
         try {
             String postResult = postRequest.execute(tokenRefreshRequest).get();
+            if (null == postResult) {
+                throw new InterruptedException();
+            }
             MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(postResult));
         } catch (InterruptedException e) {
             e.printStackTrace();

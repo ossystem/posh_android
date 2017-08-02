@@ -43,6 +43,9 @@ public class WebViewActivity extends AppCompatActivity {
                     HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
                     try {
                         String getResult = getRequest.execute(url).get();
+                        if (null == getResult) {
+                            throw new InterruptedException();
+                        }
                         MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(getResult));
                         setResult(Activity.RESULT_OK, intent);
                         finish();

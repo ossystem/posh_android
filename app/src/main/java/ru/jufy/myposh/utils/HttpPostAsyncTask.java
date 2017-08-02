@@ -60,11 +60,11 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
                 streamReader.close();
                 result = stringBuilder.toString();
             } else {
-                result = "";
+                result = null;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            result = "";
+            result = null;
         }
         return result;
     }

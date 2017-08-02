@@ -18,6 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isResumed = false;
 
     static String vkRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=vkontakte";
+    static String fbRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=facebook";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +28,25 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.vk_login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendVkRequest();
+                sendSocialAuthRequest(vkRequest);
+            }
+        });
+
+        findViewById(R.id.fb_login_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendSocialAuthRequest(fbRequest);
             }
         });
     }
 
-    private void sendVkRequest() {
+    private void sendSocialAuthRequest(String requestLink) {
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
-        //Perform the doInBackground method, passing in our url
         try {
-            String getResult = getRequest.execute(vkRequest).get();
+            String getResult = getRequest.execute(requestLink).get();
+            if (null == getResult) {
+                throw new InterruptedException();
+            }
             String authLink = JsonHelper.getSocialAuthLink(getResult);
             Intent i = new Intent(this, WebViewActivity.class);
             Bundle b = new Bundle();
@@ -45,10 +55,10 @@ public class LoginActivity extends AppCompatActivity {
             startActivityForResult(i, 1);
             //Toast.makeText(this, result, Toast.LENGTH_LONG).show();
         } catch (InterruptedException e) {
-            Toast.makeText(this, "Request for VK auth has been interrupted", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Request for social auth has been interrupted", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         } catch (ExecutionException e) {
-            Toast.makeText(this, "Request for VK auth has failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Request for social auth has failed", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
