@@ -59,8 +59,6 @@ public class MyPoshApplication extends Application {
             msToExp -= MS_TO_START_REFRESH_BEFORE_TOKEN_EXP;
         }
 
-        //msToExp = 10000;
-
         if (expTimer != null) {
             expTimer.cancel();
         }
@@ -76,12 +74,13 @@ class TimerTaskImpl extends TimerTask {
 
     @Override
     public void run() {
-        String tokenRefreshReques[] = new String[2];
-        tokenRefreshReques[0] = "http://kulon.jwma.ru/api/v1/new-token";
-        tokenRefreshReques[1] = JsonHelper.convertTokenToJson();
+        String tokenRefreshRequest[] = new String[2];
+        tokenRefreshRequest[0] = "http://kulon.jwma.ru/api/v1/new-token";
+        tokenRefreshRequest[1] = JsonHelper.convertTokenToJson();
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
         try {
-            String postResult = postRequest.execute(tokenRefreshReques).get();
+            String postResult = postRequest.execute(tokenRefreshRequest).get();
+            MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(postResult));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

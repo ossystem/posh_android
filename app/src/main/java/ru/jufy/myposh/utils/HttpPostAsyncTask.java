@@ -24,47 +24,47 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         String stringUrl = params[0];
         String parameters = params[1];
-        byte[] byteData = null;
+        byte[] byteData;
         String result;
         String inputLine;
         try {
-            //Create a URL object holding our url
             URL myUrl = new URL(stringUrl);
-            //Create a connection
+
             HttpURLConnection connection = (HttpURLConnection)
                     myUrl.openConnection();
-            //Set methods and timeouts
+
             connection.setRequestMethod(REQUEST_METHOD);
             connection.setReadTimeout(READ_TIMEOUT);
             connection.setConnectTimeout(CONNECTION_TIMEOUT);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
 
-            //connection.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
-            //connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            //OutputStream os = connection.getOutputStream();
-            //byteData = parameters.getBytes("UTF-8");
-            //os.write(byteData);
+            connection.setRequestProperty("Content-Type", "application/json");
+            OutputStream os = connection.getOutputStream();
+            byteData = parameters.getBytes("UTF-8");
+            os.write(byteData);
+            os.flush();
+            os.close();
 
-            //Connect to our url
-            connection.connect();
-            int responseCode= connection.getResponseCode();
-            //Create a new InputStreamReader
-            InputStreamReader streamReader = new
-                    InputStreamReader(connection.getInputStream());
-            //Create a new buffered reader and String Builder
-            BufferedReader reader = new BufferedReader(streamReader);
-            StringBuilder stringBuilder = new StringBuilder();
-            //Check if the line we are reading is not null
-            while ((inputLine = reader.readLine()) != null) {
-                stringBuilder.append(inputLine);
+            int responseCode = connection.getResponseCode();
+
+            if (HttpURLConnection.HTTP_OK == responseCode) {
+                InputStreamReader streamReader = new
+                        InputStreamReader(connection.getInputStream());
+                BufferedReader reader = new BufferedReader(streamReader);
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((inputLine = reader.readLine()) != null) {
+                    stringBuilder.append(inputLine);
+                }
+                reader.close();
+                streamReader.close();
+                result = stringBuilder.toString();
+            } else {
+                result = "";
             }
-            //Close our InputStream and Buffered reader
-            reader.close();
-            streamReader.close();
-            //Set our result equal to our stringBuilder
-            result = stringBuilder.toString();
         } catch (IOException e) {
             e.printStackTrace();
-            result = null;
+            result = "";
         }
         return result;
     }
