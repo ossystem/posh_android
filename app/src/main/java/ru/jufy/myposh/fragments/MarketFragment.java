@@ -21,13 +21,20 @@ import com.ogaclejapan.arclayout.ArcLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.adapters.ImageAdapter;
+import ru.jufy.myposh.data.Image;
 import ru.jufy.myposh.utils.AnimatorUtils;
+import ru.jufy.myposh.utils.HttpGetAsyncTask;
+import ru.jufy.myposh.utils.JsonHelper;
 
 
 public class MarketFragment extends ImageGridFragment {
+
+    private static String poshiksRequest = "http://kulon.jwma.ru/api/v1/market";
 
     FloatingActionButton fabSearch;
     View shadowBg;
@@ -54,10 +61,40 @@ public class MarketFragment extends ImageGridFragment {
                 onFabClick(view);
             }
         });
-        arcLayout = (ArcLayout)rootView.findViewById(R.id.search_menu);
+        arcLayout = (ArcLayout) rootView.findViewById(R.id.search_menu);
         shadowBg = rootView.findViewById(R.id.shadow_bg);
-        setupGrid(null);
+        List<Image> poshiksList = getPoshiks();
+
+        setupGrid(poshiksList);
         return rootView;
+    }
+
+    private List<Image> getPoshiks() {
+        HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
+        try {
+            String getResult = null;
+            getResult = getRequest.execute(getMarketRequest()).get();
+            if (null == getResult) {
+                throw new InterruptedException();
+            }
+            return JsonHelper.getMarketImageList(getResult);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String[] getMarketRequest() {
+        String[] result = new String[3];
+        result[0] = new String(poshiksRequest);
+        result[1] = new String("Authorization");
+        StringBuilder token = new StringBuilder("Bearer ");
+        token.append(MyPoshApplication.getCurrentToken().getToken());
+        result[2] = new String(token);
+
+        return result;
     }
 
 //--------------- menu animation methods --------------------

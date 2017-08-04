@@ -54,7 +54,7 @@ public class FavoritesFragment extends ImageGridFragment {
         // Inflate the layout for this fragment
 
         rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
-        setupGrid(null);
+        setupGrid(new ArrayList<Image>(Collections.nCopies(5, new Image())));
         adapter.setSupportsDoubleClick(false);
         cancelFab = (FloatingActionButton) rootView.findViewById(R.id.fab_cancel);
         cancelFab.setOnClickListener(new View.OnClickListener() {
@@ -105,8 +105,8 @@ public class FavoritesFragment extends ImageGridFragment {
     }
 
     @Override
-    protected void setupGrid(ImageRepository imageRepository) {
-        super.setupGrid(imageRepository);
+    protected void setupGrid(List<Image> images) {
+        super.setupGrid(images);
         adapter.setClickListener(new ImageAdapter.ClickListener() {
             @Override
             public void onSingleClick(View view, int position) {

@@ -24,6 +24,10 @@ public class HttpGetAsyncTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String stringUrl = params[0];
+        int propertiesCount = params.length - 1;
+        if ((propertiesCount % 2) != 0) {
+            --propertiesCount;
+        }
         String result;
         String inputLine;
         try {
@@ -35,6 +39,12 @@ public class HttpGetAsyncTask extends AsyncTask<String, Void, String> {
             connection.setRequestMethod(REQUEST_METHOD);
             connection.setReadTimeout(READ_TIMEOUT);
             connection.setConnectTimeout(CONNECTION_TIMEOUT);
+
+            if (propertiesCount > 0) {
+                for(int i = 0; i < propertiesCount; i += 2) {
+                    connection.setRequestProperty(params[i + 1], params[i + 2]);
+                }
+            }
 
             connection.connect();
 

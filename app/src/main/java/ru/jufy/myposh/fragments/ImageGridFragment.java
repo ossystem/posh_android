@@ -27,7 +27,8 @@ public class ImageGridFragment extends Fragment {
     protected ImageAdapter adapter;
     protected RecyclerView recyclerView;
     protected List<Image> data;
-    protected void setupGrid(ImageRepository imageRepository) {
+
+    protected void setupGrid(List<Image> images) {
         //calculate dimens
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -35,7 +36,7 @@ public class ImageGridFragment extends Fragment {
         int width = size.x;
         int rowNumber = 3;
         double imgToSpacingRatio = 2.5;
-        data = new ArrayList<Image>(Collections.nCopies(7, new Image()));
+        data = images;
         //spacing from screen border to image and from image to image equals unit,
         //image widht/height equals 2.5 units
         double unit = width / (imgToSpacingRatio * rowNumber + rowNumber + 1);
@@ -55,8 +56,6 @@ public class ImageGridFragment extends Fragment {
                 data,
                 (int)imgSize, true);
         recyclerView.setAdapter(adapter);
-
-
     }
 
 

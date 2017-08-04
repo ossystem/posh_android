@@ -1,17 +1,19 @@
 package ru.jufy.myposh.utils;
 
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import ru.jufy.myposh.MyPoshApplication;
+import ru.jufy.myposh.data.Image;
+import ru.jufy.myposh.data.MarketImage;
 
 /**
  * Created by BorisDev on 31.07.2017.
@@ -21,40 +23,28 @@ public class JsonHelper {
 
     public static int SOCIAL_AUTH_RSP_DATA_IDX = 0;
 
-    /*
-    * Message example:
-    {
-	    "data":
-	    {
-		    "link":"https:\/\/oauth.vk.com\/authorize?client_id=6089312&redirect_uri=http%3A%2F%2Fkulon.jwma.ru%2Fapi%2Fv1%2Fsocialite%2Fvkontakte%2Fcallback&scope=email&response_type=code"
-	    },
-	    "message":"Link was obtained successfully."
-    }
-    */
-
     public static String getSocialAuthLink(String jsonString) {
         try {
-            JSONObject json = new JSONObject(jsonString);
-            JSONArray nameArray = json.names();
-            JSONArray valArray = json.toJSONArray(nameArray);
-            JSONObject linkArr = valArray.getJSONObject(SOCIAL_AUTH_RSP_DATA_IDX);
-
-            return linkArr.getString("link");
+            JSONObject link = getJsonObjectFromData(jsonString);
+            return link.getString("link");
         } catch (JSONException e) {
             e.printStackTrace();
             return "";
         }
     }
 
+    private static JSONObject getJsonObjectFromData(String jsonString) throws JSONException {
+        JSONObject json = new JSONObject(jsonString);
+        JSONArray nameArray = json.names();
+        JSONArray valArray = json.toJSONArray(nameArray);
+        return valArray.getJSONObject(SOCIAL_AUTH_RSP_DATA_IDX);
+    }
+
     public static KulonToken getToken(String jsonString) {
         try {
-            JSONObject json = new JSONObject(jsonString);
-            JSONArray nameArray = json.names();
-            JSONArray valArray = json.toJSONArray(nameArray);
-            JSONObject linkArr = valArray.getJSONObject(SOCIAL_AUTH_RSP_DATA_IDX);
-
-            Date expDate = stringToDate(linkArr.getString("update_before"), "yyyy-MM-dd HH:mm:ss");
-            return new KulonToken(linkArr.getString("token"), expDate);
+            JSONObject tokenData = getJsonObjectFromData(jsonString);
+            Date expDate = stringToDate(tokenData.getString("update_before"), "yyyy-MM-dd HH:mm:ss");
+            return new KulonToken(tokenData.getString("token"), expDate);
         } catch (JSONException e) {
             e.printStackTrace();
             return new KulonToken();
@@ -74,11 +64,31 @@ public class JsonHelper {
         JSONObject data = new JSONObject();
         try {
             data.put("token", MyPoshApplication.getCurrentToken().getToken());
-            //data.put("email", "kayashovak@gmail.com");
-            //data.put("password", "katyakv");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return data.toString();
+    }
+
+    public static List<Image> getMarketImageList(String jsonString) {
+        try {
+            JSONObject poshiks = getJsonObjectFromData(jsonString);
+            String poshiksArray = poshiks.getString("marketPoshiks");
+            JSONArray jsonarray = new JSONArray(poshiksArray);
+            List<Image> result = new ArrayList<>();
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                Image item = new MarketImage();
+                item.id = jsonobject.getInt("id");
+                item.isFavorite = jsonobject.getBoolean("is_favorite");
+                item.isPurchased = jsonobject.getBoolean("is_purchased");
+                result.add(item);
+            }
+
+            return result;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

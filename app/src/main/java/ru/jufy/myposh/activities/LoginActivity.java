@@ -17,8 +17,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isResumed = false;
 
-    static String vkRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=vkontakte";
-    static String fbRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=facebook";
+    private static String vkRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=vkontakte";
+    private static String fbRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=facebook";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

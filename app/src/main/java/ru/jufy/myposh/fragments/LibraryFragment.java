@@ -22,11 +22,13 @@ import android.widget.Toast;
 import com.ogaclejapan.arclayout.ArcLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.activities.IntentDispatcherActivity;
 import ru.jufy.myposh.adapters.ImageAdapter;
+import ru.jufy.myposh.data.Image;
 import ru.jufy.myposh.utils.AnimatorUtils;
 import ru.jufy.myposh.views.ArcBarView;
 
@@ -76,7 +78,7 @@ public class LibraryFragment extends ImageGridFragment {
         shadowBg = rootView.findViewById(R.id.shadow_bg);
         arcLayout =(ArcLayout) rootView.findViewById(R.id.add_menu);
 
-        setupGrid(null);
+        setupGrid(new ArrayList<Image>(Collections.nCopies(7, new Image())));
 
         return rootView;
     }

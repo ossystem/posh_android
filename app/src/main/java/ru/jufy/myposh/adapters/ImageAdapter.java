@@ -36,7 +36,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     private List<Boolean> selected;
 
 
-    public boolean isSupportsDoubleClick() {
+    public boolean isDoubleClickSupported() {
         return supportsDoubleClick;
     }
 
@@ -66,7 +66,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
                 holder.overlayDelete.getLayoutParams();
         dltlp.height = dltlp.width =  dltSize;
         dltlp.topMargin = dltlp.leftMargin = (int)(imgSize/2 * (1 - 1/Math.sqrt(2) - 0.2));
-        //holder.imageView.setImageResource(R.drawable.pink);
         holder.overlayFavorite.setVisibility(View.GONE);
         return holder;
     }
@@ -74,12 +73,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     @Override
     public void onBindViewHolder(final ImageHolder holder, final int position) {
 
-        Picasso.with(context)
-                .load(R.drawable.pink)
-                .fit()
-                .centerCrop()
-                .placeholder(R.drawable.pink)
-                .into(holder.imageView);
+        data.get(position).show(context, holder.imageView);
 
         if (clickListener != null) {
             holder.imageView.setOnClickListener(new View.OnClickListener() {
