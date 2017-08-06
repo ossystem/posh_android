@@ -26,7 +26,7 @@ import ru.jufy.myposh.data.ImageRepository;
  * Created by Anna on 4/14/2017.
  */
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>{
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder> {
 
     private List<Image> data;
     private Context context;

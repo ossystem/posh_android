@@ -10,14 +10,16 @@
         android:paddingTop="80dp"
         android:clipToPadding="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
 
     <View
         android:id="@+id/shadow_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/shadow_background"
-        android:visibility="gone"></View>
+        android:visibility="gone">
+    </View>
 
     <ru.jufy.myposh.views.ArcLayout
         android:id = "@id/arc_layout"
@@ -40,25 +42,22 @@
 
     <com.ogaclejapan.arclayout.ArcLayout
         android:id="@+id/search_menu"
-        android:layout_marginTop="44dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="114dp"
+        android:layout_below="@+id/arc_layout"
         app:arc_origin="top"
         app:arc_radius="84dp"
         app:arc_axisRadius="104dp"
         app:arc_freeAngle="true"
-
-        android:layout_marginBottom="44dp"
+        android:layout_marginTop="-40dp"
         app:arc_reverseAngle="false"
-        android:visibility="invisible"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
         >
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_hashtag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
             android:tint="@color/accent"
             app:backgroundTint = "@color/primary"
             app:rippleColor="@color/white_fab_ripple"
@@ -69,13 +68,21 @@
             android:id="@+id/fab_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
             android:tint="@color/accent"
             app:backgroundTint = "@color/primary"
             app:rippleColor="@color/white_fab_ripple"
             app:arc_origin="center"
             app:arc_angle = "50"
             app:srcCompat="@drawable/category_96" />
+
     </com.ogaclejapan.arclayout.ArcLayout>
+
+    <FrameLayout
+        android:id="@+id/tag_and_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/search_menu">
+    </FrameLayout>
 
 </RelativeLayout>

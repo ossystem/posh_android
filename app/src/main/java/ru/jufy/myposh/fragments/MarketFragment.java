@@ -4,18 +4,20 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Toast;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ogaclejapan.arclayout.ArcLayout;
 
@@ -31,12 +33,13 @@ import ru.jufy.myposh.utils.AnimatorUtils;
 import ru.jufy.myposh.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.utils.JsonHelper;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 
 public class MarketFragment extends ImageGridFragment {
 
-    private static String poshiksRequest = "http://kulon.jwma.ru/api/v1/market";
-
     FloatingActionButton fabSearch;
+    FloatingActionButton fabCategory;
     View shadowBg;
     ArcLayout arcLayout;
 
@@ -58,7 +61,15 @@ public class MarketFragment extends ImageGridFragment {
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onFabClick(view);
+                onFabSearchClick(view);
+            }
+        });
+
+        fabCategory = (FloatingActionButton) rootView.findViewById(R.id.fab_category);
+        fabCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFabCategoryClick(view);
             }
         });
         arcLayout = (ArcLayout) rootView.findViewById(R.id.search_menu);
@@ -69,18 +80,96 @@ public class MarketFragment extends ImageGridFragment {
         return rootView;
     }
 
+    private void onFabCategoryClick(View view) {
+        FrameLayout layout = (FrameLayout) rootView.findViewById(R.id.tag_and_category);
+        layout.removeAllViews();
+        RecyclerView categoriesView = new RecyclerView(getContext());
+        categoriesView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        ViewGroup.MarginLayoutParams marginLayoutParams =
+                new ViewGroup.MarginLayoutParams(categoriesView.getLayoutParams());
+        marginLayoutParams.setMargins(50, 0, 50, 0);
+        categoriesView.setLayoutParams(marginLayoutParams);
+        categoriesView.setBackgroundColor(0xDFFFFFFF);
+        String[] categories = getCategories();
+        categoriesView.setLayoutManager(new LinearLayoutManager(getContext()));
+        CategoriesAdapter adapter = new CategoriesAdapter(getContext(), categories);
+        categoriesView.setAdapter(adapter);
+        layout.addView(categoriesView);
+    }
+
+    private String[] getCategories() {
+        HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
+        try {
+            String getResult = getRequest.execute(getCategoriesRequest()).get();
+            if (null == getResult) {
+                throw new InterruptedException();
+            }
+            return JsonHelper.getCategories(getResult);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return new String[0];
+    }
+
+    private String[] getCategoriesRequest() {
+        String[] result = new String[3];
+        result[0] = "http://kulon.jwma.ru/api/v1/categories";
+        result[1] = "Authorization";
+        StringBuilder token = new StringBuilder("Bearer ");
+        token.append(MyPoshApplication.getCurrentToken().getToken());
+        result[2] = new String(token);
+
+        return result;
+    }
+
+    class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryHolder> {
+
+        String[] items;
+        Context context;
+
+        CategoriesAdapter(Context context, String[] items) {
+            super();
+            this.context = context;
+            this.items = items;
+        }
+
+        @Override
+        public CategoriesAdapter.CategoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v =LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.category_item, parent, false);
+            return new CategoryHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(CategoriesAdapter.CategoryHolder holder, int position) {
+            holder.item.setText(items[position]);
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.length;
+        }
+
+        public class CategoryHolder extends RecyclerView.ViewHolder {
+            TextView item;
+            public CategoryHolder(View itemView) {
+                super(itemView);
+                item = (TextView)itemView.findViewById(R.id.category_item_text);;
+            }
+        }
+    }
+
     private List<Image> getPoshiks() {
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
         try {
-            String getResult = null;
-            getResult = getRequest.execute(getMarketRequest()).get();
+            String getResult = getRequest.execute(getMarketRequest()).get();
             if (null == getResult) {
                 throw new InterruptedException();
             }
             return JsonHelper.getMarketImageList(getResult);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
@@ -88,8 +177,8 @@ public class MarketFragment extends ImageGridFragment {
 
     private String[] getMarketRequest() {
         String[] result = new String[3];
-        result[0] = new String(poshiksRequest);
-        result[1] = new String("Authorization");
+        result[0] = "http://kulon.jwma.ru/api/v1/market";
+        result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
         token.append(MyPoshApplication.getCurrentToken().getToken());
         result[2] = new String(token);
@@ -99,7 +188,7 @@ public class MarketFragment extends ImageGridFragment {
 
 //--------------- menu animation methods --------------------
 
-    private void onFabClick(View v) {
+    private void onFabSearchClick(View v) {
         if (v.isSelected()) {
             hideMenu();
         } else {
@@ -108,11 +197,7 @@ public class MarketFragment extends ImageGridFragment {
         v.setSelected(!v.isSelected());
     }
 
-
-    @SuppressWarnings("NewApi")
     private void showMenu() {
-
-
         //Buttons
         arcLayout.setVisibility(View.VISIBLE);
         List<Animator> animList = new ArrayList<>();
@@ -126,23 +211,24 @@ public class MarketFragment extends ImageGridFragment {
         animSet.setInterpolator(new OvershootInterpolator());
         animSet.playTogether(animList);
 
+        setShadowOn();
 
-        //Background
-        AlphaAnimation animBg = new AlphaAnimation(0f, 1.0f);
-        shadowBg.setVisibility(View.VISIBLE);
-        animBg.setDuration(400);
-        shadowBg.setAlpha(1f);
-
-        //start
-        shadowBg.startAnimation(animBg);
         animSet.start();
     }
 
+    private void setShadowOn() {
+        setShadow(0f, 1.0f, View.VISIBLE);
+    }
 
-    @SuppressWarnings("NewApi")
+    private void setShadow(float fromAlpha, float toAlpha, int visible) {
+        AlphaAnimation animBg = new AlphaAnimation(fromAlpha, toAlpha);
+        shadowBg.setVisibility(visible);
+        animBg.setDuration(400);
+        shadowBg.setAlpha(1f);
+        shadowBg.startAnimation(animBg);
+    }
+
     private void hideMenu() {
-
-
         //Buttons
         List<Animator> animList = new ArrayList<>();
 
@@ -162,31 +248,16 @@ public class MarketFragment extends ImageGridFragment {
             }
         });
 
-        //Background
-        AlphaAnimation animBg = new AlphaAnimation(1.0f, 0f);
-        animBg.setDuration(400);
-        shadowBg.setAlpha(1f);
-        animBg.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+        setShadowOff();
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                shadowBg.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        //start
-        shadowBg.startAnimation(animBg);
         animSet.start();
 
+        FrameLayout layout = (FrameLayout) rootView.findViewById(R.id.tag_and_category);
+        layout.removeAllViews();
+    }
+
+    private void setShadowOff() {
+        setShadow(1.0f, 0f, View.GONE);
     }
 
     private Animator createShowItemAnimator(View item) {
@@ -235,6 +306,4 @@ public class MarketFragment extends ImageGridFragment {
 
         return anim;
     }
-
-    //---------------------------- end menu animation methods ----------------
 }

@@ -84,11 +84,27 @@ public class JsonHelper {
                 item.isPurchased = jsonobject.getBoolean("is_purchased");
                 result.add(item);
             }
-
             return result;
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static String[] getCategories(String jsonString) {
+        try {
+            JSONObject categories = getJsonObjectFromData(jsonString);
+            String categoriesArray = categories.getString("categories");
+            JSONArray jsonarray = new JSONArray(categoriesArray);
+            String[] result = new String[jsonarray.length()];
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                result[i] = jsonobject.getString("name");
+            }
+            return result;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new String[0];
         }
     }
 }
