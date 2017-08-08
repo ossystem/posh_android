@@ -18,7 +18,6 @@ import static android.R.attr.data;
  */
 
 public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
-    static final String REQUEST_METHOD = "POST";
     static final int READ_TIMEOUT = 15000;
     static final int CONNECTION_TIMEOUT = 15000;
 
@@ -43,7 +42,7 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
             HttpURLConnection connection = (HttpURLConnection)
                     myUrl.openConnection();
 
-            connection.setRequestMethod(REQUEST_METHOD);
+            connection.setRequestMethod(getRequestMethod());
             connection.setReadTimeout(READ_TIMEOUT);
             connection.setConnectTimeout(CONNECTION_TIMEOUT);
             connection.setDoInput(true);
@@ -80,5 +79,9 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
             result = null;
         }
         return result;
+    }
+
+    String getRequestMethod() {
+        return "POST";
     }
 }
