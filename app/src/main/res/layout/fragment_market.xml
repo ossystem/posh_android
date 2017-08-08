@@ -73,7 +73,7 @@
             app:rippleColor="@color/white_fab_ripple"
             app:arc_origin="center"
             app:arc_angle = "50"
-            app:srcCompat="@drawable/category_96" />
+            app:srcCompat="@drawable/icon_top_category_red" />
 
     </com.ogaclejapan.arclayout.ArcLayout>
 
