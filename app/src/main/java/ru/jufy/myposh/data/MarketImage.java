@@ -21,14 +21,27 @@ import ru.jufy.myposh.utils.AuthInterceptor;
 public class MarketImage extends Image {
 
     @Override
-    public void show(Context context, ImageView view) {
-        StringBuilder linkBuilder = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
-        linkBuilder.append(id);
-        linkBuilder.append("/img?size=small");
+    public void showSmall(Context context, ImageView view) {
+        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
+        link.append(id);
+        link.append("/img?size=small");
 
+        showImage(context, view, link);
+    }
+
+    @Override
+    public void showBig(Context context, ImageView view) {
+        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
+        link.append(id);
+        link.append("/img?size=big");
+
+        showImage(context, view, link);
+    }
+
+    private void showImage(Context context, ImageView view, StringBuilder link) {
         OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new AuthInterceptor()).build();
         Picasso image = new Picasso.Builder(context).downloader(new OkHttp3Downloader(okHttpClient)).build();
-        image.load(linkBuilder.toString())
+        image.load(link.toString())
                 .fit()
                 .centerCrop()
                 .placeholder(R.drawable.pink)

@@ -25,7 +25,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@drawable/top_bar"></View>
+        android:background="@drawable/top_bar">
+    </View>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,7 +64,6 @@
             app:itemIconTint="@color/bottom_nav_foreground"
             app:itemTextColor="@color/bottom_nav_foreground"
             app:menu="@menu/bottom_navigation_menu" />
-
     </LinearLayout>
 
 

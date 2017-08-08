@@ -16,7 +16,15 @@ public class Image {
     public boolean isFavorite;
     public boolean isPurchased;
 
-    public void show(Context context, ImageView view) {
+    public void showSmall(Context context, ImageView view) {
+        show(context, view);
+    }
+
+    public void showBig(Context context, ImageView view) {
+        show(context, view);
+    }
+
+    private void show(Context context, ImageView view) {
         Picasso.with(context)
                 .load(R.drawable.pink)
                 .fit()

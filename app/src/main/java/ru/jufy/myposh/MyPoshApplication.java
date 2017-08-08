@@ -74,9 +74,11 @@ class TimerTaskImpl extends TimerTask {
 
     @Override
     public void run() {
-        String tokenRefreshRequest[] = new String[2];
+        String tokenRefreshRequest[] = new String[4];
         tokenRefreshRequest[0] = "http://kulon.jwma.ru/api/v1/new-token";
         tokenRefreshRequest[1] = JsonHelper.convertTokenToJson();
+        tokenRefreshRequest[2] = "Content-Type";
+        tokenRefreshRequest[3] = "application/json";
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
         try {
             String postResult = postRequest.execute(tokenRefreshRequest).get();

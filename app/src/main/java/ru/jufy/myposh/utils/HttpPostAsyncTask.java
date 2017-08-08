@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.R.attr.data;
 
@@ -23,10 +25,18 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String stringUrl = params[0];
-        String parameters = params[1];
+        String body = (params.length > 1) ? params[1] : "";
+        HashMap<String, String> reqProps = new HashMap<>();
         byte[] byteData;
         String result;
         String inputLine;
+        if (params.length > 2) {
+            int numReqProps = params.length - 2;
+            numReqProps = ((int)(numReqProps / 2)) * 2;
+            for (int i = 0; i < numReqProps; i += 2) {
+                reqProps.put(params[i + 2], params[i + 3]);
+            }
+        }
         try {
             URL myUrl = new URL(stringUrl);
 
@@ -39,9 +49,12 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
             connection.setDoInput(true);
             connection.setDoOutput(true);
 
-            connection.setRequestProperty("Content-Type", "application/json");
+            for(Map.Entry<String, String> prop : reqProps.entrySet()) {
+                connection.setRequestProperty(prop.getKey(), prop.getValue());
+            }
+
             OutputStream os = connection.getOutputStream();
-            byteData = parameters.getBytes("UTF-8");
+            byteData = body.getBytes("UTF-8");
             os.write(byteData);
             os.flush();
             os.close();

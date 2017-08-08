@@ -13,6 +13,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
     private String currentPhotoPath;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_CROP_AND_CONFIRM = 2;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +48,13 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
 
         initFragments();
         setupBottomNav();
-        showFragment(marketFragment);
+        showMarket();
     }
 
+    public void showMarket() {
+        showFragment(marketFragment);
+        showBottomNav();
+    }
 
     private void initFragments() {
         marketFragment = MarketFragment.newInstance();
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
     }
 
     private void setupBottomNav() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+        bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -135,6 +141,14 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
                         return true;
                     }
                 });
+    }
+
+    public void hideBottomNav() {
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    public void showBottomNav() {
+        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
     private void showFragment(Fragment fragment){

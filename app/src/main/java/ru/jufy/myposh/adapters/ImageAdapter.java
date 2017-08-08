@@ -1,18 +1,13 @@
 package ru.jufy.myposh.adapters;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import com.mikhaellopez.circularimageview.CircularImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +15,6 @@ import java.util.List;
 
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.data.Image;
-import ru.jufy.myposh.data.ImageRepository;
 
 /**
  * Created by Anna on 4/14/2017.
@@ -30,7 +24,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
 
     private List<Image> data;
     private Context context;
-    int imgSize;
+    private int imgSize;
     private ClickListener clickListener;
     private boolean supportsDoubleClick;
     private List<Boolean> selected;
@@ -38,6 +32,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
 
     public boolean isDoubleClickSupported() {
         return supportsDoubleClick;
+    }
+
+    public Image getImage(final int position) {
+        return data.get(position);
     }
 
     public void setSupportsDoubleClick(boolean supportsDoubleClick) {
@@ -73,7 +71,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     @Override
     public void onBindViewHolder(final ImageHolder holder, final int position) {
 
-        data.get(position).show(context, holder.imageView);
+        data.get(position).showSmall(context, holder.imageView);
 
         if (clickListener != null) {
             holder.imageView.setOnClickListener(new View.OnClickListener() {

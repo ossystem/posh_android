@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import ru.jufy.myposh.utils.AnimatorUtils;
 import ru.jufy.myposh.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.utils.JsonHelper;
 
+import static android.R.attr.fragment;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 
@@ -51,6 +53,31 @@ public class MarketFragment extends ImageGridFragment {
         return fragment;
     }
 
+    @Override
+    protected void setupGrid(List<Image> images) {
+        super.setupGrid(images);
+        adapter.setClickListener(new ImageAdapter.ClickListener() {
+            @Override
+            public void onSingleClick(View view, int position) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ImageFragment imgFrag = new ImageFragment();
+                imgFrag.setImage(adapter.getImage(position));
+                transaction.replace(R.id.fragment_frame, imgFrag);
+                transaction.commit();
+            }
+
+            @Override
+            public void onDoubleClick(View view, int position) {
+                //not supported
+            }
+
+            @Override
+            public boolean onLongClick(View view, int position) {
+                return true;
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,7 +164,7 @@ public class MarketFragment extends ImageGridFragment {
 
         @Override
         public CategoriesAdapter.CategoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v =LayoutInflater.from(parent.getContext())
+            View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.category_item, parent, false);
             return new CategoryHolder(v);
         }
