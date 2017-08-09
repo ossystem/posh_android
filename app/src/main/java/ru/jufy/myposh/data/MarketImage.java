@@ -3,15 +3,11 @@ package ru.jufy.myposh.data;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
-import java.util.List;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
 import ru.jufy.myposh.R;
-import ru.jufy.myposh.utils.AuthInterceptor;
+import ru.jufy.myposh.utils.GlideApp;
 
 
 /**
@@ -30,6 +26,15 @@ public class MarketImage extends Image {
     }
 
     @Override
+    public void showMiddle(Context context, ImageView view) {
+        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
+        link.append(id);
+        link.append("/img?size=middle");
+
+        showImage(context, view, link);
+    }
+
+    @Override
     public void showBig(Context context, ImageView view) {
         StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
         link.append(id);
@@ -39,12 +44,14 @@ public class MarketImage extends Image {
     }
 
     private void showImage(Context context, ImageView view, StringBuilder link) {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new AuthInterceptor()).build();
-        Picasso image = new Picasso.Builder(context).downloader(new OkHttp3Downloader(okHttpClient)).build();
-        image.load(link.toString())
-                .fit()
-                .centerCrop()
-                .placeholder(R.drawable.pink)
+        GlideApp
+                .with(context)
+                .load(link.toString())
+                .override(size, size)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .circleCrop()
+                .apply(RequestOptions.placeholderOf(R.drawable.pink))
+                .apply(RequestOptions.errorOf(R.drawable.error))
                 .into(view);
     }
 }

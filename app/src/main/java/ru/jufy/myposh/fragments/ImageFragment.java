@@ -1,10 +1,11 @@
 package ru.jufy.myposh.fragments;
 
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,6 @@ import ru.jufy.myposh.activities.MainActivity;
 import ru.jufy.myposh.data.Image;
 import ru.jufy.myposh.utils.HttpDelAsyncTask;
 import ru.jufy.myposh.utils.HttpPostAsyncTask;
-import ru.jufy.myposh.utils.JsonHelper;
-
-import static android.R.attr.id;
 
 /**
  * Created by BorisDev on 07.08.2017.
@@ -41,7 +39,8 @@ public class ImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_image, container, false);
         ImageView imageView = (ImageView)rootView.findViewById(R.id.bigImage);
-        image.showBig(getActivity(), imageView);
+        calculateImageSize();
+        image.showMiddle(getActivity(), imageView);
         fabCancel = (FloatingActionButton)rootView.findViewById(R.id.fab_cancel);
         fabCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +65,7 @@ public class ImageFragment extends Fragment {
             }
         });
         ((MainActivity)getActivity()).hideBottomNav();
+
         return rootView;
     }
 
@@ -134,5 +134,12 @@ public class ImageFragment extends Fragment {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    private void calculateImageSize() {
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        this.image.size = (int)(size.x * 0.9);
     }
 }

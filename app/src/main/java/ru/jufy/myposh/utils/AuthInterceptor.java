@@ -14,7 +14,7 @@ import ru.jufy.myposh.MyPoshApplication;
 public class AuthInterceptor implements Interceptor {
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public synchronized Response intercept(Chain chain) throws IOException {
         final Request original = chain.request();
         final Request.Builder requestBuilder = original.newBuilder()
                 .header("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken())

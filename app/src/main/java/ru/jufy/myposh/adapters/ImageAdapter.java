@@ -71,6 +71,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     @Override
     public void onBindViewHolder(final ImageHolder holder, final int position) {
 
+        data.get(position).size = imgSize;
         data.get(position).showSmall(context, holder.imageView);
 
         if (clickListener != null) {

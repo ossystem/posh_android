@@ -2,17 +2,15 @@ package ru.jufy.myposh;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
+
 import android.widget.Toast;
 
 import java.util.Date;
-import java.util.Locale;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
-import ru.jufy.myposh.activities.LoginActivity;
-import ru.jufy.myposh.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.utils.HttpPostAsyncTask;
 import ru.jufy.myposh.utils.JsonHelper;
 import ru.jufy.myposh.utils.KulonToken;
