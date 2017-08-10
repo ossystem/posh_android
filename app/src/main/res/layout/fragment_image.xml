@@ -50,7 +50,7 @@
         app:arc_radius="84dp"
         app:arc_axisRadius="104dp"
         app:arc_freeAngle="true"
-        android:layout_marginTop="-150dp"
+        android:layout_marginTop="-50dp"
         app:arc_reverseAngle="false"
         android:layout_centerHorizontal="true">
 

@@ -16,7 +16,11 @@ public class Image {
     public int id;
     public boolean isFavorite;
     public boolean isPurchased;
-    public int size;
+    protected int size;
+
+    public void setSize(int size) {
+        this.size = (int)(size * 0.9);
+    }
 
     public void showSmall(Context context, ImageView view) {
         show(context, view);
@@ -37,5 +41,13 @@ public class Image {
                 .apply(RequestOptions.placeholderOf(R.drawable.pink))
                 .apply(RequestOptions.errorOf(R.drawable.error))
                 .into(view);
+    }
+
+    public boolean like() {
+        return false;
+    }
+
+    public boolean unlike() {
+        return false;
     }
 }

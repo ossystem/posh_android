@@ -86,49 +86,14 @@ public class ImageFragment extends Fragment {
     }
 
     private void onUnLike() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/favorites/");
-        link.append(image.id);
-        String imgUnFavRequest[] = new String[4];
-        imgUnFavRequest[0] = link.toString();
-        imgUnFavRequest[1] = "";
-        imgUnFavRequest[2] = "Authorization";
-        imgUnFavRequest[3] = "Bearer " + MyPoshApplication.getCurrentToken().getToken();
-        HttpDelAsyncTask delRequest = new HttpDelAsyncTask();
-        try {
-            String delResult = delRequest.execute(imgUnFavRequest).get();
-            if (null == delResult) {
-                throw new InterruptedException();
-            }
+        if (image.unlike()) {
             setUnlikedIcon();
-            image.isFavorite = false;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
         }
     }
 
     private void onLike() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
-        link.append(image.id);
-        link.append("/fav");
-        String imgFavRequest[] = new String[4];
-        imgFavRequest[0] = link.toString();
-        imgFavRequest[1] = "";
-        imgFavRequest[2] = "Authorization";
-        imgFavRequest[3] = "Bearer " + MyPoshApplication.getCurrentToken().getToken();
-        HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
-        try {
-            String postResult = postRequest.execute(imgFavRequest).get();
-            if (null == postResult) {
-                throw new InterruptedException();
-            }
+        if (image.like()) {
             setLikedIcon();
-            image.isFavorite = true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
         }
     }
 
@@ -140,6 +105,6 @@ public class ImageFragment extends Fragment {
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        this.image.size = (int)(size.x * 0.9);
+        this.image.setSize(size.x);
     }
 }

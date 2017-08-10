@@ -69,10 +69,37 @@ public class FavoritesFragment extends ImageGridFragment {
                 }
                 else {
                     List<Image> selected = adapter.getSelected();
+                    int failedUnlikes = 0;
+                    List<Image> unliked = new ArrayList<>();
+                    for (Image image : selected) {
+                        if (!image.unlike()) {
+                            ++failedUnlikes;
+                        } else {
+                            unliked.add(image);
+                        }
+                    }
+                    if (failedUnlikes > 0) {
+                        Toast.makeText(getContext(), R.string.toast_delete_favorite_failed + failedUnlikes,
+                                Toast.LENGTH_SHORT).show();
+                    }
                     adapter.setSelectedAll(false);
                     hideFab(cancelFab, selectAllFab);
-                    data = new ArrayList<>(Collections.nCopies(data.size() - selected.size(),
-                            new Image()));
+
+                    List<Image> newData = new ArrayList<>();
+                    for (Image dataImage : data) {
+                        boolean found = false;
+                        for (Image unlikedImage : unliked) {
+                            if (dataImage.id == unlikedImage.id) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            newData.add(dataImage);
+                        }
+                    }
+
+                    data = newData;
                     adapter.setData(data);
                 }
 
