@@ -91,6 +91,27 @@ public class JsonHelper {
         }
     }
 
+    public static List<Image> getFavoritesImageList(String jsonString) {
+        try {
+            JSONObject poshiks = getJsonObjectFromData(jsonString);
+            String poshiksArray = poshiks.getString("favorites");
+            JSONArray jsonarray = new JSONArray(poshiksArray);
+            List<Image> result = new ArrayList<>();
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                Image item = new MarketImage();
+                item.id = jsonobject.getInt("id");
+                item.isFavorite = true;
+                item.isPurchased = false;
+                result.add(item);
+            }
+            return result;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static String[] getCategories(String jsonString) {
         try {
             JSONObject categories = getJsonObjectFromData(jsonString);

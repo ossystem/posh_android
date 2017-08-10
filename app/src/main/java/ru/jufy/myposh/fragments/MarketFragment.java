@@ -102,8 +102,8 @@ public class MarketFragment extends ImageGridFragment {
         arcLayout = (ArcLayout) rootView.findViewById(R.id.search_menu);
         shadowBg = rootView.findViewById(R.id.shadow_bg);
         List<Image> poshiksList = getPoshiks();
-
         setupGrid(poshiksList);
+
         return rootView;
     }
 
@@ -199,7 +199,7 @@ public class MarketFragment extends ImageGridFragment {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private String[] getMarketRequest() {

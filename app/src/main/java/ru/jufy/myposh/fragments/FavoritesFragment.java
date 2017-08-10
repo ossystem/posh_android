@@ -3,31 +3,25 @@ package ru.jufy.myposh.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.Toast;
 
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.adapters.ImageAdapter;
-import ru.jufy.myposh.adapters.ImageGridDecoration;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.data.Image;
-import ru.jufy.myposh.data.ImageRepository;
-import ru.jufy.myposh.views.ArcLayout;
+import ru.jufy.myposh.utils.HttpGetAsyncTask;
+import ru.jufy.myposh.utils.JsonHelper;
 
 
 public class FavoritesFragment extends ImageGridFragment {
@@ -54,7 +48,8 @@ public class FavoritesFragment extends ImageGridFragment {
         // Inflate the layout for this fragment
 
         rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
-        setupGrid(new ArrayList<Image>(Collections.nCopies(5, new Image())));
+        List<Image> favoritesList = getFavorites();
+        setupGrid(favoritesList);
         adapter.setSupportsDoubleClick(false);
         cancelFab = (FloatingActionButton) rootView.findViewById(R.id.fab_cancel);
         cancelFab.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +86,31 @@ public class FavoritesFragment extends ImageGridFragment {
             }
         });
         return rootView;
+    }
+
+    private List<Image> getFavorites() {
+        HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
+        try {
+            String getResult = getRequest.execute(getFavoritesRequest()).get();
+            if (null == getResult) {
+                throw new InterruptedException();
+            }
+            return JsonHelper.getFavoritesImageList(getResult);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    private String[] getFavoritesRequest() {
+        String[] result = new String[3];
+        result[0] = "http://kulon.jwma.ru/api/v1/favorites";
+        result[1] = "Authorization";
+        StringBuilder token = new StringBuilder("Bearer ");
+        token.append(MyPoshApplication.getCurrentToken().getToken());
+        result[2] = new String(token);
+
+        return result;
     }
 
     @Override
