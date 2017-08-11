@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import ru.jufy.myposh.MyPoshApplication;
+import ru.jufy.myposh.data.Category;
 import ru.jufy.myposh.data.Image;
 import ru.jufy.myposh.data.MarketImage;
 
@@ -112,20 +113,22 @@ public class JsonHelper {
         }
     }
 
-    public static String[] getCategories(String jsonString) {
+    public static Category[] getCategories(String jsonString) {
         try {
             JSONObject categories = getJsonObjectFromData(jsonString);
             String categoriesArray = categories.getString("categories");
             JSONArray jsonarray = new JSONArray(categoriesArray);
-            String[] result = new String[jsonarray.length()];
-            for (int i = 0; i < jsonarray.length(); i++) {
+            Category[] result = new Category[jsonarray.length()];
+            for (int i = 0; i < jsonarray.length(); ++i) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                result[i] = jsonobject.getString("name");
+                result[i] = new Category();
+                result[i].name = jsonobject.getString("name");
+                result[i].id = jsonobject.getInt("id");
             }
             return result;
         } catch (JSONException e) {
             e.printStackTrace();
-            return new String[0];
+            return new Category[0];
         }
     }
 }

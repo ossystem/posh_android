@@ -28,7 +28,7 @@ public class ImageGridFragment extends Fragment {
     protected RecyclerView recyclerView;
     protected List<Image> data;
 
-    protected void setupGrid(List<Image> images) {
+    protected void setupGrid(List<Image> images, boolean initialSetup) {
         //calculate dimens
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -48,9 +48,11 @@ public class ImageGridFragment extends Fragment {
         int marginTop = ((ArcLayout)rootView.findViewById(R.id.arc_layout)).getPreferredHeight();
         recyclerView = (RecyclerView) rootView.findViewById(R.id.image_recycler);
         recyclerView.getItemAnimator().setChangeDuration(0);
-        GridLayoutManager manager = new GridLayoutManager(getContext(), rowNumber);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.addItemDecoration(new ImageGridDecoration(rowNumber, (int) gridSpacing, true));
+        if (initialSetup) {
+            GridLayoutManager manager = new GridLayoutManager(getContext(), rowNumber);
+            recyclerView.setLayoutManager(manager);
+            recyclerView.addItemDecoration(new ImageGridDecoration(rowNumber, (int) gridSpacing, true));
+        }
 
         adapter = new ImageAdapter(getContext(),
                 data,

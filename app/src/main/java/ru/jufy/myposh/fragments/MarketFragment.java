@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +18,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ogaclejapan.arclayout.ArcLayout;
@@ -29,13 +29,11 @@ import java.util.concurrent.ExecutionException;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.adapters.ImageAdapter;
+import ru.jufy.myposh.data.Category;
 import ru.jufy.myposh.data.Image;
 import ru.jufy.myposh.utils.AnimatorUtils;
 import ru.jufy.myposh.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.utils.JsonHelper;
-
-import static android.R.attr.fragment;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 
 public class MarketFragment extends ImageGridFragment {
@@ -54,8 +52,8 @@ public class MarketFragment extends ImageGridFragment {
     }
 
     @Override
-    protected void setupGrid(List<Image> images) {
-        super.setupGrid(images);
+    protected void setupGrid(List<Image> images, boolean initialSetup) {
+        super.setupGrid(images, initialSetup);
         adapter.setClickListener(new ImageAdapter.ClickListener() {
             @Override
             public void onSingleClick(View view, int position) {
@@ -101,8 +99,8 @@ public class MarketFragment extends ImageGridFragment {
         });
         arcLayout = (ArcLayout) rootView.findViewById(R.id.search_menu);
         shadowBg = rootView.findViewById(R.id.shadow_bg);
-        List<Image> poshiksList = getPoshiks();
-        setupGrid(poshiksList);
+        List<Image> poshiksList = getAllPoshiks();
+        setupGrid(poshiksList, true);
 
         return rootView;
     }
@@ -119,14 +117,14 @@ public class MarketFragment extends ImageGridFragment {
         marginLayoutParams.setMargins(50, 0, 50, 0);
         categoriesView.setLayoutParams(marginLayoutParams);
         categoriesView.setBackgroundColor(0xDFFFFFFF);
-        String[] categories = getCategories();
+        Category[] categories = getCategories();
         categoriesView.setLayoutManager(new LinearLayoutManager(getContext()));
         CategoriesAdapter adapter = new CategoriesAdapter(getContext(), categories);
         categoriesView.setAdapter(adapter);
         layout.addView(categoriesView);
     }
 
-    private String[] getCategories() {
+    private Category[] getCategories() {
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
         try {
             String getResult = getRequest.execute(getCategoriesRequest()).get();
@@ -137,7 +135,7 @@ public class MarketFragment extends ImageGridFragment {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return new String[0];
+        return new Category[0];
     }
 
     private String[] getCategoriesRequest() {
@@ -153,10 +151,10 @@ public class MarketFragment extends ImageGridFragment {
 
     class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryHolder> {
 
-        String[] items;
+        Category[] items;
         Context context;
 
-        CategoriesAdapter(Context context, String[] items) {
+        CategoriesAdapter(Context context, Category[] items) {
             super();
             this.context = context;
             this.items = items;
@@ -170,8 +168,16 @@ public class MarketFragment extends ImageGridFragment {
         }
 
         @Override
-        public void onBindViewHolder(CategoriesAdapter.CategoryHolder holder, int position) {
-            holder.item.setText(items[position]);
+        public void onBindViewHolder(CategoriesAdapter.CategoryHolder holder, final int position) {
+            holder.item.setText(items[position].name);
+            holder.item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onFabSearchClick(fabSearch);
+                    List<Image> poshiksList = getCategoryPoshiks(items[position].id);
+                    setupGrid(poshiksList, false);
+                }
+            });
         }
 
         @Override
@@ -188,10 +194,28 @@ public class MarketFragment extends ImageGridFragment {
         }
     }
 
-    private List<Image> getPoshiks() {
+    private List<Image> getCategoryPoshiks(int id) {
+        return getPoshiks(getMarketRequestCategory(id));
+    }
+
+    private String[] getMarketRequestCategory(int id) {
+        StringBuilder url = new StringBuilder("http://kulon.jwma.ru/api/v1/market?category=");
+        url.append(id);
+        return getRequestAuthorized(url.toString());
+    }
+
+    private List<Image> getAllPoshiks() {
+        return getPoshiks(getMarketRequestAll());
+    }
+
+    private String[] getMarketRequestAll() {
+        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/market");
+    }
+
+    private List<Image> getPoshiks(String[] requestParams) {
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
         try {
-            String getResult = getRequest.execute(getMarketRequest()).get();
+            String getResult = getRequest.execute(requestParams).get();
             if (null == getResult) {
                 throw new InterruptedException();
             }
@@ -202,9 +226,10 @@ public class MarketFragment extends ImageGridFragment {
         return new ArrayList<>();
     }
 
-    private String[] getMarketRequest() {
+    @NonNull
+    private String[] getRequestAuthorized(String url) {
         String[] result = new String[3];
-        result[0] = "http://kulon.jwma.ru/api/v1/market";
+        result[0] = url;
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
         token.append(MyPoshApplication.getCurrentToken().getToken());

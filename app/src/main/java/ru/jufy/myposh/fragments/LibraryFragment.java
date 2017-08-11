@@ -78,7 +78,7 @@ public class LibraryFragment extends ImageGridFragment {
         shadowBg = rootView.findViewById(R.id.shadow_bg);
         arcLayout =(ArcLayout) rootView.findViewById(R.id.add_menu);
 
-        setupGrid(new ArrayList<Image>(Collections.nCopies(7, new Image())));
+        setupGrid(new ArrayList<Image>(Collections.nCopies(7, new Image())), true);
 
         return rootView;
     }
