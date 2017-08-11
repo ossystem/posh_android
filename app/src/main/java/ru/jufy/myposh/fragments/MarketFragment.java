@@ -5,18 +5,28 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -35,11 +45,15 @@ import ru.jufy.myposh.utils.AnimatorUtils;
 import ru.jufy.myposh.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.utils.JsonHelper;
 
+import static android.R.attr.id;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
+
 
 public class MarketFragment extends ImageGridFragment {
 
     FloatingActionButton fabSearch;
     FloatingActionButton fabCategory;
+    FloatingActionButton fabTag;
     View shadowBg;
     ArcLayout arcLayout;
 
@@ -94,9 +108,18 @@ public class MarketFragment extends ImageGridFragment {
         fabCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onFabCategoryClick(view);
+                onFabCategoryClick();
             }
         });
+
+        fabTag = (FloatingActionButton) rootView.findViewById(R.id.fab_hashtag);
+        fabTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFabTagClick();
+            }
+        });
+
         arcLayout = (ArcLayout) rootView.findViewById(R.id.search_menu);
         shadowBg = rootView.findViewById(R.id.shadow_bg);
         List<Image> poshiksList = getAllPoshiks();
@@ -105,7 +128,88 @@ public class MarketFragment extends ImageGridFragment {
         return rootView;
     }
 
-    private void onFabCategoryClick(View view) {
+    private void onFabTagClick() {
+        FrameLayout layout = (FrameLayout) rootView.findViewById(R.id.tag_and_category);
+        layout.removeAllViews();
+        AutoCompleteTextView input = new AutoCompleteTextView(getContext());
+        input.setBackground(new ColorDrawable(0xFFFFFFFF));
+        input.setTextColor(ResourcesCompat.getColor(getResources(), R.color.accent, null));
+        input.setHint("TAG");
+        input.setGravity(Gravity.CENTER_HORIZONTAL);
+        input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (hasFocus) {
+                    imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+                } else {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
+        input.setSingleLine();
+        input.setMaxLines(1);
+        input.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ( (actionId == EditorInfo.IME_ACTION_DONE) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
+                    onFabSearchClick(fabSearch);
+                    List<Image> poshiksList = getTagPoshiks(v.getText().toString());
+                    setupGrid(poshiksList, false);
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        });
+
+        String[] tags = getTags();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+                R.layout.tag_search, tags);
+        input.setAdapter(adapter);
+        layout.addView(input);
+    }
+
+    private List<Image> getTagPoshiks(String tag) {
+        return getPoshiks(getMarketRequestTag(tag));
+    }
+
+    private String[] getMarketRequestTag(String tag) {
+        StringBuilder url = new StringBuilder("http://kulon.jwma.ru/api/v1/market?search=");
+        url.append(tag);
+        return getRequestAuthorized(url.toString());
+    }
+
+    private String[] getTags() {
+        HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
+        try {
+            String getResult = getRequest.execute(getTagsRequest()).get();
+            if (null == getResult) {
+                throw new InterruptedException();
+            }
+            return JsonHelper.getTags(getResult);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return new String[0];
+    }
+
+    private String[] getTagsRequest() {
+        String[] result = new String[3];
+        result[0] = "http://kulon.jwma.ru/api/v1/tags";
+        result[1] = "Authorization";
+        StringBuilder token = new StringBuilder("Bearer ");
+        token.append(MyPoshApplication.getCurrentToken().getToken());
+        result[2] = new String(token);
+
+        return result;
+    }
+
+    private void onFabCategoryClick() {
         FrameLayout layout = (FrameLayout) rootView.findViewById(R.id.tag_and_category);
         layout.removeAllViews();
         RecyclerView categoriesView = new RecyclerView(getContext());

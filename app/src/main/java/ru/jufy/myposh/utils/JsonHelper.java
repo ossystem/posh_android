@@ -131,4 +131,21 @@ public class JsonHelper {
             return new Category[0];
         }
     }
+
+    public static String[] getTags(String jsonString) {
+        try {
+            JSONObject categories = getJsonObjectFromData(jsonString);
+            String categoriesArray = categories.getString("tags");
+            JSONArray jsonarray = new JSONArray(categoriesArray);
+            String[] result = new String[jsonarray.length()];
+            for (int i = 0; i < jsonarray.length(); ++i) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                result[i] = jsonobject.getString("value");
+            }
+            return result;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new String[0];
+        }
+    }
 }
