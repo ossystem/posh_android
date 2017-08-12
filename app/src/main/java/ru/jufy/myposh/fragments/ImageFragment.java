@@ -11,14 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.util.concurrent.ExecutionException;
-
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.activities.MainActivity;
 import ru.jufy.myposh.data.Image;
-import ru.jufy.myposh.utils.HttpDelAsyncTask;
-import ru.jufy.myposh.utils.HttpPostAsyncTask;
 
 /**
  * Created by BorisDev on 07.08.2017.
@@ -28,6 +24,7 @@ public class ImageFragment extends Fragment {
     private View rootView;
     FloatingActionButton fabCancel;
     FloatingActionButton fabLike;
+    FloatingActionButton fabBuyDownload;
     private Image image;
 
     public ImageFragment() {
@@ -64,9 +61,43 @@ public class ImageFragment extends Fragment {
                 }
             }
         });
+
+        fabBuyDownload = (FloatingActionButton)rootView.findViewById(R.id.fab_buy_download);
+        if (image.isPurchased) {
+            setDownloadIcon();
+        }
+        fabBuyDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (image.isPurchased) {
+                    downloadImage();
+                } else {
+                    buyImage();
+                }
+            }
+        });
+
         ((MainActivity)getActivity()).hideBottomNav();
 
         return rootView;
+    }
+
+    private void setDownloadIcon() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fabBuyDownload.setImageDrawable(getResources().getDrawable(R.drawable.icon_install, MyPoshApplication.getContext().getTheme()));
+        } else {
+            fabBuyDownload.setImageDrawable(getResources().getDrawable(R.drawable.icon_install));
+        }
+    }
+
+    private void downloadImage() {
+
+    }
+
+    private void buyImage() {
+        if (image.buy()) {
+            setDownloadIcon();
+        }
     }
 
     private void setLikedIcon() {

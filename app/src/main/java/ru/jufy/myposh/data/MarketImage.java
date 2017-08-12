@@ -110,4 +110,29 @@ public class MarketImage extends Image {
         }
         return false;
     }
+
+    @Override
+    public boolean buy() {
+        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
+        link.append(id);
+        String imgBuyRequest[] = new String[4];
+        imgBuyRequest[0] = link.toString();
+        imgBuyRequest[1] = "";
+        imgBuyRequest[2] = "Authorization";
+        imgBuyRequest[3] = "Bearer " + MyPoshApplication.getCurrentToken().getToken();
+        HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
+        try {
+            String postResult = postRequest.execute(imgBuyRequest).get();
+            if (null == postResult) {
+                throw new InterruptedException();
+            }
+            isPurchased = true;
+            return true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
