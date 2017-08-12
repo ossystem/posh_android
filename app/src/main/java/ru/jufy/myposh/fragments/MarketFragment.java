@@ -25,9 +25,11 @@ import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ogaclejapan.arclayout.ArcLayout;
@@ -150,7 +152,7 @@ public class MarketFragment extends ImageGridFragment {
 
         input.setSingleLine();
         input.setMaxLines(1);
-        input.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+        input.setInputType(EditorInfo.TYPE_TEXT_FLAG_AUTO_COMPLETE);
 
         input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -169,7 +171,8 @@ public class MarketFragment extends ImageGridFragment {
 
         String[] tags = getTags();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
-                R.layout.tag_search, tags);
+                R.layout.tag_search,
+                tags);
         input.setAdapter(adapter);
         layout.addView(input);
     }

@@ -19,7 +19,7 @@ public class Image {
     protected int size;
 
     public void setSize(int size) {
-        this.size = (int)(size * 0.9);
+        this.size = (int)(size * 0.8);
     }
 
     public void showSmall(Context context, ImageView view) {
@@ -48,6 +48,10 @@ public class Image {
     }
 
     public boolean unlike() {
+        return false;
+    }
+
+    public boolean buy() {
         return false;
     }
 }
