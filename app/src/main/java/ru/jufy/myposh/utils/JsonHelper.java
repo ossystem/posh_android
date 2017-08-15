@@ -71,12 +71,12 @@ public class JsonHelper {
         return data.toString();
     }
 
-    public static List<Image> getMarketImageList(String jsonString) {
+    public static List<Object> getMarketImageList(String jsonString) {
         try {
             JSONObject poshiks = getJsonObjectFromData(jsonString);
             String poshiksArray = poshiks.getString("marketPoshiks");
             JSONArray jsonarray = new JSONArray(poshiksArray);
-            List<Image> result = new ArrayList<>();
+            List<Object> result = new ArrayList<>();
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
                 Image item = new MarketImage();
@@ -88,16 +88,16 @@ public class JsonHelper {
             return result;
         } catch (JSONException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
-    public static List<Image> getFavoritesImageList(String jsonString) {
+    public static List<Object> getFavoritesImageList(String jsonString) {
         try {
             JSONObject poshiks = getJsonObjectFromData(jsonString);
             String poshiksArray = poshiks.getString("favorites");
             JSONArray jsonarray = new JSONArray(poshiksArray);
-            List<Image> result = new ArrayList<>();
+            List<Object> result = new ArrayList<>();
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
                 Image item = new MarketImage();
@@ -109,7 +109,7 @@ public class JsonHelper {
             return result;
         } catch (JSONException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -146,6 +146,27 @@ public class JsonHelper {
         } catch (JSONException e) {
             e.printStackTrace();
             return new String[0];
+        }
+    }
+
+    public static List<Object> getPurchasedImageList(String jsonString) {
+        try {
+            JSONObject poshiks = getJsonObjectFromData(jsonString);
+            String poshiksArray = poshiks.getString("purchases");
+            JSONArray jsonarray = new JSONArray(poshiksArray);
+            List<Object> result = new ArrayList<>();
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                Image item = new MarketImage();
+                item.id = jsonobject.getInt("id");
+                item.isFavorite = false;
+                item.isPurchased = true;
+                result.add(item);
+            }
+            return result;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }

@@ -68,29 +68,9 @@ public class MarketFragment extends ImageGridFragment {
     }
 
     @Override
-    protected void setupGrid(List<Image> images, boolean initialSetup) {
+    protected void setupGrid(List<Object> images, boolean initialSetup) {
         super.setupGrid(images, initialSetup);
-        adapter.setClickListener(new ImageAdapter.ClickListener() {
-            @Override
-            public void onSingleClick(View view, int position) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ImageFragment imgFrag = new ImageFragment();
-                imgFrag.setImage(adapter.getImage(position));
-                transaction.replace(R.id.fragment_frame, imgFrag);
-                transaction.commit();
-            }
-
-            @Override
-            public void onDoubleClick(View view, int position) {
-                //not supported
-            }
-
-            @Override
-            public boolean onLongClick(View view, int position) {
-                return true;
-            }
-        });
+        adapter.setClickListener(new ImageClickListener());
     }
 
     @Override
@@ -124,7 +104,7 @@ public class MarketFragment extends ImageGridFragment {
 
         arcLayout = (ArcLayout) rootView.findViewById(R.id.search_menu);
         shadowBg = rootView.findViewById(R.id.shadow_bg);
-        List<Image> poshiksList = getAllPoshiks();
+        List<Object> poshiksList = getAllPoshiks();
         setupGrid(poshiksList, true);
 
         return rootView;
@@ -159,7 +139,7 @@ public class MarketFragment extends ImageGridFragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ( (actionId == EditorInfo.IME_ACTION_DONE) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
                     onFabSearchClick(fabSearch);
-                    List<Image> poshiksList = getTagPoshiks(v.getText().toString());
+                    List<Object> poshiksList = getTagPoshiks(v.getText().toString());
                     setupGrid(poshiksList, false);
                     return true;
                 }
@@ -177,7 +157,7 @@ public class MarketFragment extends ImageGridFragment {
         layout.addView(input);
     }
 
-    private List<Image> getTagPoshiks(String tag) {
+    private List<Object> getTagPoshiks(String tag) {
         return getPoshiks(getMarketRequestTag(tag));
     }
 
@@ -281,7 +261,7 @@ public class MarketFragment extends ImageGridFragment {
                 @Override
                 public void onClick(View view) {
                     onFabSearchClick(fabSearch);
-                    List<Image> poshiksList = getCategoryPoshiks(items[position].id);
+                    List<Object> poshiksList = getCategoryPoshiks(items[position].id);
                     setupGrid(poshiksList, false);
                 }
             });
@@ -301,7 +281,7 @@ public class MarketFragment extends ImageGridFragment {
         }
     }
 
-    private List<Image> getCategoryPoshiks(int id) {
+    private List<Object> getCategoryPoshiks(int id) {
         return getPoshiks(getMarketRequestCategory(id));
     }
 
@@ -311,7 +291,7 @@ public class MarketFragment extends ImageGridFragment {
         return getRequestAuthorized(url.toString());
     }
 
-    private List<Image> getAllPoshiks() {
+    private List<Object> getAllPoshiks() {
         return getPoshiks(getMarketRequestAll());
     }
 
@@ -319,7 +299,7 @@ public class MarketFragment extends ImageGridFragment {
         return getRequestAuthorized("http://kulon.jwma.ru/api/v1/market");
     }
 
-    private List<Image> getPoshiks(String[] requestParams) {
+    private List<Object> getPoshiks(String[] requestParams) {
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
         try {
             String getResult = getRequest.execute(requestParams).get();
@@ -331,18 +311,6 @@ public class MarketFragment extends ImageGridFragment {
             e.printStackTrace();
         }
         return new ArrayList<>();
-    }
-
-    @NonNull
-    private String[] getRequestAuthorized(String url) {
-        String[] result = new String[3];
-        result[0] = url;
-        result[1] = "Authorization";
-        StringBuilder token = new StringBuilder("Bearer ");
-        token.append(MyPoshApplication.getCurrentToken().getToken());
-        result[2] = new String(token);
-
-        return result;
     }
 
 //--------------- menu animation methods --------------------

@@ -29,6 +29,8 @@ import ru.jufy.myposh.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements IntentDispatcherActivity {
 
+    private enum MainFragments { MARKET, LIBRARY, FAVORITES, SETTINGS};
+
     private MarketFragment marketFragment;
     private LibraryFragment libraryFragment;
     private FavoritesFragment favoritesFragment;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_CROP_AND_CONFIRM = 2;
     private BottomNavigationView bottomNavigationView;
+    private MainFragments currentFragment = MainFragments.MARKET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +54,41 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
         showMarket();
     }
 
+    public void showCurrentFragment() {
+        switch (currentFragment) {
+            case MARKET:
+                showMarket();
+                break;
+            case LIBRARY:
+                showLibrary();
+                break;
+            case FAVORITES:
+                showFavorites();
+                break;
+            case SETTINGS:
+                showSettings();
+                break;
+        }
+    }
+
     public void showMarket() {
+        currentFragment = MainFragments.MARKET;
         showFragment(marketFragment);
-        showBottomNav();
+    }
+
+    public void showLibrary() {
+        currentFragment = MainFragments.LIBRARY;
+        showFragment(libraryFragment);
+    }
+
+    public void showFavorites() {
+        currentFragment = MainFragments.FAVORITES;
+        showFragment(favoritesFragment);
+    }
+
+    public void showSettings() {
+        currentFragment = MainFragments.SETTINGS;
+        showFragment(settingsFragment);
     }
 
     private void initFragments() {
@@ -126,16 +161,16 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.bn_market:
-                                showFragment(marketFragment);
+                                showMarket();
                                 break;
                             case R.id.bn_my_library:
-                                showFragment(libraryFragment);
+                                showLibrary();
                                 break;
                             case R.id.bn_favorites:
-                                showFragment(favoritesFragment);
+                                showFavorites();
                                 break;
                             case R.id.bn_settings:
-                                showFragment(settingsFragment);
+                                showSettings();
                                 break;
                         }
                         return true;
@@ -156,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.replace(R.id.fragment_frame, fragment);
         transaction.commit();
+        showBottomNav();
     }
 
 }

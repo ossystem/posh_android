@@ -42,7 +42,7 @@ public class ImageFragment extends Fragment {
         fabCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).showMarket();
+                ((MainActivity)getActivity()).showCurrentFragment();
             }
         });
         fabLike = (FloatingActionButton)rootView.findViewById(R.id.fab_like);
@@ -64,6 +64,7 @@ public class ImageFragment extends Fragment {
 
         fabBuyDownload = (FloatingActionButton)rootView.findViewById(R.id.fab_buy_download);
         if (image.isPurchased) {
+            fabLike.setVisibility(View.INVISIBLE);
             setDownloadIcon();
         }
         fabBuyDownload.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +98,7 @@ public class ImageFragment extends Fragment {
     private void buyImage() {
         if (image.buy()) {
             setDownloadIcon();
+            fabLike.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -48,7 +47,7 @@ public class FavoritesFragment extends ImageGridFragment {
         // Inflate the layout for this fragment
 
         rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
-        List<Image> favoritesList = getFavorites();
+        List<Object> favoritesList = getFavorites();
         setupGrid(favoritesList, true);
         adapter.setSupportsDoubleClick(false);
         cancelFab = (FloatingActionButton) rootView.findViewById(R.id.fab_cancel);
@@ -68,7 +67,7 @@ public class FavoritesFragment extends ImageGridFragment {
                             Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    List<Image> selected = adapter.getSelected();
+                    List<Image> selected = adapter.getSelectedImages();
                     int failedUnlikes = 0;
                     List<Image> unliked = new ArrayList<>();
                     for (Image image : selected) {
@@ -85,17 +84,19 @@ public class FavoritesFragment extends ImageGridFragment {
                     adapter.setSelectedAll(false);
                     hideFab(cancelFab, selectAllFab);
 
-                    List<Image> newData = new ArrayList<>();
-                    for (Image dataImage : data) {
+                    List<Object> newData = new ArrayList<>();
+                    for (Object dataItem : data) {
                         boolean found = false;
                         for (Image unlikedImage : unliked) {
-                            if (dataImage.id == unlikedImage.id) {
-                                found = true;
-                                break;
+                            if (dataItem instanceof Image) {
+                                if (((Image)dataItem).id == unlikedImage.id) {
+                                    found = true;
+                                    break;
+                                }
                             }
                         }
                         if (!found) {
-                            newData.add(dataImage);
+                            newData.add(dataItem);
                         }
                     }
 
@@ -115,7 +116,7 @@ public class FavoritesFragment extends ImageGridFragment {
         return rootView;
     }
 
-    private List<Image> getFavorites() {
+    private List<Object> getFavorites() {
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
         try {
             String getResult = getRequest.execute(getFavoritesRequest()).get();
@@ -152,7 +153,7 @@ public class FavoritesFragment extends ImageGridFragment {
     }
 
     @Override
-    protected void setupGrid(List<Image> images, boolean initialSetup) {
+    protected void setupGrid(List<Object> images, boolean initialSetup) {
         super.setupGrid(images, initialSetup);
         adapter.setClickListener(new ImageAdapter.ClickListener() {
             @Override
