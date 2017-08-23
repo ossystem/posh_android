@@ -60,7 +60,7 @@
         <activity
             android:name=".activities.WebViewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.SettingsResultActivity"></activity>
+        <activity android:name=".activities.SettingsResultActivity" />
     </application>
 
 </manifest>

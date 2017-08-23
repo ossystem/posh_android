@@ -35,4 +35,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC0'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
     testCompile 'junit:junit:4.12'
+    compile "com.github.danielnilsson9:color-picker-view:1.4.0@aar"
 }

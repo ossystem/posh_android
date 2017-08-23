@@ -5,31 +5,26 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ogaclejapan.arclayout.ArcLayout;
@@ -40,15 +35,10 @@ import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
-import ru.jufy.myposh.adapters.ImageAdapter;
 import ru.jufy.myposh.data.Category;
-import ru.jufy.myposh.data.Image;
 import ru.jufy.myposh.utils.AnimatorUtils;
 import ru.jufy.myposh.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.utils.JsonHelper;
-
-import static android.R.attr.id;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 
 public class MarketFragment extends ImageGridFragment {
@@ -71,6 +61,12 @@ public class MarketFragment extends ImageGridFragment {
     protected void setupGrid(List<Object> images, boolean initialSetup) {
         super.setupGrid(images, initialSetup);
         adapter.setClickListener(new ImageClickListener());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -250,7 +246,7 @@ public class MarketFragment extends ImageGridFragment {
         @Override
         public CategoriesAdapter.CategoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.category_item, parent, false);
+                    .inflate(R.layout.list_item, parent, false);
             return new CategoryHolder(v);
         }
 
@@ -276,7 +272,7 @@ public class MarketFragment extends ImageGridFragment {
             TextView item;
             public CategoryHolder(View itemView) {
                 super(itemView);
-                item = (TextView)itemView.findViewById(R.id.category_item_text);;
+                item = (TextView)itemView.findViewById(R.id.list_item_text);
             }
         }
     }

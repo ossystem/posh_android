@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ import static ru.jufy.myposh.utils.JsonHelper.getPurchasedImageList;
 
 public class LibraryFragment extends ImageGridFragment {
     View shadowBg;
+    FloatingActionButton fabText;
 
     public LibraryFragment() {
         // Required empty public constructor
@@ -57,10 +59,27 @@ public class LibraryFragment extends ImageGridFragment {
         rootView = inflater.inflate(R.layout.fragment_library, container, false);
         shadowBg = rootView.findViewById(R.id.shadow_bg);
 
+        fabText = (FloatingActionButton)
+                rootView.findViewById(R.id.fab_text);
+        fabText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFabTextClick();
+            }
+        });
+
         List<Object> poshiksList = getPurchasedPoshiks();
         setupGrid(poshiksList, true);
 
         return rootView;
+    }
+
+    private void onFabTextClick() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        TextEditorFragment textFrag = new TextEditorFragment();
+        transaction.replace(R.id.fragment_frame, textFrag);
+        transaction.commit();
     }
 
     @Override

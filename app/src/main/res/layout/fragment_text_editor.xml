@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="ru.jufy.myposh.fragments.TextEditorFragment">
+
+    <View
+        android:id="@+id/shadow_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/shadow_background"
+        android:visibility="gone">
+    </View>
+
+    <ru.jufy.myposh.views.ArcLayout
+        android:id = "@id/arc_layout"
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id = "@+id/fab_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_position = "middle"
+            app:rippleColor="@color/light_fab_ripple"
+            app:backgroundTint="@color/light_fab"
+            android:tint="@color/light_fab_fg"
+            app:srcCompat="@drawable/icon_cancel" />
+
+    </ru.jufy.myposh.views.ArcLayout>
+
+
+    <ru.jufy.myposh.views.ClippingRelativeLayout
+        android:id="@+id/textEditorBackground"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/transparent"
+        android:clipChildren="true">
+
+        <ImageView
+            android:id="@+id/circle"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:srcCompat="@drawable/circle" />
+
+        <EditText
+            android:id="@+id/textEditor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:privateImeOptions="nm" />
+    </ru.jufy.myposh.views.ClippingRelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
+
+        <ImageView
+            android:id="@+id/iconKeyboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/icon_keyboard_pink" />
+
+        <ImageView
+            android:id="@+id/iconFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/icon_font_pink" />
+
+        <ImageView
+            android:id="@+id/iconFontColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/icon_font_color_pink" />
+
+        <ImageView
+            android:id="@+id/iconFill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/icon_fill_pink" />
+
+        <ImageView
+            android:id="@+id/iconUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/icon_upload" />
+    </LinearLayout>
+
+</LinearLayout>
