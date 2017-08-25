@@ -15,8 +15,6 @@ import ru.jufy.myposh.utils.JsonHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private boolean isResumed = false;
-
     private static String vkRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=vkontakte";
     private static String fbRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=facebook";
 
@@ -32,7 +30,21 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.imageViewVk).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendSocialAuthRequest(vkRequest);
+            }
+        });
+
         findViewById(R.id.fb_login_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendSocialAuthRequest(fbRequest);
+            }
+        });
+
+        findViewById(R.id.imageViewFb).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendSocialAuthRequest(fbRequest);
