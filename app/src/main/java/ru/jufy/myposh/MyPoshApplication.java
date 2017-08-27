@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import java.util.Date;
 
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -72,12 +73,13 @@ class TimerTaskImpl extends TimerTask {
 
     @Override
     public void run() {
-        String tokenRefreshRequest[] = new String[4];
+        String tokenRefreshRequest[] = new String[2];
         tokenRefreshRequest[0] = "http://kulon.jwma.ru/api/v1/new-token";
         tokenRefreshRequest[1] = JsonHelper.convertTokenToJson();
-        tokenRefreshRequest[2] = "Content-Type";
-        tokenRefreshRequest[3] = "application/json";
+        HashMap<String, String> reqProps = new HashMap<>();
+        reqProps.put("Content-Type", "application/json");
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
+        postRequest.setRequestProperties(reqProps);
         try {
             String postResult = postRequest.execute(tokenRefreshRequest).get();
             if (null == postResult) {

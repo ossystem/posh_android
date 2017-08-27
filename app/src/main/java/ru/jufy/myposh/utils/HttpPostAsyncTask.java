@@ -1,5 +1,6 @@
 package ru.jufy.myposh.utils;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -18,24 +19,22 @@ import static android.R.attr.data;
  */
 
 public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
-    static final int READ_TIMEOUT = 15000;
-    static final int CONNECTION_TIMEOUT = 15000;
+    private static final int READ_TIMEOUT = 15000;
+    private static final int CONNECTION_TIMEOUT = 15000;
+
+    private static final String crlf = "\r\n";
+    private static final String twoHyphens = "--";
+    private static final String boundary =  "****";
+    private HashMap<String, String> reqProps = null;
+    private Bitmap image = null;
 
     @Override
     protected String doInBackground(String... params) {
         String stringUrl = params[0];
         String body = (params.length > 1) ? params[1] : "";
-        HashMap<String, String> reqProps = new HashMap<>();
         byte[] byteData;
         String result;
         String inputLine;
-        if (params.length > 2) {
-            int numReqProps = params.length - 2;
-            numReqProps = ((int)(numReqProps / 2)) * 2;
-            for (int i = 0; i < numReqProps; i += 2) {
-                reqProps.put(params[i + 2], params[i + 3]);
-            }
-        }
         try {
             URL myUrl = new URL(stringUrl);
 
@@ -48,13 +47,28 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
             connection.setDoInput(true);
             connection.setDoOutput(true);
 
-            for(Map.Entry<String, String> prop : reqProps.entrySet()) {
-                connection.setRequestProperty(prop.getKey(), prop.getValue());
+            if (null != reqProps) {
+                for (Map.Entry<String, String> prop : reqProps.entrySet()) {
+                    connection.setRequestProperty(prop.getKey(), prop.getValue());
+                }
             }
 
             OutputStream os = connection.getOutputStream();
             byteData = body.getBytes("UTF-8");
-            os.write(byteData);
+            if (null != image) {
+                os.write(twoHyphens.getBytes("UTF-8"));
+                os.write(boundary.getBytes("UTF-8"));
+                os.write(crlf.getBytes("UTF-8"));
+                os.write(byteData);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                os.write(crlf.getBytes("UTF-8"));
+                os.write(twoHyphens.getBytes("UTF-8"));
+                os.write(boundary.getBytes("UTF-8"));
+                os.write(twoHyphens.getBytes("UTF-8"));
+                os.write(crlf.getBytes("UTF-8"));
+            } else {
+                os.write(byteData);
+            }
             os.flush();
             os.close();
 
@@ -83,5 +97,21 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
 
     String getRequestMethod() {
         return "POST";
+    }
+
+    public void setRequestProperties(HashMap<String, String> props) {
+        reqProps = props;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public String getBoundary() {
+        return boundary;
+    }
+
+    public String getCrLf() {
+        return crlf;
     }
 }

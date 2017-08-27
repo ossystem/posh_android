@@ -1,10 +1,20 @@
 package ru.jufy.myposh.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.Region;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -23,15 +33,22 @@ import android.widget.TextView;
 
 import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.activities.MainActivity;
+import ru.jufy.myposh.utils.HttpPostAsyncTask;
+import ru.jufy.myposh.views.ClippingRelativeLayout;
 
+import static android.R.attr.id;
 import static ru.jufy.myposh.R.drawable.circle;
 
 /**
@@ -40,7 +57,7 @@ import static ru.jufy.myposh.R.drawable.circle;
 
 public class TextEditorFragment extends Fragment {
     private static final int initialFillColor = 0xFF0099FF;
-    private static final int initialFontColor = 0xFF000000;
+    private static final int initialFontColor = 0xFF000011;
     private View rootView;
     FloatingActionButton fabCancel;
     EditText textEditor;
@@ -49,10 +66,12 @@ public class TextEditorFragment extends Fragment {
     ImageView font;
     ImageView fontColor;
     ImageView fillColor;
+    ImageView upload;
     private RecyclerView fontsView = null;
     private ColorPickerView fontColorPicker;
     private ColorPickerView fillColorPicker;
     private int currentFillColor = initialFillColor;
+    private int currentFontColor = initialFontColor;
 
     public TextEditorFragment() {
         super();
@@ -84,7 +103,6 @@ public class TextEditorFragment extends Fragment {
             }
         });
         textEditor.setTextColor(initialFontColor);
-        textEditor.setClipToOutline(true);
 
         circle = (ImageView)rootView.findViewById(R.id.circle);
         GradientDrawable bg = (GradientDrawable) circle.getDrawable();
@@ -119,6 +137,14 @@ public class TextEditorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 activateFillColor();
+            }
+        });
+
+        upload = (ImageView) rootView.findViewById(R.id.iconUpload);
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadImage();
             }
         });
 
@@ -181,10 +207,11 @@ public class TextEditorFragment extends Fragment {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         fontColorPicker.setAlphaSliderVisible(true);
-        fontColorPicker.setColor(textEditor.getCurrentTextColor(), true);
+        fontColorPicker.setColor(currentFontColor, true);
         fontColorPicker.setOnColorChangedListener(new ColorPickerView.OnColorChangedListener() {
             @Override
             public void onColorChanged(int newColor) {
+                currentFontColor = newColor;
                 textEditor.setTextColor(newColor);
             }
         });
@@ -227,6 +254,72 @@ public class TextEditorFragment extends Fragment {
         }
     }
 
+    private void uploadImage() {
+        inactivateAll();
+        ClippingRelativeLayout poshikEditor = (ClippingRelativeLayout) rootView.findViewById(R.id.poshikEditor);
+        FileOutputStream out = null;
+        try {
+            textEditor.setCursorVisible(false);
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/textEditorTest.jpg";
+            out = new FileOutputStream(path);
+            poshikEditor.buildDrawingCache();
+            Bitmap bm = poshikEditor.getDrawingCache();
+            Bitmap output = Bitmap.createBitmap(bm.getHeight(),
+                    bm.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(output);
+            canvas.drawARGB(0, 0, 0, 0);
+            Rect srcRect = new Rect((bm.getWidth() - bm.getHeight())/2, 0, (bm.getWidth() - bm.getHeight())/2 + bm.getHeight(), bm.getHeight());
+            Rect newRect = new Rect(0, 0, bm.getHeight(), bm.getHeight());
+            canvas.drawBitmap(bm, srcRect, newRect, null);
+
+            Path clipPath = new Path();
+            clipPath.addCircle(newRect.exactCenterX(), newRect.exactCenterY(), newRect.height()/2, Path.Direction.CW);
+            canvas.clipPath(clipPath, Region.Op.DIFFERENCE);
+            canvas.drawColor(currentFillColor);
+            sendToServer(output);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            poshikEditor.destroyDrawingCache();
+            textEditor.setCursorVisible(true);
+        }
+    }
+
+    private boolean sendToServer(Bitmap image) {
+        HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
+        postRequest.setImage(image);
+        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/my");
+        String addPoshikRequest[] = new String[2];
+        addPoshikRequest[0] = link.toString();
+        addPoshikRequest[1] = "Content-Disposition: form-data; name=\"poshik\"; filename=\"poshik.jpg\"" + postRequest.getCrLf()
+                                + "Content-Type: image/jpeg" + postRequest.getCrLf() + postRequest.getCrLf();
+
+        HashMap<String, String> reqProps = new HashMap<>();
+        reqProps.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
+        reqProps.put("Cache-Control", "no-cache");
+        reqProps.put("Content-Type", "multipart/form-data; boundary=" + postRequest.getBoundary());
+        postRequest.setRequestProperties(reqProps);
+        try {
+            String postResult = postRequest.execute(addPoshikRequest).get();
+            if (null == postResult) {
+                throw new InterruptedException();
+            }
+            return true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private void setIcon(ImageView view, @DrawableRes int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             view.setImageDrawable(getResources().getDrawable(id, MyPoshApplication.getContext().getTheme()));
@@ -254,7 +347,7 @@ public class TextEditorFragment extends Fragment {
         }
 
         private List<Pair<String, Typeface>> getSSystemFontMap() {
-            Map<String, Typeface> sSystemFontMap = null;
+            Map<String, Typeface> sSystemFontMap;
             List<Pair<String, Typeface>> result = new ArrayList<>();
             try {
                 Typeface typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);

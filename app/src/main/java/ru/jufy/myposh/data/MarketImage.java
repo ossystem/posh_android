@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.MyPoshApplication;
@@ -65,12 +66,13 @@ public class MarketImage extends Image {
         StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
         link.append(id);
         link.append("/fav");
-        String imgFavRequest[] = new String[4];
+        String imgFavRequest[] = new String[2];
         imgFavRequest[0] = link.toString();
         imgFavRequest[1] = "";
-        imgFavRequest[2] = "Authorization";
-        imgFavRequest[3] = "Bearer " + MyPoshApplication.getCurrentToken().getToken();
+        HashMap<String, String> reqProps = new HashMap<>();
+        reqProps.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
+        postRequest.setRequestProperties(reqProps);
         try {
             String postResult = postRequest.execute(imgFavRequest).get();
             if (null == postResult) {
@@ -90,12 +92,13 @@ public class MarketImage extends Image {
     public boolean unlike() {
         StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/favorites/");
         link.append(id);
-        String imgUnFavRequest[] = new String[4];
+        String imgUnFavRequest[] = new String[2];
         imgUnFavRequest[0] = link.toString();
         imgUnFavRequest[1] = "";
-        imgUnFavRequest[2] = "Authorization";
-        imgUnFavRequest[3] = "Bearer " + MyPoshApplication.getCurrentToken().getToken();
+        HashMap<String, String> reqProps = new HashMap<>();
+        reqProps.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
         HttpDelAsyncTask delRequest = new HttpDelAsyncTask();
+        delRequest.setRequestProperties(reqProps);
         try {
             String delResult = delRequest.execute(imgUnFavRequest).get();
             if (null == delResult) {
@@ -115,12 +118,13 @@ public class MarketImage extends Image {
     public boolean buy() {
         StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
         link.append(id);
-        String imgBuyRequest[] = new String[4];
+        String imgBuyRequest[] = new String[2];
         imgBuyRequest[0] = link.toString();
         imgBuyRequest[1] = "";
-        imgBuyRequest[2] = "Authorization";
-        imgBuyRequest[3] = "Bearer " + MyPoshApplication.getCurrentToken().getToken();
+        HashMap<String, String> reqProps = new HashMap<>();
+        reqProps.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
+        postRequest.setRequestProperties(reqProps);
         try {
             String postResult = postRequest.execute(imgBuyRequest).get();
             if (null == postResult) {

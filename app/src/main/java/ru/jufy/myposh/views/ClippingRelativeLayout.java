@@ -27,13 +27,8 @@ public class ClippingRelativeLayout extends RelativeLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public ClippingRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
-
         canvas.getClipBounds(canvasRect);
         clipPath.addCircle(canvasRect.exactCenterX(), canvasRect.exactCenterY(), canvasRect.height()/2, Path.Direction.CW);
         canvas.clipPath(clipPath);
