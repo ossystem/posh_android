@@ -13,10 +13,28 @@ import ru.jufy.myposh.utils.GlideApp;
  */
 
 public class Image {
-    public int id;
-    public boolean isFavorite;
-    public boolean isPurchased;
+    protected int id;
     protected int size;
+
+    public Image(int id) {
+        this.id = id;
+    }
+
+    public boolean canLike() {
+        return false;
+    }
+
+    public boolean canUnlike() {
+        return false;
+    }
+
+    public boolean canDownload() {
+        return true;
+    }
+
+    public boolean isMe(Image imgToCompare) {
+        return imgToCompare.id == id;
+    }
 
     public void setSize(int size) {
         this.size = (int)(size * 0.8);

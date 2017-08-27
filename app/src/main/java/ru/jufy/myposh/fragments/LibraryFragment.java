@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.ogaclejapan.arclayout.ArcLayout;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -69,9 +70,28 @@ public class LibraryFragment extends ImageGridFragment {
         });
 
         List<Object> poshiksList = getPurchasedPoshiks();
+        poshiksList.addAll(getHandmadePoshiks());
         setupGrid(poshiksList, true);
 
         return rootView;
+    }
+
+    private List<Object> getHandmadePoshiks() {
+        HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
+        try {
+            String getResult = getRequest.execute(getHandmadeRequest()).get();
+            if (null == getResult) {
+                throw new InterruptedException();
+            }
+            List<Object> result = JsonHelper.getHandmadeImageList(getResult);
+            if (result.size() > 0) {
+                result.add(0, new String("Мои пошики"));
+            }
+            return result;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
     private void onFabTextClick() {
@@ -106,6 +126,10 @@ public class LibraryFragment extends ImageGridFragment {
 
     private String[] getPurchasedRequest() {
         return getRequestAuthorized("http://kulon.jwma.ru/api/v1/poshiks/purchase");
+    }
+
+    private String[] getHandmadeRequest() {
+        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/poshiks/my");
     }
 
     @Override

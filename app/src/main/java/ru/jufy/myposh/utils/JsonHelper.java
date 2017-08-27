@@ -1,5 +1,7 @@
 package ru.jufy.myposh.utils;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +15,7 @@ import java.util.TimeZone;
 
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.data.Category;
+import ru.jufy.myposh.data.HandmadeImage;
 import ru.jufy.myposh.data.Image;
 import ru.jufy.myposh.data.MarketImage;
 
@@ -22,8 +25,9 @@ import ru.jufy.myposh.data.MarketImage;
 
 public class JsonHelper {
 
-    public static int SOCIAL_AUTH_RSP_DATA_IDX = 0;
+    private static int SOCIAL_AUTH_RSP_DATA_IDX = 0;
 
+    @NonNull
     public static String getSocialAuthLink(String jsonString) {
         try {
             JSONObject link = getJsonObjectFromData(jsonString);
@@ -41,6 +45,7 @@ public class JsonHelper {
         return valArray.getJSONObject(SOCIAL_AUTH_RSP_DATA_IDX);
     }
 
+    @NonNull
     public static KulonToken getToken(String jsonString) {
         try {
             JSONObject tokenData = getJsonObjectFromData(jsonString);
@@ -57,10 +62,10 @@ public class JsonHelper {
         ParsePosition pos = new ParsePosition(0);
         SimpleDateFormat simpledateformat = new SimpleDateFormat(aFormat);
         simpledateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        Date stringDate = simpledateformat.parse(aDate, pos);
-        return stringDate;
+        return simpledateformat.parse(aDate, pos);
     }
 
+    @NonNull
     public static String convertTokenToJson() {
         JSONObject data = new JSONObject();
         try {
@@ -71,6 +76,7 @@ public class JsonHelper {
         return data.toString();
     }
 
+    @NonNull
     public static List<Object> getMarketImageList(String jsonString) {
         try {
             JSONObject poshiks = getJsonObjectFromData(jsonString);
@@ -79,10 +85,7 @@ public class JsonHelper {
             List<Object> result = new ArrayList<>();
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                Image item = new MarketImage();
-                item.id = jsonobject.getInt("id");
-                item.isFavorite = jsonobject.getBoolean("is_favorite");
-                item.isPurchased = jsonobject.getBoolean("is_purchased");
+                Image item = new MarketImage(jsonobject.getInt("id"), jsonobject.getBoolean("is_favorite"), jsonobject.getBoolean("is_purchased"));
                 result.add(item);
             }
             return result;
@@ -92,6 +95,7 @@ public class JsonHelper {
         }
     }
 
+    @NonNull
     public static List<Object> getFavoritesImageList(String jsonString) {
         try {
             JSONObject poshiks = getJsonObjectFromData(jsonString);
@@ -100,10 +104,7 @@ public class JsonHelper {
             List<Object> result = new ArrayList<>();
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                Image item = new MarketImage();
-                item.id = jsonobject.getInt("id");
-                item.isFavorite = true;
-                item.isPurchased = false;
+                Image item = new MarketImage(jsonobject.getInt("id"), true, false);
                 result.add(item);
             }
             return result;
@@ -113,6 +114,7 @@ public class JsonHelper {
         }
     }
 
+    @NonNull
     public static Category[] getCategories(String jsonString) {
         try {
             JSONObject categories = getJsonObjectFromData(jsonString);
@@ -132,6 +134,7 @@ public class JsonHelper {
         }
     }
 
+    @NonNull
     public static String[] getTags(String jsonString) {
         try {
             JSONObject categories = getJsonObjectFromData(jsonString);
@@ -149,24 +152,39 @@ public class JsonHelper {
         }
     }
 
+    @NonNull
     public static List<Object> getPurchasedImageList(String jsonString) {
+        List<Object> result = new ArrayList<>();
         try {
             JSONObject poshiks = getJsonObjectFromData(jsonString);
             String poshiksArray = poshiks.getString("purchases");
             JSONArray jsonarray = new JSONArray(poshiksArray);
-            List<Object> result = new ArrayList<>();
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                Image item = new MarketImage();
-                item.id = jsonobject.getInt("id");
-                item.isFavorite = false;
-                item.isPurchased = true;
+                Image item = new MarketImage(jsonobject.getInt("id"), false, true);
                 result.add(item);
             }
-            return result;
         } catch (JSONException e) {
             e.printStackTrace();
-            return new ArrayList<>();
         }
+        return result;
+    }
+
+    @NonNull
+    public static List<Object> getHandmadeImageList(String jsonString) {
+        List<Object> result = new ArrayList<>();
+        try {
+            JSONObject poshiks = getJsonObjectFromData(jsonString);
+            String poshiksArray = poshiks.getString("myPoshiks");
+            JSONArray jsonarray = new JSONArray(poshiksArray);
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject jsonobject = jsonarray.getJSONObject(i);
+                Image item = new HandmadeImage(jsonobject.getInt("id"));
+                result.add(item);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

@@ -38,6 +38,7 @@ public class ImageFragment extends Fragment {
         ImageView imageView = (ImageView)rootView.findViewById(R.id.bigImage);
         calculateImageSize();
         image.showMiddle(getActivity(), imageView);
+
         fabCancel = (FloatingActionButton)rootView.findViewById(R.id.fab_cancel);
         fabCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,32 +46,34 @@ public class ImageFragment extends Fragment {
                 ((MainActivity)getActivity()).showCurrentFragment();
             }
         });
-        fabLike = (FloatingActionButton)rootView.findViewById(R.id.fab_like);
-        if (image.isFavorite) {
+
+        fabLike = (FloatingActionButton)rootView.findViewById(R.id.fab_like_delete);
+        if (image.canUnlike()) {
             setLikedIcon();
-        } else {
+        } else if (image.canLike()) {
             setUnlikedIcon();
+        } else {
+            fabLike.setVisibility(View.INVISIBLE);
         }
         fabLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (image.isFavorite) {
+                if (image.canUnlike()) {
                     onUnLike();
-                } else {
+                } else if (image.canLike()) {
                     onLike();
                 }
             }
         });
 
         fabBuyDownload = (FloatingActionButton)rootView.findViewById(R.id.fab_buy_download);
-        if (image.isPurchased) {
-            fabLike.setVisibility(View.INVISIBLE);
+        if (image.canDownload()) {
             setDownloadIcon();
         }
         fabBuyDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (image.isPurchased) {
+                if (image.canDownload()) {
                     downloadImage();
                 } else {
                     buyImage();

@@ -89,7 +89,7 @@ public class FavoritesFragment extends ImageGridFragment {
                         boolean found = false;
                         for (Image unlikedImage : unliked) {
                             if (dataItem instanceof Image) {
-                                if (((Image)dataItem).id == unlikedImage.id) {
+                                if (unlikedImage.isMe((Image)dataItem)) {
                                     found = true;
                                     break;
                                 }

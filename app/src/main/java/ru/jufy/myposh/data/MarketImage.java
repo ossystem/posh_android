@@ -1,6 +1,7 @@
 package ru.jufy.myposh.data;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -22,19 +23,48 @@ import ru.jufy.myposh.utils.HttpPostAsyncTask;
 
 public class MarketImage extends Image {
 
+    private boolean isFavorite;
+    private boolean isPurchased;
+
+    public MarketImage(int id, boolean isFavorite, boolean isPurchased) {
+        super(id);
+        this.isFavorite = isFavorite;
+        this.isPurchased = isPurchased;
+    }
+
+    @Override
+    public boolean canLike() {
+        return !isFavorite && !isPurchased;
+    }
+
+    @Override
+    public boolean canUnlike() {
+        return isFavorite && !isPurchased;
+    }
+
+    @Override
+    public boolean canDownload() {
+        return isPurchased;
+    }
+
     @Override
     public void showSmall(Context context, ImageView view) {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
-        link.append(id);
+        StringBuilder link = getMarketLinkCommonPart();
         link.append("/img?size=small");
 
         showImage(context, view, link);
     }
 
-    @Override
-    public void showMiddle(Context context, ImageView view) {
+    @NonNull
+    private StringBuilder getMarketLinkCommonPart() {
         StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
         link.append(id);
+        return link;
+    }
+
+    @Override
+    public void showMiddle(Context context, ImageView view) {
+        StringBuilder link = getMarketLinkCommonPart();
         link.append("/img?size=middle");
 
         showImage(context, view, link);
@@ -42,8 +72,7 @@ public class MarketImage extends Image {
 
     @Override
     public void showBig(Context context, ImageView view) {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
-        link.append(id);
+        StringBuilder link = getMarketLinkCommonPart();
         link.append("/img?size=big");
 
         showImage(context, view, link);
@@ -63,8 +92,7 @@ public class MarketImage extends Image {
 
     @Override
     public boolean like() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
-        link.append(id);
+        StringBuilder link = getMarketLinkCommonPart();
         link.append("/fav");
         String imgFavRequest[] = new String[2];
         imgFavRequest[0] = link.toString();
@@ -80,9 +108,7 @@ public class MarketImage extends Image {
             }
             isFavorite = true;
             return true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return false;
@@ -116,8 +142,7 @@ public class MarketImage extends Image {
 
     @Override
     public boolean buy() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
-        link.append(id);
+        StringBuilder link = getMarketLinkCommonPart();
         String imgBuyRequest[] = new String[2];
         imgBuyRequest[0] = link.toString();
         imgBuyRequest[1] = "";
