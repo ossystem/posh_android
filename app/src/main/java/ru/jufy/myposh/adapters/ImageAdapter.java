@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -97,7 +98,7 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case IMAGE:
                 ImageHolder image_vh = (ImageHolder)holder;
                 ((Image)data.get(position)).setSize(imgSize);
-                ((Image)data.get(position)).showSmall(context, image_vh.imageView);
+                ((Image)data.get(position)).showSmall(context, image_vh.imageView, image_vh.progressBar);
 
                 if (clickListener != null) {
                     image_vh.imageView.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +180,7 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return data.size();
     }
 
-    public int getItemColumn(int position, int columnsNumber) {
+    int getItemColumn(int position, int columnsNumber) {
         int result = 0;
         boolean firstImgAfterText = true;
         for (int i = 0; i <= position; ++i) {
@@ -204,7 +205,7 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return result;
     }
 
-    public boolean isFirstRow(int position, int columnsNumber) {
+    boolean isFirstRow(int position, int columnsNumber) {
         int column = 0;
         for (int i = 0; i < position; ++i) {
             switch (getItemViewType(i)) {
@@ -221,21 +222,23 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return true;
     }
 
-    class ImageHolder extends RecyclerView.ViewHolder {
+    private class ImageHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
+        ProgressBar progressBar;
         View overlayDelete;
         View overlayFavorite;
-        public ImageHolder(View itemView) {
+        ImageHolder(View itemView) {
             super(itemView);
             imageView = (ImageView)itemView.findViewById(R.id.image);
+            progressBar = (ProgressBar)itemView.findViewById(R.id.progress);
             overlayDelete = itemView.findViewById(R.id.overlay_delete);
             overlayFavorite = itemView.findViewById(R.id.overlay_favorite);
         }
     }
 
-    class TextHolder extends RecyclerView.ViewHolder {
+    private class TextHolder extends RecyclerView.ViewHolder {
         TextView textView;
-        public TextHolder(View itemView) {
+        TextHolder(View itemView) {
             super(itemView);
             textView = (TextView)itemView;
         }

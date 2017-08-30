@@ -2,6 +2,7 @@ package ru.jufy.myposh.data;
 
 import android.content.Context;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.request.RequestOptions;
 
@@ -32,6 +33,10 @@ public class Image {
         return true;
     }
 
+    public boolean canDelete() {
+        return false;
+    }
+
     public boolean isMe(Image imgToCompare) {
         return imgToCompare.id == id;
     }
@@ -40,15 +45,15 @@ public class Image {
         this.size = (int)(size * 0.8);
     }
 
-    public void showSmall(Context context, ImageView view) {
+    public void showSmall(Context context, ImageView view, ProgressBar progressBar) {
         show(context, view);
     }
 
-    public void showMiddle(Context context, ImageView view) {
+    public void showMiddle(Context context, ImageView view, ProgressBar progressBar) {
         show(context, view);
     }
 
-    public void showBig(Context context, ImageView view) {
+    public void showBig(Context context, ImageView view, ProgressBar progressBar) {
         show(context, view);
     }
 
@@ -70,6 +75,10 @@ public class Image {
     }
 
     public boolean buy() {
+        return false;
+    }
+
+    public boolean delete() {
         return false;
     }
 }

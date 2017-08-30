@@ -1,11 +1,19 @@
 package ru.jufy.myposh.data;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -48,11 +56,11 @@ public class MarketImage extends Image {
     }
 
     @Override
-    public void showSmall(Context context, ImageView view) {
+    public void showSmall(Context context, ImageView view, ProgressBar progressBar) {
         StringBuilder link = getMarketLinkCommonPart();
         link.append("/img?size=small");
 
-        showImage(context, view, link);
+        showImage(context, view, progressBar, link);
     }
 
     @NonNull
@@ -63,29 +71,42 @@ public class MarketImage extends Image {
     }
 
     @Override
-    public void showMiddle(Context context, ImageView view) {
+    public void showMiddle(Context context, ImageView view, ProgressBar progressBar) {
         StringBuilder link = getMarketLinkCommonPart();
         link.append("/img?size=middle");
 
-        showImage(context, view, link);
+        showImage(context, view, progressBar, link);
     }
 
     @Override
-    public void showBig(Context context, ImageView view) {
+    public void showBig(Context context, ImageView view, ProgressBar progressBar) {
         StringBuilder link = getMarketLinkCommonPart();
         link.append("/img?size=big");
 
-        showImage(context, view, link);
+        showImage(context, view, progressBar, link);
     }
 
-    private void showImage(Context context, ImageView view, StringBuilder link) {
+    private void showImage(Context context, ImageView view, final ProgressBar progressBar, StringBuilder link) {
         GlideApp
                 .with(context)
                 .load(link.toString())
                 .override(size, size)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .circleCrop()
-                .apply(RequestOptions.placeholderOf(R.drawable.pink))
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                //.apply(RequestOptions.placeholderOf(R.drawable.pink))
                 .apply(RequestOptions.errorOf(R.drawable.error))
                 .into(view);
     }
@@ -132,9 +153,7 @@ public class MarketImage extends Image {
             }
             isFavorite = false;
             return true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return false;
@@ -157,9 +176,7 @@ public class MarketImage extends Image {
             }
             isPurchased = true;
             return true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return false;

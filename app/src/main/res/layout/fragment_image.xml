@@ -41,6 +41,15 @@
         android:src="@drawable/pink"
         android:background="@android:color/transparent" />
 
+    <ProgressBar
+        android:id="@+id/bigProgress"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+        android:layout_height="100dp" />
+
     <com.ogaclejapan.arclayout.ArcLayout
         android:id="@+id/image_menu"
         android:layout_width="match_parent"

@@ -87,7 +87,7 @@ public class ImageGridFragment extends Fragment {
         return result;
     }
 
-    protected class ImageClickListener extends ImageAdapter.ClickListener {
+    class ImageClickListener extends ImageAdapter.ClickListener {
         @Override
         public void onSingleClick(View view, int position) {
             Image image = adapter.getImage(position);

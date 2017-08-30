@@ -23,18 +23,19 @@ import ru.jufy.myposh.utils.KulonToken;
 public class MyPoshApplication extends Application {
 
     private static KulonToken currentToken = null;
-    private static Context context;
     private static Timer expTimer = null;
+
+    private static MyPoshApplication app;
 
     private static long MS_TO_START_REFRESH_BEFORE_TOKEN_EXP = 10000;
 
     public void onCreate() {
         super.onCreate();
-        MyPoshApplication.context = getApplicationContext();
+        app = this;
     }
 
     public static Context getContext() {
-        return  context;
+        return  app.getApplicationContext();
     }
 
     public static KulonToken getCurrentToken() {
@@ -44,7 +45,7 @@ public class MyPoshApplication extends Application {
     public static void onNewTokenObtained(KulonToken newToken) {
         Date now = new Date();
         if (newToken.getExpirationDate().getTime() < now.getTime()) {
-            Toast.makeText(context, "Received token expiration date which is in the past", Toast.LENGTH_LONG).show();
+            Toast.makeText(app.getApplicationContext(), "Received token expiration date which is in the past", Toast.LENGTH_LONG).show();
             return;
         }
         currentToken = newToken;
@@ -86,9 +87,7 @@ class TimerTaskImpl extends TimerTask {
                 throw new InterruptedException();
             }
             MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(postResult));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }

@@ -3,6 +3,7 @@ package ru.jufy.myposh.fragments;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.Display;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
@@ -23,7 +26,7 @@ import ru.jufy.myposh.data.Image;
 public class ImageFragment extends Fragment {
     private View rootView;
     FloatingActionButton fabCancel;
-    FloatingActionButton fabLike;
+    FloatingActionButton fabLikeTrash;
     FloatingActionButton fabBuyDownload;
     private Image image;
 
@@ -36,8 +39,9 @@ public class ImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_image, container, false);
         ImageView imageView = (ImageView)rootView.findViewById(R.id.bigImage);
+        ProgressBar progressBar = (ProgressBar)rootView.findViewById(R.id.bigProgress);
         calculateImageSize();
-        image.showMiddle(getActivity(), imageView);
+        image.showMiddle(getActivity(), imageView, progressBar);
 
         fabCancel = (FloatingActionButton)rootView.findViewById(R.id.fab_cancel);
         fabCancel.setOnClickListener(new View.OnClickListener() {
@@ -47,21 +51,25 @@ public class ImageFragment extends Fragment {
             }
         });
 
-        fabLike = (FloatingActionButton)rootView.findViewById(R.id.fab_like_delete);
+        fabLikeTrash = (FloatingActionButton)rootView.findViewById(R.id.fab_like_delete);
         if (image.canUnlike()) {
             setLikedIcon();
         } else if (image.canLike()) {
             setUnlikedIcon();
+        } else if (image.canDelete()) {
+            setTrashIcon();
         } else {
-            fabLike.setVisibility(View.INVISIBLE);
+            fabLikeTrash.setVisibility(View.INVISIBLE);
         }
-        fabLike.setOnClickListener(new View.OnClickListener() {
+        fabLikeTrash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (image.canUnlike()) {
                     onUnLike();
                 } else if (image.canLike()) {
                     onLike();
+                } else if (image.canDelete()) {
+                    onDelete();
                 }
             }
         });
@@ -101,23 +109,27 @@ public class ImageFragment extends Fragment {
     private void buyImage() {
         if (image.buy()) {
             setDownloadIcon();
-            fabLike.setVisibility(View.INVISIBLE);
+            fabLikeTrash.setVisibility(View.INVISIBLE);
         }
     }
 
     private void setLikedIcon() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fabLike.setImageDrawable(getResources().getDrawable(R.drawable.icon_liked, MyPoshApplication.getContext().getTheme()));
-        } else {
-            fabLike.setImageDrawable(getResources().getDrawable(R.drawable.icon_liked));
-        }
+        setIcon(fabLikeTrash, R.drawable.icon_liked);
     }
 
     private void setUnlikedIcon() {
+        setIcon(fabLikeTrash, R.drawable.icon_like);
+    }
+
+    private void setTrashIcon() {
+        setIcon(fabLikeTrash, R.drawable.icon_trash);
+    }
+
+    private void setIcon(ImageView view, @DrawableRes int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fabLike.setImageDrawable(getResources().getDrawable(R.drawable.icon_like, MyPoshApplication.getContext().getTheme()));
+            view.setImageDrawable(getResources().getDrawable(id, MyPoshApplication.getContext().getTheme()));
         } else {
-            fabLike.setImageDrawable(getResources().getDrawable(R.drawable.icon_like));
+            view.setImageDrawable(getResources().getDrawable(id));
         }
     }
 
@@ -130,6 +142,14 @@ public class ImageFragment extends Fragment {
     private void onLike() {
         if (image.like()) {
             setLikedIcon();
+        }
+    }
+
+    private void onDelete() {
+        if (image.delete()) {
+            ((MainActivity)getActivity()).showCurrentFragment();
+        } else {
+            Toast.makeText(getActivity(), "Не получилось удалить пошик", Toast.LENGTH_LONG).show();
         }
     }
 
