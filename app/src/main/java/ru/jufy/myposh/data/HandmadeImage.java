@@ -38,7 +38,7 @@ public class HandmadeImage extends Image {
 
     @Override
     public boolean delete() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/");
+        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/my/");
         link.append(id);
         String imgDelRequest[] = new String[2];
         imgDelRequest[0] = link.toString();

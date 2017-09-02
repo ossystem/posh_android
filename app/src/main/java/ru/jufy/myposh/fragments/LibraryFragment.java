@@ -43,9 +43,10 @@ import static ru.jufy.myposh.utils.JsonHelper.getPurchasedImageList;
 public class LibraryFragment extends ImageGridFragment {
     View shadowBg;
     FloatingActionButton fabText;
+    private final TextEditorFragment textFrag;
 
     public LibraryFragment() {
-        // Required empty public constructor
+        textFrag = new TextEditorFragment();
     }
 
     public static LibraryFragment newInstance() {
@@ -97,7 +98,6 @@ public class LibraryFragment extends ImageGridFragment {
     private void onFabTextClick() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        TextEditorFragment textFrag = new TextEditorFragment();
         transaction.replace(R.id.fragment_frame, textFrag);
         transaction.commit();
     }

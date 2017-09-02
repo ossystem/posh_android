@@ -3,11 +3,8 @@ package ru.jufy.myposh.fragments;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.Typeface;
@@ -22,6 +19,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -31,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.almeros.android.multitouch.MoveGestureDetector;
+import com.almeros.android.multitouch.RotateGestureDetector;
 import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
 
 import java.io.FileOutputStream;
@@ -47,9 +48,6 @@ import ru.jufy.myposh.R;
 import ru.jufy.myposh.activities.MainActivity;
 import ru.jufy.myposh.utils.HttpPostAsyncTask;
 import ru.jufy.myposh.views.ClippingRelativeLayout;
-
-import static android.R.attr.id;
-import static ru.jufy.myposh.R.drawable.circle;
 
 /**
  * Created by BorisDev on 16.08.2017.
@@ -72,6 +70,20 @@ public class TextEditorFragment extends Fragment {
     private ColorPickerView fillColorPicker;
     private int currentFillColor = initialFillColor;
     private int currentFontColor = initialFontColor;
+
+    private float initialTextSize;
+    private float mScaleFactor = 1.0f;
+
+    private float initialPosX;
+    private float initialPosY;
+    private float mFocusX = 0.f;
+    private float mFocusY = 0.f;
+
+    private float mRotationDegrees = 0.f;
+
+    private ScaleGestureDetector mScaleDetector;
+    private MoveGestureDetector mMoveDetector;
+    private RotateGestureDetector mRotateDetector;
 
     public TextEditorFragment() {
         super();
@@ -103,6 +115,7 @@ public class TextEditorFragment extends Fragment {
             }
         });
         textEditor.setTextColor(initialFontColor);
+        textEditor.setRotation(mRotationDegrees);
 
         circle = (ImageView)rootView.findViewById(R.id.circle);
         GradientDrawable bg = (GradientDrawable) circle.getDrawable();
@@ -145,6 +158,32 @@ public class TextEditorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 uploadImage();
+            }
+        });
+
+        initialTextSize = textEditor.getTextSize();
+        initialPosX = textEditor.getX();
+        initialPosY = textEditor.getY();
+
+        mScaleDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
+        mMoveDetector = new MoveGestureDetector(getContext(), new MoveListener());
+        mRotateDetector = new RotateGestureDetector(getContext(), new RotateListener());
+
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                mScaleDetector.onTouchEvent(event);
+                mMoveDetector.onTouchEvent(event);
+                mRotateDetector.onTouchEvent(event);
+
+                float newSize = initialTextSize * mScaleFactor;
+                textEditor.setTextSize(newSize);
+
+                textEditor.setX(initialPosX + mFocusX);
+                textEditor.setY(initialPosY + mFocusY);
+
+                textEditor.setRotation(mRotationDegrees);
+
+                return true;
             }
         });
 
@@ -295,9 +334,8 @@ public class TextEditorFragment extends Fragment {
     private boolean sendToServer(Bitmap image) {
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
         postRequest.setImage(image);
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/my");
         String addPoshikRequest[] = new String[2];
-        addPoshikRequest[0] = link.toString();
+        addPoshikRequest[0] = "http://kulon.jwma.ru/api/v1/poshiks/my";
         addPoshikRequest[1] = "Content-Disposition: form-data; name=\"poshik\"; filename=\"poshik.jpg\"" + postRequest.getCrLf()
                                 + "Content-Type: image/jpeg" + postRequest.getCrLf() + postRequest.getCrLf();
 
@@ -312,9 +350,7 @@ public class TextEditorFragment extends Fragment {
                 throw new InterruptedException();
             }
             return true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return false;
@@ -388,12 +424,66 @@ public class TextEditorFragment extends Fragment {
             return items.size();
         }
 
-        public class FontHolder extends RecyclerView.ViewHolder {
+        class FontHolder extends RecyclerView.ViewHolder {
             TextView item;
-            public FontHolder(View v) {
+            FontHolder(View v) {
                 super(v);
                 item = (TextView)itemView.findViewById(R.id.list_item_text);
             }
+        }
+    }
+
+    private class ScaleListener implements ScaleGestureDetector.OnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            mScaleFactor *= detector.getScaleFactor();
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector detector) {
+        }
+    }
+
+    private class MoveListener implements MoveGestureDetector.OnMoveGestureListener {
+        @Override
+        public boolean onMove(MoveGestureDetector detector) {
+            PointF d = detector.getFocusDelta();
+            mFocusX += d.x;
+            mFocusY += d.y;
+            return true;
+        }
+
+        @Override
+        public boolean onMoveBegin(MoveGestureDetector detector) {
+            return true;
+        }
+
+        @Override
+        public void onMoveEnd(MoveGestureDetector detector) {
+        }
+    }
+
+    private class RotateListener implements RotateGestureDetector.OnRotateGestureListener {
+        @Override
+        public boolean onRotate(RotateGestureDetector detector) {
+            mRotationDegrees -= detector.getRotationDegreesDelta();
+            return true;
+        }
+
+        @Override
+        public boolean onRotateBegin(RotateGestureDetector detector) {
+            return true;
+        }
+
+        @Override
+        public void onRotateEnd(RotateGestureDetector detector) {
+
         }
     }
 }

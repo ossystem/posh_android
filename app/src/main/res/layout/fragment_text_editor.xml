@@ -6,14 +6,6 @@
     android:orientation="vertical"
     tools:context="ru.jufy.myposh.fragments.TextEditorFragment">
 
-    <View
-        android:id="@+id/shadow_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/shadow_background"
-        android:visibility="gone">
-    </View>
-
     <ru.jufy.myposh.views.ArcLayout
         android:id = "@id/arc_layout"
         android:layout_width="match_parent"
