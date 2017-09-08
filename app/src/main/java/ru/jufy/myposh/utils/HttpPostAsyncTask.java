@@ -72,22 +72,16 @@ public class HttpPostAsyncTask extends AsyncTask<String, Void, String> {
             os.flush();
             os.close();
 
-            int responseCode = connection.getResponseCode();
-
-            if (HttpURLConnection.HTTP_OK == responseCode) {
-                InputStreamReader streamReader = new
-                        InputStreamReader(connection.getInputStream());
-                BufferedReader reader = new BufferedReader(streamReader);
-                StringBuilder stringBuilder = new StringBuilder();
-                while ((inputLine = reader.readLine()) != null) {
-                    stringBuilder.append(inputLine);
-                }
-                reader.close();
-                streamReader.close();
-                result = stringBuilder.toString();
-            } else {
-                result = null;
+            InputStreamReader streamReader = new
+                    InputStreamReader(connection.getInputStream());
+            BufferedReader reader = new BufferedReader(streamReader);
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((inputLine = reader.readLine()) != null) {
+                stringBuilder.append(inputLine);
             }
+            reader.close();
+            streamReader.close();
+            result = stringBuilder.toString();
         } catch (IOException e) {
             e.printStackTrace();
             result = null;

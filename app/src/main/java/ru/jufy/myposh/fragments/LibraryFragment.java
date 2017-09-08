@@ -50,8 +50,7 @@ public class LibraryFragment extends ImageGridFragment {
     }
 
     public static LibraryFragment newInstance() {
-        LibraryFragment fragment = new LibraryFragment();
-        return fragment;
+        return new LibraryFragment();
     }
 
     @Override

@@ -40,9 +40,7 @@ public class JsonHelper {
 
     private static JSONObject getJsonObjectFromData(String jsonString) throws JSONException {
         JSONObject json = new JSONObject(jsonString);
-        JSONArray nameArray = json.names();
-        JSONArray valArray = json.toJSONArray(nameArray);
-        return valArray.getJSONObject(SOCIAL_AUTH_RSP_DATA_IDX);
+        return json.getJSONObject("data");
     }
 
     @NonNull
@@ -182,6 +180,30 @@ public class JsonHelper {
                 Image item = new HandmadeImage(jsonobject.getInt("id"));
                 result.add(item);
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @NonNull
+    public static String convertEmailPassword(String email, String password) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("email", email);
+            data.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return data.toString();
+    }
+
+    @NonNull
+    public static String getMessage(String jsonString) {
+        String result = "";
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            result = json.getString("message");
         } catch (JSONException e) {
             e.printStackTrace();
         }

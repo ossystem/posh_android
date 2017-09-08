@@ -2,14 +2,17 @@ package ru.jufy.myposh.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.R;
+import ru.jufy.myposh.fragments.EmailLoginFragment;
+import ru.jufy.myposh.fragments.LoginTypesFragment;
 import ru.jufy.myposh.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.utils.JsonHelper;
 
@@ -18,38 +21,58 @@ public class LoginActivity extends AppCompatActivity {
     private static String vkRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=vkontakte";
     private static String fbRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=facebook";
 
+    private FragmentTransaction transaction;
+    private LoginTypesFragment loginTypesFragment;
+    private EmailLoginFragment emailLoginFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        findViewById(R.id.vk_login_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendSocialAuthRequest(vkRequest);
-            }
-        });
+        loginTypesFragment = new LoginTypesFragment();
+        emailLoginFragment = new EmailLoginFragment();
 
-        findViewById(R.id.imageViewVk).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendSocialAuthRequest(vkRequest);
-            }
-        });
+        showLoginTypes();
+    }
 
-        findViewById(R.id.fb_login_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendSocialAuthRequest(fbRequest);
-            }
-        });
+    private void showFragment(Fragment fragment) {
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.replace(R.id.fragment_frame, fragment);
+        transaction.commit();
+    }
 
-        findViewById(R.id.imageViewFb).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendSocialAuthRequest(fbRequest);
-            }
-        });
+    public void authorizeVK() {
+        sendSocialAuthRequest(vkRequest);
+    }
+
+    public void authorizeFB() {
+        sendSocialAuthRequest(fbRequest);
+    }
+
+    public void showLoginTypes() {
+        showFragment(loginTypesFragment);
+    }
+    public void showEmailLogin() {
+        showFragment(emailLoginFragment);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        if (Activity.RESULT_OK == resultCode) {
+            startMainActivity();
+        } else {
+            Toast.makeText(this, "Failed to authorize!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void startMainActivity() {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
     private void sendSocialAuthRequest(String requestLink) {
@@ -72,19 +95,6 @@ public class LoginActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             Toast.makeText(this, "Request for social auth has failed", Toast.LENGTH_LONG).show();
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {
-            return;
-        }
-        if (Activity.RESULT_OK == resultCode) {
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
-        } else {
-            Toast.makeText(this, "Failed to authorize!", Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -57,6 +57,7 @@ public class TextEditorFragment extends Fragment {
     private static final int initialFillColor = 0xFF0099FF;
     private static final int initialFontColor = 0xFF000011;
     private View rootView;
+    private ClippingRelativeLayout poshikEditor;
     FloatingActionButton fabCancel;
     EditText textEditor;
     ImageView circle;
@@ -169,7 +170,9 @@ public class TextEditorFragment extends Fragment {
         mMoveDetector = new MoveGestureDetector(getContext(), new MoveListener());
         mRotateDetector = new RotateGestureDetector(getContext(), new RotateListener());
 
-        rootView.setOnTouchListener(new View.OnTouchListener() {
+        poshikEditor = (ClippingRelativeLayout) rootView.findViewById(R.id.poshikEditor);
+
+        poshikEditor.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 mScaleDetector.onTouchEvent(event);
                 mMoveDetector.onTouchEvent(event);
