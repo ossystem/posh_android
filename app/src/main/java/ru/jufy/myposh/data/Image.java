@@ -1,11 +1,16 @@
 package ru.jufy.myposh.data;
 
 import android.content.Context;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.File;
+
+import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.utils.GlideApp;
 
@@ -13,12 +18,16 @@ import ru.jufy.myposh.utils.GlideApp;
  * Created by Anna on 4/18/2017.
  */
 
-public class Image {
+public abstract class Image {
     protected int id;
     protected int size;
+    protected String extension;
 
-    public Image(int id) {
+    protected File tempFile = null;
+
+    public Image(int id, String extension) {
         this.id = id;
+        this.extension = extension;
     }
 
     public boolean canLike() {
@@ -81,4 +90,31 @@ public class Image {
     public boolean delete() {
         return false;
     }
+
+    public boolean download() {
+        return false;
+    }
+
+    public File getDownloadedFile() {return tempFile;}
+
+    @NonNull
+    protected static String[] getRequestAuthorized(String url) {
+        String[] result = new String[3];
+        result[0] = url;
+        result[1] = "Authorization";
+        StringBuilder token = new StringBuilder("Bearer ");
+        token.append(MyPoshApplication.getCurrentToken().getToken());
+        result[2] = new String(token);
+
+        return result;
+    }
+
+    @NonNull
+    protected File createTempFile() {
+        File cacheDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);//MyPoshApplication.getContext().getCacheDir();
+        //File.createTempFile(filename.toString(), "jpeg", cacheDir);
+        return new File(cacheDir, getTempFilename());
+    }
+
+    protected abstract String getTempFilename();
 }

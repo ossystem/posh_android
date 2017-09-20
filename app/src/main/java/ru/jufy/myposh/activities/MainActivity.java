@@ -1,5 +1,8 @@
 package ru.jufy.myposh.activities;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
     private BottomNavigationView bottomNavigationView;
     private MainFragments currentFragment = MainFragments.MARKET;
 
+    private static final int ENABLE_BT_REQ = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,21 @@ public class MainActivity extends AppCompatActivity implements IntentDispatcherA
         initFragments();
         setupBottomNav();
         showMarket();
+
+        if (!isBLEEnabled()) {
+            showBLEDialog();
+        }
+    }
+
+    public boolean isBLEEnabled() {
+        final BluetoothManager manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        final BluetoothAdapter adapter = manager.getAdapter();
+        return adapter != null && adapter.isEnabled();
+    }
+
+    public void showBLEDialog() {
+        final Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(enableIntent, ENABLE_BT_REQ);
     }
 
     public void showCurrentFragment() {

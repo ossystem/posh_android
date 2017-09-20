@@ -27,4 +27,34 @@
     <string name="toast_delete_favorite">Выделите картинку долгим нажатием, чтобы удалить</string>
     <string name="toast_delete_favorite_failed">Не получилось удалить картинки: </string>
     <string name="title_activity_login">LoginActivity</string>
+
+    <string name="dfu_service_title">nRF Toolbox DFU Proxy</string>
+
+    <string name="permission_title">Permission required</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="no_required_permission">Не получено необходимых разрешений</string>
+    <string name="no_device_scanned">Устройство не найдено</string>
+
+    <string name="dfu_unknown_name">unnamed device</string>
+    <string name="dfu_status_connecting">Connecting&#8230;</string>
+    <string name="dfu_status_connecting_msg">Connecting to %s&#8230;</string>
+    <string name="dfu_status_starting">Starting DFU&#8230;</string>
+    <string name="dfu_status_switching_to_dfu">Starting bootloader&#8230;</string>
+    <string name="dfu_status_validating">Validating&#8230;</string>
+    <string name="dfu_status_disconnecting">Disconnecting&#8230;</string>
+    <string name="dfu_status_completed">Done</string>
+    <string name="dfu_status_aborted">Aborted</string>
+    <string name="dfu_status_starting_msg">Initializing DFU process&#8230;</string>
+    <string name="dfu_status_switching_to_dfu_msg">Waiting for bootloader&#8230;</string>
+    <string name="dfu_status_validating_msg">Validating&#8230;</string>
+    <string name="dfu_status_completed_msg">Application has been sent successfully.</string>
+    <string name="dfu_status_aborted_msg">Application upload has been canceled.</string>
+    <string name="dfu_status_disconnecting_msg">Disconnecting from %s&#8230;</string>
+    <string name="dfu_status_uploading">Uploading&#8230;</string>
+    <string name="dfu_status_uploading_part" formatted="false">Uploading part %d/%d&#8230;</string>
+    <string name="dfu_status_uploading_msg">Transmitting firmware to %s&#8230;</string>
+    <string name="dfu_action_abort">Abort</string>
+    <string name="dfu_status_error">Upload failed</string>
+    <string name="dfu_status_error_msg">DFU process failed.</string>
 </resources>

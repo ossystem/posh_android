@@ -22,6 +22,7 @@ import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.utils.GlideApp;
 import ru.jufy.myposh.utils.HttpDelAsyncTask;
+import ru.jufy.myposh.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.utils.HttpPostAsyncTask;
 
 
@@ -34,8 +35,8 @@ public class MarketImage extends Image {
     private boolean isFavorite;
     private boolean isPurchased;
 
-    public MarketImage(int id, boolean isFavorite, boolean isPurchased) {
-        super(id);
+    public MarketImage(int id, String extension, boolean isFavorite, boolean isPurchased) {
+        super(id, extension);
         this.isFavorite = isFavorite;
         this.isPurchased = isPurchased;
     }
@@ -180,5 +181,41 @@ public class MarketImage extends Image {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public boolean download() {
+        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/purchase/set/");
+        link.append(id);
+
+        HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
+        try {
+            tempFile = createTempFile();
+            getRequest.setFileToStoreImage(tempFile);
+            String getResult = getRequest.execute(getRequestAuthorized(link.toString())).get();
+            if (null == getResult) {
+                tempFile.delete();
+                throw new InterruptedException();
+            }
+
+            if (getRequest.receivedDataIsBinary()) {
+                return true;
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    protected String getTempFilename() {
+        StringBuilder filename = new StringBuilder("market_");
+        filename.append(Integer.toString(id));
+        filename.append(".");
+        filename.append(extension);
+
+        return filename.toString();
     }
 }

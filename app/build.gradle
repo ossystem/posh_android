@@ -3,9 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "ru.jufy.myposh"
         minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -21,6 +23,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -35,5 +38,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC0'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
     testCompile 'junit:junit:4.12'
-    compile "com.github.danielnilsson9:color-picker-view:1.4.0@aar"
+    compile 'com.github.danielnilsson9:color-picker-view:1.4.0@aar'
 }

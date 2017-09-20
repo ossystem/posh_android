@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.jufy.myposh">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,6 +19,10 @@
 
     <uses-feature
         android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
         android:required="true" />
 
     <application
@@ -70,6 +77,17 @@
             android:name=".activities.WebViewActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activities.SettingsResultActivity" />
+
+        <service
+            android:name="com.ble.posh.posh.DfuService"
+            android:exported="true"
+            android:label="@string/dfu_service_title" >
+            <intent-filter>
+                <action android:name="no.nordicsemi.android.action.DFU_UPLOAD" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

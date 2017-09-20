@@ -21,14 +21,16 @@ import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.utils.GlideApp;
 import ru.jufy.myposh.utils.HttpDelAsyncTask;
+import ru.jufy.myposh.utils.HttpGetAsyncTask;
 
 /**
  * Created by BorisDev on 28.08.2017.
  */
 
 public class HandmadeImage extends Image {
-    public HandmadeImage(int id) {
-        super(id);
+
+    public HandmadeImage(int id, String extension) {
+        super(id, extension);
     }
 
     @Override
@@ -112,5 +114,41 @@ public class HandmadeImage extends Image {
                 //.apply(RequestOptions.placeholderOf(R.drawable.pink))
                 .apply(RequestOptions.errorOf(R.drawable.error))
                 .into(view);
+    }
+
+    @Override
+    public boolean download() {
+        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/my/set/");
+        link.append(id);
+
+        HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
+        try {
+            tempFile = createTempFile();
+            getRequest.setFileToStoreImage(tempFile);
+            String getResult = getRequest.execute(getRequestAuthorized(link.toString())).get();
+            if (null == getResult) {
+                tempFile.delete();
+                throw new InterruptedException();
+            }
+
+            if (getRequest.receivedDataIsBinary()) {
+                return true;
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    protected String getTempFilename() {
+        StringBuilder filename = new StringBuilder("hm_");
+        filename.append(Integer.toString(id));
+        filename.append(".");
+        filename.append(extension);
+
+        return filename.toString();
     }
 }

@@ -1,11 +1,20 @@
 package ru.jufy.myposh.fragments;
 
+import android.Manifest;
+import android.bluetooth.BluetoothDevice;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +22,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.ble.posh.posh.DfuService;
+import com.ble.posh.posh.ble.DfuServiceInitiator;
+import com.ble.posh.posh.scanner.BluetoothLeScannerCompat;
+import com.ble.posh.posh.scanner.ScanCallback;
+import com.ble.posh.posh.scanner.ScanResult;
+import com.ble.posh.posh.scanner.ScanSettings;
+
+import java.util.List;
 
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
@@ -29,6 +47,13 @@ public class ImageFragment extends Fragment {
     FloatingActionButton fabLikeTrash;
     FloatingActionButton fabBuyDownload;
     private Image image;
+
+    private boolean mIsScanning = false;
+    private final Handler mHandler = new Handler();
+    private BluetoothDevice device = null;
+
+    private final static int REQUEST_PERMISSION_REQ_CODE = 34;
+    private final static long SCAN_DURATION = 5000;
 
     public ImageFragment() {
         super();
@@ -82,7 +107,9 @@ public class ImageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (image.canDownload()) {
-                    downloadImage();
+                    if (downloadPoshik()) {
+                        installImage();
+                    }
                 } else {
                     buyImage();
                 }
@@ -102,8 +129,110 @@ public class ImageFragment extends Fragment {
         }
     }
 
-    private void downloadImage() {
+    private void installImage() {
+        if (((MainActivity)getActivity()).isBLEEnabled()) {
+            if (permissionGranted()) {
+                performAllBleInteractions();
+            }
+        } else {
+            ((MainActivity)getActivity()).showBLEDialog();
+        }
+    }
 
+    private boolean permissionGranted() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // When user pressed Deny and still wants to use this functionality, show the rationale
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                // Here we can show the user a message with explanation why we need this permission
+                return false;
+            }
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_REQ_CODE);
+            return false;
+        }
+        return true;
+    }
+
+    public void performAllBleInteractions() {
+        if (!mIsScanning) {
+            scan();
+        }
+    }
+
+    private boolean scan() {
+        final BluetoothLeScannerCompat scanner = BluetoothLeScannerCompat.getScanner();
+        final ScanSettings settings = new ScanSettings.Builder()
+                .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).setReportDelay(1000).setUseHardwareBatchingIfSupported(false).build();
+        scanner.startScan(null, settings, scanCallback);
+
+        mIsScanning = true;
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                stopScan();
+                if (null == device) {
+                    Toast.makeText(getActivity(), R.string.no_device_scanned, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, SCAN_DURATION);
+        return false;
+    }
+
+    private void stopScan() {
+        if (mIsScanning) {
+            final BluetoothLeScannerCompat scanner = BluetoothLeScannerCompat.getScanner();
+            scanner.stopScan(scanCallback);
+            mIsScanning = false;
+        }
+    }
+
+    private ScanCallback scanCallback = new ScanCallback() {
+        @Override
+        public void onScanResult(final int callbackType, final ScanResult result) {
+            // do nothing
+        }
+
+        @Override
+        public void onBatchScanResults(final List<ScanResult> results) {
+            for (ScanResult result : results) {
+                if (null != result.getScanRecord() && null != result.getScanRecord().getDeviceName() && result.getScanRecord().getDeviceName().equals("Posh")) {
+                    device = result.getDevice();
+                    stopScan();
+                    Toast.makeText(getActivity(), "Device found", Toast.LENGTH_SHORT).show();
+                    setPoshik();
+                    return;
+                }
+            }
+        }
+
+        @Override
+        public void onScanFailed(final int errorCode) {
+            // should never be called
+        }
+    };
+
+    private void setPoshik() {
+        final DfuServiceInitiator starter = new DfuServiceInitiator(device.getAddress())
+                .setDeviceName(device.getName())
+                .setKeepBond(true)
+                .setForceDfu(false)
+                .setPacketsReceiptNotificationsEnabled(true)
+                .setPacketsReceiptNotificationsValue(12)
+                .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
+                .setCmdOrFile(false);
+
+        starter.setBinOrHex(DfuService.TYPE_SOFT_DEVICE, null /*Uri.fromFile(image.getDownloadedFile())*/, image.getDownloadedFile().getAbsolutePath()).setInitFile(null, null);
+        Log.d("BOOT", " send command ");
+        starter.start(getActivity(), DfuService.class);
+    }
+
+    private boolean downloadPoshik() {
+        if (image.download()) {
+            Toast.makeText(getActivity(), "Image downloaded", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(getActivity(), "Failed to download image", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 
     private void buyImage() {
@@ -162,5 +291,21 @@ public class ImageFragment extends Fragment {
         Point size = new Point();
         display.getSize(size);
         this.image.setSize(size.x);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, final @NonNull String[] permissions, final @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PERMISSION_REQ_CODE: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // We have been granted the Manifest.permission.ACCESS_COARSE_LOCATION permission. Now we may proceed with image installation.
+                    performAllBleInteractions();
+                } else {
+                    // We can also show the user explanations why we require this permission
+                    Toast.makeText(getActivity(), R.string.no_required_permission, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+        }
     }
 }

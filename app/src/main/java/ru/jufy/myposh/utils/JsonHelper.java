@@ -83,7 +83,8 @@ public class JsonHelper {
             List<Object> result = new ArrayList<>();
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                Image item = new MarketImage(jsonobject.getInt("id"), jsonobject.getBoolean("is_favorite"), jsonobject.getBoolean("is_purchased"));
+                Image item = new MarketImage(jsonobject.getInt("id"), jsonobject.getString("extension"),
+                        jsonobject.getBoolean("is_favorite"), jsonobject.getBoolean("is_purchased"));
                 result.add(item);
             }
             return result;
@@ -102,7 +103,7 @@ public class JsonHelper {
             List<Object> result = new ArrayList<>();
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                Image item = new MarketImage(jsonobject.getInt("id"), true, false);
+                Image item = new MarketImage(jsonobject.getInt("id"), jsonobject.getString("extension"), true, false);
                 result.add(item);
             }
             return result;
@@ -159,7 +160,7 @@ public class JsonHelper {
             JSONArray jsonarray = new JSONArray(poshiksArray);
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                Image item = new MarketImage(jsonobject.getInt("id"), false, true);
+                Image item = new MarketImage(jsonobject.getInt("id"), jsonobject.getString("extension"), false, true);
                 result.add(item);
             }
         } catch (JSONException e) {
@@ -177,7 +178,7 @@ public class JsonHelper {
             JSONArray jsonarray = new JSONArray(poshiksArray);
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                Image item = new HandmadeImage(jsonobject.getInt("id"));
+                Image item = new HandmadeImage(jsonobject.getInt("id"), jsonobject.getString("extension"));
                 result.add(item);
             }
         } catch (JSONException e) {
