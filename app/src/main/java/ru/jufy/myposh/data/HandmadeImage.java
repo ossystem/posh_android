@@ -3,6 +3,7 @@ package ru.jufy.myposh.data;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -14,7 +15,10 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.MyPoshApplication;
@@ -92,28 +96,34 @@ public class HandmadeImage extends Image {
     }
 
     private void showImage(Context context, ImageView view, final ProgressBar progressBar, StringBuilder link) {
-        GlideApp
-                .with(context)
-                .load(link.toString())
-                .override(size, size)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .circleCrop()
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
+        try {
+            GlideApp
+                    .with(context)
+                    .load(new URL(link.toString()))
+                    .override(size, size)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .circleCrop()
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            Log.d("GLIDE", String.format(Locale.ROOT,
+                                    "onLoadFailed(%s, %s, %s, %s)", e, model, target, isFirstResource), e);
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
-                })
-                //.apply(RequestOptions.placeholderOf(R.drawable.pink))
-                .apply(RequestOptions.errorOf(R.drawable.error))
-                .into(view);
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    //.apply(RequestOptions.placeholderOf(R.drawable.pink))
+                    .apply(RequestOptions.errorOf(R.drawable.error))
+                    .into(view);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
