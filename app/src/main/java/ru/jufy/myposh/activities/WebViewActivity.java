@@ -49,10 +49,7 @@ public class WebViewActivity extends AppCompatActivity {
                         MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(getResult));
                         setResult(Activity.RESULT_OK, intent);
                         finish();
-                    } catch (InterruptedException e) {
-                        setResult(Activity.RESULT_CANCELED, intent);
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
+                    } catch (InterruptedException | ExecutionException e) {
                         setResult(Activity.RESULT_CANCELED, intent);
                         e.printStackTrace();
                     }

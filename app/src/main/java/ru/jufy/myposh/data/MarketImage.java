@@ -110,7 +110,6 @@ public class MarketImage extends Image {
                             return false;
                         }
                     })
-                    //.apply(RequestOptions.placeholderOf(R.drawable.pink))
                     .apply(RequestOptions.errorOf(R.drawable.error))
                     .into(view);
         } catch (MalformedURLException e) {
@@ -217,11 +216,8 @@ public class MarketImage extends Image {
 
     @Override
     protected String getTempFilename() {
-        StringBuilder filename = new StringBuilder("market_");
-        filename.append(Integer.toString(id));
-        filename.append(".");
-        filename.append(extension);
-
-        return filename.toString();
+        return "market_" + Integer.toString(id) +
+                "." +
+                extension;
     }
 }

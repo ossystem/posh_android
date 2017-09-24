@@ -46,7 +46,7 @@
             android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
             android:fontFamily="monospace"
-            android:text="Войти с помощью Facebook"
+            android:text="@string/button_fb_login"
             android:textAlignment="viewStart"
             android:textAllCaps="false" />
     </LinearLayout>
@@ -72,7 +72,7 @@
             android:layout_marginLeft="10dp"
             android:background="@android:color/transparent"
             android:fontFamily="monospace"
-            android:text="Войти с помощью VK"
+            android:text="@string/button_vk_login"
             android:textAlignment="viewStart"
             android:textAllCaps="false" />
     </LinearLayout>
@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:text="или"
+            android:text="@string/title_or"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:layout_gravity="top"
@@ -115,7 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:text="Используя почту"
+        android:text="@string/button_email_login"
         android:textAlignment="center"
         android:textAllCaps="false" />
 

@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         if (Activity.RESULT_OK == resultCode) {
             startMainActivity();
         } else {
-            Toast.makeText(this, "Failed to authorize!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.auth_failed, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -88,12 +88,8 @@ public class LoginActivity extends AppCompatActivity {
             b.putString("link", authLink);
             i.putExtras(b);
             startActivityForResult(i, 1);
-            //Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-        } catch (InterruptedException e) {
-            Toast.makeText(this, "Request for social auth has been interrupted", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            Toast.makeText(this, "Request for social auth has failed", Toast.LENGTH_LONG).show();
+        } catch (InterruptedException | ExecutionException e) {
+            Toast.makeText(this, R.string.social_auth_failed, Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }

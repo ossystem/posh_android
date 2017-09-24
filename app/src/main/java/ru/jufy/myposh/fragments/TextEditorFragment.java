@@ -49,6 +49,8 @@ import ru.jufy.myposh.activities.MainActivity;
 import ru.jufy.myposh.utils.HttpPostAsyncTask;
 import ru.jufy.myposh.views.ClippingRelativeLayout;
 
+import static android.R.attr.path;
+
 /**
  * Created by BorisDev on 16.08.2017.
  */
@@ -299,11 +301,8 @@ public class TextEditorFragment extends Fragment {
     private void uploadImage() {
         inactivateAll();
         ClippingRelativeLayout poshikEditor = (ClippingRelativeLayout) rootView.findViewById(R.id.poshikEditor);
-        FileOutputStream out = null;
         try {
             textEditor.setCursorVisible(false);
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/textEditorTest.jpg";
-            out = new FileOutputStream(path);
             poshikEditor.buildDrawingCache();
             Bitmap bm = poshikEditor.getDrawingCache();
             Bitmap output = Bitmap.createBitmap(bm.getHeight(),
@@ -322,13 +321,6 @@ public class TextEditorFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             poshikEditor.destroyDrawingCache();
             textEditor.setCursorVisible(true);
         }

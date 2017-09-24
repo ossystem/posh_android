@@ -32,8 +32,6 @@ import ru.jufy.myposh.utils.ScreenUtils;
 
 public class ArcLayout extends ViewGroup {
 
-
-
     //bg
     int topSpace;
     int bgColor;

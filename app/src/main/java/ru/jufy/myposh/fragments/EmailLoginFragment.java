@@ -87,7 +87,7 @@ public class EmailLoginFragment extends Fragment {
     }
 
     private void showUnknownError() {
-        showMessage("Что-то пошло не так...");
+        showMessage(getString(R.string.smth_went_wrong));
     }
 
     private void onAuthResult(String postResult) {
@@ -106,15 +106,15 @@ public class EmailLoginFragment extends Fragment {
 
     private void showNotRegistered() {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-        alertDialog.setTitle("Регистрация");
-        alertDialog.setMessage("Аккаунта с такой почтой не существует. Создать новый?");
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
+        alertDialog.setTitle(getString(R.string.registration));
+        alertDialog.setMessage(getString(R.string.email_not_found));
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -157,14 +157,14 @@ public class EmailLoginFragment extends Fragment {
     }
 
     private void showPasswordIncorrect() {
-        showMessage("Введён неправильный пароль");
+        showMessage(getString(R.string.incorrect_password));
     }
 
     private void showMessage(String message) {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-        alertDialog.setTitle("Ошибка!");
+        alertDialog.setTitle(getString(R.string.error));
         alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

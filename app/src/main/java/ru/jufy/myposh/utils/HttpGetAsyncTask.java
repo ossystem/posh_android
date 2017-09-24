@@ -103,10 +103,6 @@ public class HttpGetAsyncTask extends AsyncTask<String, Void, String> {
         return result;
     }
 
-    public Map<String,List<String>> getHeaderFields() {
-        return responseHeaders;
-    }
-
     public boolean receivedDataIsBinary() {
         if (null != contentType && (contentType.equals("image/jpeg") || contentType.equals("application/octet-stream"))) {
             return true;

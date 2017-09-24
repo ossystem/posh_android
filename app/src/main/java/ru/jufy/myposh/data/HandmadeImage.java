@@ -118,7 +118,6 @@ public class HandmadeImage extends Image {
                             return false;
                         }
                     })
-                    //.apply(RequestOptions.placeholderOf(R.drawable.pink))
                     .apply(RequestOptions.errorOf(R.drawable.error))
                     .into(view);
         } catch (MalformedURLException e) {

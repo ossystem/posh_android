@@ -45,7 +45,7 @@ public class MyPoshApplication extends Application {
     public static void onNewTokenObtained(KulonToken newToken) {
         Date now = new Date();
         if (newToken.getExpirationDate().getTime() < now.getTime()) {
-            Toast.makeText(app.getApplicationContext(), "Received token expiration date which is in the past", Toast.LENGTH_LONG).show();
+            Toast.makeText(app.getApplicationContext(), R.string.token_date_in_past, Toast.LENGTH_LONG).show();
             return;
         }
         currentToken = newToken;

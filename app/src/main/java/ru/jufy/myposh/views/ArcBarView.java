@@ -77,50 +77,9 @@ public class ArcBarView extends ImageView {
         super(context, attrs);
         //get attrs
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-         /*
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.ArcBarView,
-                0, 0);
-
-
-        //Background
-        topSpace = a.getDimensionPixelSize(R.styleable.ArcBarView_top_space,
-                (int)ScreenUtils.convertDpToPixel(defaultTopSpaceDp,getContext()));
-        bgColor = a.getColor(R.styleable.ArcBarView_bg_color,
-                getResources().getColor(R.color.primary));
-        shadowColor = a.getColor(R.styleable.ArcBarView_shadow_color,
-                getResources().getColor(R.color.shadow));
-        shadowSize =  a.getDimensionPixelSize(R.styleable.ArcBarView_shadow_size,
-                (int)ScreenUtils.convertDpToPixel(defaultShadowSizeDp,getContext()));
-
-        //buttons
-        buttonMargin= a.getDimensionPixelSize(R.styleable.ArcBarView_button_margin,
-                (int)ScreenUtils.convertDpToPixel(defaultButtonMarginDp,getContext()));
-        smallButtonSize = a.getDimensionPixelSize(R.styleable.ArcBarView_small_button_size,
-                (int)ScreenUtils.convertDpToPixel(defaultSmallButtonSizeDp,getContext()));
-        smallButtonBorder =  a.getDimensionPixelSize(R.styleable.ArcBarView_small_button_border,
-                (int)ScreenUtils.convertDpToPixel(defaultSmallButtonBorderDp,getContext()));
-        bigButtonSize = a.getDimensionPixelSize(R.styleable.ArcBarView_big_button_size,
-                (int)ScreenUtils.convertDpToPixel(defaultBigButtonSizeDp,getContext()));
-        bigButtonBorder = a.getDimensionPixelSize(R.styleable.ArcBarView_big_button_border,
-                (int)ScreenUtils.convertDpToPixel(defaultBigButtonBorderDp,getContext()));
-        buttonBgColor = a.getColor(R.styleable.ArcBarView_button_bg_color,
-                getResources().getColor(R.color.accent_light));
-
-        //icon
-        iconTint = a.getColor(R.styleable.ArcBarView_icon_tint,
-                getResources().getColor(R.color.light_fab_fg));
-        bigIconSize = a.getDimensionPixelSize(R.styleable.ArcBarView_big_icon_size,
-                (int)ScreenUtils.convertDpToPixel(defaultBigIconSizeDp,getContext()));
-        */
         init();
 
     }
-
-
-
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -170,15 +129,11 @@ public class ArcBarView extends ImageView {
         mBgPaint.setStyle(Paint.Style.FILL);
         mBgPaint.setShadowLayer(shadowSize/2, 0, shadowSize/2, shadowColor);
 
-
         //button paint
         mButtonPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mButtonPaint.setColor(buttonBgColor);
         mButtonPaint.setStyle(Paint.Style.FILL);
     }
-
-
-
 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -220,10 +175,7 @@ public class ArcBarView extends ImageView {
            //TODO
         }
 
-
-
         //draw bg
-
         canvas.drawPath(bgPath, mBgPaint);
 
         if (isLeftButtonSet()) {

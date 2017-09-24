@@ -4,7 +4,6 @@ import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -197,7 +196,7 @@ public class ImageFragment extends Fragment {
                 if (null != result.getScanRecord() && null != result.getScanRecord().getDeviceName() && result.getScanRecord().getDeviceName().equals("Posh")) {
                     device = result.getDevice();
                     stopScan();
-                    Toast.makeText(getActivity(), "Device found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.device_scanned, Toast.LENGTH_SHORT).show();
                     setPoshik();
                     return;
                 }
@@ -220,17 +219,17 @@ public class ImageFragment extends Fragment {
                 .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
                 .setCmdOrFile(false);
 
-        starter.setBinOrHex(DfuService.TYPE_SOFT_DEVICE, null /*Uri.fromFile(image.getDownloadedFile())*/, image.getDownloadedFile().getAbsolutePath()).setInitFile(null, null);
+        starter.setBinOrHex(DfuService.TYPE_SOFT_DEVICE, null, image.getDownloadedFile().getAbsolutePath()).setInitFile(null, null);
         Log.d("BOOT", " send command ");
         starter.start(getActivity(), DfuService.class);
     }
 
     private boolean downloadPoshik() {
         if (image.download()) {
-            Toast.makeText(getActivity(), "Image downloaded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.image_downloaded, Toast.LENGTH_SHORT).show();
             return true;
         } else {
-            Toast.makeText(getActivity(), "Failed to download image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.image_download_failed, Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -278,7 +277,7 @@ public class ImageFragment extends Fragment {
         if (image.delete()) {
             ((MainActivity)getActivity()).showCurrentFragment();
         } else {
-            Toast.makeText(getActivity(), "Не получилось удалить пошик", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.image_deletion_failed, Toast.LENGTH_LONG).show();
         }
     }
 

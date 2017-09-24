@@ -112,7 +112,7 @@ public class MarketFragment extends ImageGridFragment {
         AutoCompleteTextView input = new AutoCompleteTextView(getContext());
         input.setBackground(new ColorDrawable(0xFFFFFFFF));
         input.setTextColor(ResourcesCompat.getColor(getResources(), R.color.accent, null));
-        input.setHint("TAG");
+        input.setHint(R.string.hint_tag);
         input.setGravity(Gravity.CENTER_HORIZONTAL);
         input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

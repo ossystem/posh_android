@@ -8,7 +8,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Вход\n"
+        android:text="@string/title_login"
         android:textAlignment="center"
         android:textSize="30sp" />
 
@@ -27,7 +27,7 @@
             android:id="@+id/emailInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Почта"
+            android:hint="@string/hint_email"
             android:ems="10"
             android:inputType="textEmailAddress" />
     </LinearLayout>
@@ -48,7 +48,7 @@
             android:id="@+id/passwordInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Пароль"
+            android:hint="@string/hint_password"
             android:ems="10"
             android:inputType="textPassword" />
     </LinearLayout>
@@ -68,7 +68,7 @@
             android:fontFamily="monospace"
             android:layout_marginRight="20dp"
             android:background="@drawable/round_cornered_rect"
-            android:text="Назад" />
+            android:text="@string/button_back" />
 
         <Button
             android:id="@+id/buttonForward"
@@ -78,7 +78,7 @@
             android:textAllCaps="false"
             android:fontFamily="monospace"
             android:background="@drawable/round_cornered_rect"
-            android:text="Далее" />
+            android:text="@string/button_next" />
     </LinearLayout>
 
     <LinearLayout
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:text="или"
+            android:text="@string/title_or"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:layout_gravity="top"

@@ -1,5 +1,4 @@
 <resources>
-    <integer name="com_vk_sdk_AppId">6126857</integer>
     <string name="app_name">MyPosh</string>
     <string name="action_settings">Settings</string>
 
@@ -7,25 +6,25 @@
 
 
     <!-- Bottom navigation-->
-    <string name="market">Маркет</string>
-    <string name="favorites">Избранное</string>
-    <string name="my_library">Мои картинки</string>
-    <string name="settings">Настройки</string>
+    <string name="market">Market</string>
+    <string name="favorites">Favorites</string>
+    <string name="my_library">My images</string>
+    <string name="settings">Settings</string>
 
     <!--Settings -->
-    <string name="settings_unbind_label">Отвязать кулон</string>
-    <string name="settings_unbind_comment">Изменить кулон, управляемый с помощью приложения</string>
-    <string name="settings_qa_label">Вопросы и ответы</string>
-    <string name="settings_qa_comment">Ответы на самые распространенные вопросы</string>
+    <string name="settings_unbind_label">Unbind pendant</string>
+    <string name="settings_unbind_comment">Change pendant managed by the application</string>
+    <string name="settings_qa_label">FAQ</string>
+    <string name="settings_qa_comment">Answers for most frequent questions</string>
     <string name="debug_info_label">Debug info</string>
     <string name="debug_info_comment">Debug info</string>
-    <string name="settings_address_label">Адреса магазинов</string>
-    <string name="settings_address_comment">Написать разработчику и задать свой вопрос</string>
-    <string name="settings_contacts_label">Контакты</string>
-    <string name="settings_contacts_comment">Написать разработчику и задать свой вопрос</string>
+    <string name="settings_address_label">Shops</string>
+    <string name="settings_address_comment">Sale points\' addresses</string>
+    <string name="settings_contacts_label">Contact us</string>
+    <string name="settings_contacts_comment">Contact developers and ask your question</string>
     <string name="title_activity_photo_confirm">PhotoConfirmActivity</string>
-    <string name="toast_delete_favorite">Выделите картинку долгим нажатием, чтобы удалить</string>
-    <string name="toast_delete_favorite_failed">Не получилось удалить картинки: </string>
+    <string name="toast_delete_favorite">Long press the image to delete</string>
+    <string name="toast_delete_favorite_failed">Failed to delete images: </string>
     <string name="title_activity_login">LoginActivity</string>
 
     <string name="dfu_service_title">nRF Toolbox DFU Proxy</string>
@@ -33,8 +32,33 @@
     <string name="permission_title">Permission required</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
-    <string name="no_required_permission">Не получено необходимых разрешений</string>
-    <string name="no_device_scanned">Устройство не найдено</string>
+    <string name="no_required_permission">Haven\'t got the necessary permissions</string>
+    <string name="no_device_scanned">Device not found</string>
+    <string name="device_scanned">Device found</string>
+    <string name="image_downloaded">Image downloaded</string>
+    <string name="image_download_failed">Failed to download the image</string>
+    <string name="image_deletion_failed">Failed to delete the image</string>
+    <string name="auth_failed">Failed to authorize!</string>
+    <string name="social_auth_failed">Request for social auth has failed</string>
+    <string name="smth_went_wrong">Smth went wrong…</string>
+    <string name="registration">Registration</string>
+    <string name="email_not_found">No account exists for the email address. Create new account?</string>
+    <string name="incorrect_password">Password is incorrect</string>
+    <string name="error">Error!</string>
+    <string name="title_my_poshiks">My images</string>
+    <string name="title_purchases">Purchases</string>
+    <string name="hint_tag">TAG</string>
+    <string name="token_date_in_past">Received token expiration date which is in the past</string>
+    <string name="title_login">Login\n</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_password">Password</string>
+    <string name="button_back">Back</string>
+    <string name="button_next">Next</string>
+    <string name="title_or">or</string>
+    <string name="button_fb_login">Login with Facebook</string>
+    <string name="button_vk_login">Login with VK</string>
+    <string name="button_email_login">with e-mail</string>
+    <string name="title_category">Category</string>
 
     <string name="dfu_unknown_name">unnamed device</string>
     <string name="dfu_status_connecting">Connecting&#8230;</string>

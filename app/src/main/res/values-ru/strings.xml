@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_name">MyPosh</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+
+
+    <!-- Bottom navigation-->
+    <string name="market">Маркет</string>
+    <string name="favorites">Избранное</string>
+    <string name="my_library">Мои картинки</string>
+    <string name="settings">Настройки</string>
+
+    <!--Settings -->
+    <string name="settings_unbind_label">Отвязать кулон</string>
+    <string name="settings_unbind_comment">Изменить кулон, управляемый с помощью приложения</string>
+    <string name="settings_qa_label">Вопросы и ответы</string>
+    <string name="settings_qa_comment">Ответы на самые распространенные вопросы</string>
+    <string name="debug_info_label">Debug info</string>
+    <string name="debug_info_comment">Debug info</string>
+    <string name="settings_address_label">Адреса магазинов</string>
+    <string name="settings_address_comment">Пункты продаж кулонов</string>
+    <string name="settings_contacts_label">Контакты</string>
+    <string name="settings_contacts_comment">Написать разработчику и задать свой вопрос</string>
+    <string name="title_activity_photo_confirm">PhotoConfirmActivity</string>
+    <string name="toast_delete_favorite">Выделите картинку долгим нажатием, чтобы удалить</string>
+    <string name="toast_delete_favorite_failed">Не получилось удалить картинки: </string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <string name="dfu_service_title">nRF Toolbox DFU Proxy</string>
+
+    <string name="permission_title">Permission required</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">Ок</string>
+    <string name="no_required_permission">Не получено необходимых разрешений</string>
+    <string name="no_device_scanned">Устройство не найдено</string>
+    <string name="device_scanned">Устройство найдено</string>
+    <string name="image_downloaded">Пошик сгружен</string>
+    <string name="image_download_failed">Не получилось сгрузить пошик</string>
+    <string name="image_deletion_failed">Не получилось удалить пошик</string>
+    <string name="auth_failed">Не получилось авторизоваться</string>
+    <string name="social_auth_failed">Запрос на авторизацию через социальную сеть неуспешен</string>
+    <string name="smth_went_wrong">Что-то пошло не так…</string>
+    <string name="registration">Регистрация</string>
+    <string name="email_not_found">Аккаунта с такой почтой не существует. Создать новый?</string>
+    <string name="incorrect_password">Введён неправильный пароль</string>
+    <string name="error">Ошибка!</string>
+    <string name="title_my_poshiks">Мои пошики</string>
+    <string name="title_purchases">Покупки</string>
+    <string name="hint_tag">ТЕГ</string>
+    <string name="token_date_in_past">Получен токен с истёкшим сроком годности</string>
+    <string name="title_login">Вход\n</string>
+    <string name="hint_email">Почта</string>
+    <string name="hint_password">Пароль</string>
+    <string name="button_back">Назад</string>
+    <string name="button_next">Далее</string>
+    <string name="title_or">или</string>
+    <string name="button_fb_login">Войти с помощью Facebook</string>
+    <string name="button_vk_login">Войти с помощью VK</string>
+    <string name="button_email_login">Используя почту</string>
+    <string name="title_category">Категория</string>
+
+    <string name="dfu_unknown_name">unnamed device</string>
+    <string name="dfu_status_connecting">Connecting&#8230;</string>
+    <string name="dfu_status_connecting_msg">Connecting to %s&#8230;</string>
+    <string name="dfu_status_starting">Starting DFU&#8230;</string>
+    <string name="dfu_status_switching_to_dfu">Starting bootloader&#8230;</string>
+    <string name="dfu_status_validating">Validating&#8230;</string>
+    <string name="dfu_status_disconnecting">Disconnecting&#8230;</string>
+    <string name="dfu_status_completed">Done</string>
+    <string name="dfu_status_aborted">Aborted</string>
+    <string name="dfu_status_starting_msg">Initializing DFU process&#8230;</string>
+    <string name="dfu_status_switching_to_dfu_msg">Waiting for bootloader&#8230;</string>
+    <string name="dfu_status_validating_msg">Validating&#8230;</string>
+    <string name="dfu_status_completed_msg">Application has been sent successfully.</string>
+    <string name="dfu_status_aborted_msg">Application upload has been canceled.</string>
+    <string name="dfu_status_disconnecting_msg">Disconnecting from %s&#8230;</string>
+    <string name="dfu_status_uploading">Uploading&#8230;</string>
+    <string name="dfu_status_uploading_part" formatted="false">Uploading part %d/%d&#8230;</string>
+    <string name="dfu_status_uploading_msg">Transmitting firmware to %s&#8230;</string>
+    <string name="dfu_action_abort">Abort</string>
+    <string name="dfu_status_error">Upload failed</string>
+    <string name="dfu_status_error_msg">DFU process failed.</string>
+</resources>

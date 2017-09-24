@@ -85,7 +85,7 @@ public class LibraryFragment extends ImageGridFragment {
             }
             List<Object> result = JsonHelper.getHandmadeImageList(getResult);
             if (result.size() > 0) {
-                result.add(0, new String("Мои пошики"));
+                result.add(0, getString(R.string.title_my_poshiks));
             }
             return result;
         } catch (InterruptedException | ExecutionException e) {
@@ -115,7 +115,7 @@ public class LibraryFragment extends ImageGridFragment {
                 throw new InterruptedException();
             }
             List<Object> result = JsonHelper.getPurchasedImageList(getResult);
-            result.add(0, new String("Покупки"));
+            result.add(0, getString(R.string.title_purchases));
             return result;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
