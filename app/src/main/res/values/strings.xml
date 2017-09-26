@@ -53,12 +53,16 @@
     <string name="hint_email">E-mail</string>
     <string name="hint_password">Password</string>
     <string name="button_back">Back</string>
+    <string name="button_reset_password">Reset password</string>
     <string name="button_next">Next</string>
     <string name="title_or">or</string>
     <string name="button_fb_login">Login with Facebook</string>
     <string name="button_vk_login">Login with VK</string>
     <string name="button_email_login">with e-mail</string>
     <string name="title_category">Category</string>
+    <string name="email_format_incorrect">Email format is incorrect.</string>
+    <string name="no_user_exist">The user is not found.</string>
+    <string name="password_reset_success">Password has been successfully resetted. Please check your email.</string>
 
     <string name="dfu_unknown_name">unnamed device</string>
     <string name="dfu_status_connecting">Connecting&#8230;</string>

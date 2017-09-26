@@ -53,12 +53,16 @@
     <string name="hint_email">Почта</string>
     <string name="hint_password">Пароль</string>
     <string name="button_back">Назад</string>
+    <string name="button_reset_password">Сбросить пароль</string>
     <string name="button_next">Далее</string>
     <string name="title_or">или</string>
     <string name="button_fb_login">Войти с помощью Facebook</string>
     <string name="button_vk_login">Войти с помощью VK</string>
     <string name="button_email_login">Используя почту</string>
     <string name="title_category">Категория</string>
+    <string name="email_format_incorrect">Неправильный формат электронной почты.</string>
+    <string name="no_user_exist">Пользователь с такой почтой не существует.</string>
+    <string name="password_reset_success">Пароль успешно сброшен. Пожалуйста, проверьте почту.</string>
 
     <string name="dfu_unknown_name">unnamed device</string>
     <string name="dfu_status_connecting">Connecting&#8230;</string>

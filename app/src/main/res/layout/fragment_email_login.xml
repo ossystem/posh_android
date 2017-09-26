@@ -63,19 +63,30 @@
             android:id="@+id/buttonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:textAllCaps="false"
+            android:layout_weight="1"
             android:fontFamily="monospace"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/round_cornered_rect"
             android:text="@string/button_back" />
+
+        <Button
+            android:id="@+id/buttonResetPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_weight="100"
+            android:fontFamily="monospace"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/round_cornered_rect"
+            android:text="@string/button_reset_password" />
 
         <Button
             android:id="@+id/buttonForward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:textAllCaps="false"
+            android:layout_weight="1"
             android:fontFamily="monospace"
             android:background="@drawable/round_cornered_rect"
             android:text="@string/button_next" />

@@ -188,11 +188,18 @@ public class JsonHelper {
     }
 
     @NonNull
+    public static String convertEmail(String email) {
+        return convertEmailPassword(email, null);
+    }
+
+    @NonNull
     public static String convertEmailPassword(String email, String password) {
         JSONObject data = new JSONObject();
         try {
             data.put("email", email);
-            data.put("password", password);
+            if (null != password) {
+                data.put("password", password);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

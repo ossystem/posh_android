@@ -15,11 +15,8 @@ import java.util.concurrent.ExecutionException;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.activities.LoginActivity;
-import ru.jufy.myposh.activities.MainActivity;
 import ru.jufy.myposh.utils.HttpPostAsyncTask;
 import ru.jufy.myposh.utils.JsonHelper;
-
-import static ru.jufy.myposh.MyPoshApplication.onNewTokenObtained;
 
 /**
  * Created by BorisDev on 04.09.2017.
@@ -37,6 +34,14 @@ public class EmailLoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ((LoginActivity)getActivity()).showLoginTypes();
+            }
+        });
+
+        rootView.findViewById(R.id.buttonResetPassword).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = ((EditText)rootView.findViewById(R.id.emailInput)).getText().toString();
+                resetPassword(email);
             }
         });
 
@@ -64,6 +69,51 @@ public class EmailLoginFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void resetPassword(String email) {
+        String authReq[] = new String[2];
+        authReq[0] = "http://kulon.jwma.ru/api/v1/reset-password";
+        authReq[1] = JsonHelper.convertEmail(email);
+        HashMap<String, String> reqProps = new HashMap<>();
+        reqProps.put("Content-Type", "application/json");
+        HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
+        postRequest.setRequestProperties(reqProps);
+        try {
+            String postResult = postRequest.execute(authReq).get();
+            if (null == postResult) {
+                throw new InterruptedException();
+            }
+            onPasswordResetResult(postResult);
+        } catch (InterruptedException | ExecutionException e) {
+            showUnknownError();
+            e.printStackTrace();
+        }
+    }
+
+    private void onPasswordResetResult(String postResult) {
+        String message = JsonHelper.getMessage(postResult);
+        if (message.contains("We sent a new password to your email")) {
+            showPasswordResetSuccess();
+        } else if (message.contains("User doesn't exists")) {
+            showNoUserExist();
+        } else if (message.contains("Validation error")) {
+            showEmailFormatIncorrect();
+        } else {
+            showMessage(message);
+        }
+    }
+
+    private void showEmailFormatIncorrect() {
+        showMessage(getString(R.string.email_format_incorrect));
+    }
+
+    private void showNoUserExist() {
+        showMessage(getString(R.string.no_user_exist));
+    }
+
+    private void showPasswordResetSuccess() {
+        showMessage(getString(R.string.password_reset_success));
     }
 
     private void authorizeEmail(String email, String password) {
@@ -96,7 +146,7 @@ public class EmailLoginFragment extends Fragment {
             MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(postResult));
             ((LoginActivity)getActivity()).startMainActivity();
         } else if (message.contains("Your email was entered incorrectly, or the user is not registered")) {
-            showNotRegistered();
+            startRegistration();
         } else if (message.contains("The password is incorrect")) {
             showPasswordIncorrect();
         } else {
@@ -104,7 +154,7 @@ public class EmailLoginFragment extends Fragment {
         }
     }
 
-    private void showNotRegistered() {
+    private void startRegistration() {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle(getString(R.string.registration));
         alertDialog.setMessage(getString(R.string.email_not_found));
