@@ -36,7 +36,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/image_fragment_image_margin"
         android:layout_below="@+id/arc_layout"
         android:src="@drawable/pink"
         android:background="@android:color/transparent" />
@@ -48,18 +48,18 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@android:color/transparent"
-        android:layout_height="100dp" />
+        android:layout_height="@dimen/image_fragment_progressbar_height" />
 
     <com.ogaclejapan.arclayout.ArcLayout
         android:id="@+id/image_menu"
         android:layout_width="match_parent"
-        android:layout_height="114dp"
+        android:layout_height="@dimen/arc_height"
         android:layout_below="@+id/bigImage"
         app:arc_origin="top"
-        app:arc_radius="84dp"
-        app:arc_axisRadius="104dp"
+        app:arc_radius="@dimen/arc_radius"
+        app:arc_axisRadius="@dimen/arc_axis_radius"
         app:arc_freeAngle="true"
-        android:layout_marginTop="-50dp"
+        android:layout_marginTop="@dimen/image_fragment_bottom_arc_margin_top"
         app:arc_reverseAngle="false"
         android:layout_centerHorizontal="true">
 

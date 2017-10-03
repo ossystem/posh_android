@@ -5,10 +5,10 @@
     android:gravity="left">
     <shape android:shape="oval">
         <solid android:color="#000000" />
-        <corners android:bottomLeftRadius="16dp"
-            android:bottomRightRadius="16dp"
-            android:topLeftRadius="16dp"
-            android:topRightRadius="16dp" />
+        <corners android:bottomLeftRadius="@dimen/top_bar_radius"
+            android:bottomRightRadius="@dimen/top_bar_radius"
+            android:topLeftRadius="@dimen/top_bar_radius"
+            android:topRightRadius="@dimen/top_bar_radius" />
 
     </shape>
 </clip>

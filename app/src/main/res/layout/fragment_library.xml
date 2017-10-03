@@ -9,7 +9,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/image_recycler"
-        android:paddingTop="80dp"
+        android:paddingTop="@dimen/image_recycler_view_padding_top"
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

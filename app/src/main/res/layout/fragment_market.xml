@@ -7,7 +7,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/image_recycler"
-        android:paddingTop="80dp"
+        android:paddingTop="@dimen/image_recycler_view_padding_top"
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -43,13 +43,13 @@
     <com.ogaclejapan.arclayout.ArcLayout
         android:id="@+id/search_menu"
         android:layout_width="match_parent"
-        android:layout_height="114dp"
+        android:layout_height="@dimen/arc_height"
         android:layout_below="@+id/arc_layout"
         app:arc_origin="top"
-        app:arc_radius="84dp"
-        app:arc_axisRadius="104dp"
+        app:arc_radius="@dimen/arc_radius"
+        app:arc_axisRadius="@dimen/arc_axis_radius"
         app:arc_freeAngle="true"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="@dimen/market_fragment_search_menu_margin_top"
         app:arc_reverseAngle="false"
         android:layout_centerHorizontal="true"
         android:visibility="invisible"

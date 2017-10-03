@@ -5,6 +5,6 @@
     <solid
         android:color="#FF00FF"/>
     <size
-        android:width="300dp"
-        android:height="300dp"/>
+        android:width="@dimen/textEditorCircleDiameter"
+        android:height="@dimen/textEditorCircleDiameter"/>
 </shape>

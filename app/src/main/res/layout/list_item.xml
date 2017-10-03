@@ -8,12 +8,10 @@
         android:id="@+id/list_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/list_item_margin_start"
         android:text="@string/title_category"
         android:textColor="@android:color/black"
-        android:textSize="32sp" />
+        android:textSize="@dimen/list_item_font_size" />
 
     <View
         android:id = "@+id/divider"

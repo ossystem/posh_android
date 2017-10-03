@@ -9,7 +9,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
-        android:paddingTop="88dp"
+        android:paddingTop="@dimen/settings_fragment_padding_top"
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

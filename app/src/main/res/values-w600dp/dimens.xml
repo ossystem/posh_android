@@ -1,0 +1,44 @@
+<resources>
+    <!-- Example customization of dimensions originally defined in res/values/dimens.xml
+         (such as screen margins) for screens with more than 820dp of available width. This
+         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
+    <dimen name="settings_image_size">106dp</dimen>
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="textEditorCircleDiameter">420dp</dimen>
+    <dimen name="login_fragment_margin_vertical">8dp</dimen>
+    <dimen name="login_fragment_margin_horizontal">80dp</dimen>
+    <dimen name="main_activity_top_bar_height">100dp</dimen>
+    <dimen name="title_login_font_size">50sp</dimen>
+    <dimen name="icon_email_passwd_width">40dp</dimen>
+    <dimen name="icon_email_passwd_margin_end">20dp</dimen>
+    <dimen name="gap_between_email_and_passwd">30dp</dimen>
+    <dimen name="gap_between_passwd_and_buttons">30dp</dimen>
+    <dimen name="gap_between_email_login_buttons">20dp</dimen>
+    <dimen name="horizontal_margins_or">20dp</dimen>
+    <dimen name="horizontal_line_width">120dp</dimen>
+    <dimen name="or_font_size">34sp</dimen>
+    <dimen name="fb_vk_rectangled_width_height">50dp</dimen>
+    <dimen name="image_recycler_view_padding_top">80dp</dimen>
+    <dimen name="image_fragment_image_margin">10dp</dimen>
+    <dimen name="image_fragment_progressbar_height">100dp</dimen>
+    <dimen name="arc_height">114dp</dimen>
+    <dimen name="arc_radius">84dp</dimen>
+    <dimen name="arc_axis_radius">104dp</dimen>
+    <dimen name="image_fragment_bottom_arc_margin_top">-50dp</dimen>
+    <dimen name="gap_between_logo_and_tagline">20dp</dimen>
+    <dimen name="fb_vk_logo_width">84dp</dimen>
+    <dimen name="email_login_button_font_size">25sp</dimen>
+    <dimen name="market_fragment_search_menu_margin_top">-40dp</dimen>
+    <dimen name="settings_fragment_padding_top">88dp</dimen>
+    <dimen name="header_item_font_size">24sp</dimen>
+    <dimen name="list_item_margin_start">10dp</dimen>
+    <dimen name="list_item_font_size">32sp</dimen>
+    <dimen name="logo_height">250dp</dimen>
+    <dimen name="go_with_your_flow_font_size">40sp</dimen>
+    <dimen name="fb_vk_logo_height">30dp</dimen>
+    <dimen name="login_types_horizontal_margin">0dp</dimen>
+    <dimen name="vk_fb_login_font_size">22sp</dimen>
+    <dimen name="email_passwd_input_font_size">25sp</dimen>
+    <dimen name="email_login_button_height">60dp</dimen>
+    <dimen name="top_bar_radius">40dp</dimen>
+</resources>

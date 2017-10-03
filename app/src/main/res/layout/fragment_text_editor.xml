@@ -28,15 +28,15 @@
     <ru.jufy.myposh.views.ClippingRelativeLayout
         android:id="@+id/poshikEditor"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="@dimen/textEditorCircleDiameter"
         android:layout_gravity="center_horizontal"
         android:background="@android:color/transparent"
         android:clipChildren="true">
 
         <ImageView
             android:id="@+id/circle"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/textEditorCircleDiameter"
+            android:layout_height="@dimen/textEditorCircleDiameter"
             android:layout_centerInParent="true"
             app:srcCompat="@drawable/circle" />
 

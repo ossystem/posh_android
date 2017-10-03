@@ -8,46 +8,47 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_width="@dimen/logo_height"
+        android:layout_height="@dimen/logo_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/gap_between_logo_and_tagline"
         app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/gap_between_logo_and_tagline"
         android:text="Go with your flow"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        android:textSize="24sp" />
+        android:textSize="@dimen/go_with_your_flow_font_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_cornered_rect"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/gap_between_logo_and_tagline"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageViewFb"
-            android:layout_width="64dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="@dimen/fb_vk_logo_width"
+            android:layout_height="@dimen/fb_vk_logo_height"
+            android:layout_marginBottom="@dimen/gap_between_logo_and_tagline"
+            android:layout_marginTop="@dimen/gap_between_logo_and_tagline"
             app:srcCompat="@drawable/fb_icon" />
 
         <Button
             android:id="@+id/fb_login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/login_types_horizontal_margin"
             android:background="@android:color/transparent"
             android:fontFamily="monospace"
             android:text="@string/button_fb_login"
             android:textAlignment="viewStart"
+            android:textSize="@dimen/vk_fb_login_font_size"
             android:textAllCaps="false" />
     </LinearLayout>
 
@@ -59,51 +60,53 @@
 
         <ImageView
             android:id="@+id/imageViewVk"
-            android:layout_width="64dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_width="@dimen/fb_vk_logo_width"
+            android:layout_height="@dimen/fb_vk_logo_height"
+            android:layout_marginTop="@dimen/gap_between_logo_and_tagline"
+            android:layout_marginBottom="@dimen/gap_between_logo_and_tagline"
             app:srcCompat="@drawable/vk_icon" />
 
         <Button
             android:id="@+id/vk_login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/login_types_horizontal_margin"
             android:background="@android:color/transparent"
             android:fontFamily="monospace"
             android:text="@string/button_vk_login"
             android:textAlignment="viewStart"
+            android:textSize="@dimen/vk_fb_login_font_size"
             android:textAllCaps="false" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="@dimen/horizontal_margins_or"
+        android:layout_marginRight="@dimen/horizontal_margins_or"
+        android:layout_marginTop="@dimen/gap_between_logo_and_tagline"
+        android:layout_marginBottom="@dimen/gap_between_logo_and_tagline"
         android:orientation="horizontal">
 
         <View
-            android:layout_width="70dp"
+            android:layout_width="@dimen/horizontal_line_width"
             android:layout_height="2dp"
             android:layout_gravity="center"
             android:background="#FFFFFF"/>
 
         <TextView
             android:id="@+id/orTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
             android:text="@string/title_or"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:layout_gravity="top"
-            android:textSize="24sp" />
+            android:textSize="@dimen/or_font_size" />
 
         <View
-            android:layout_width="70dp"
+            android:layout_width="@dimen/horizontal_line_width"
             android:layout_height="2dp"
             android:layout_gravity="center_vertical"
             android:background="#FFFFFF"/>
@@ -117,6 +120,7 @@
         android:background="@android:color/transparent"
         android:text="@string/button_email_login"
         android:textAlignment="center"
+        android:textSize="@dimen/email_login_button_font_size"
         android:textAllCaps="false" />
 
 </LinearLayout>
