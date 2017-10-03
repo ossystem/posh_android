@@ -259,7 +259,22 @@ public class TextEditorFragment extends Fragment {
                 textEditor.setTextColor(newColor);
             }
         });
-        ((LinearLayout)rootView).addView(fontColorPicker);
+
+        // this wierd way to display color picker is because direct addition to rootView
+        // causes crash at some devices (e.g. Nexus 7 virtual device)
+        // The crash scenario is the following:
+        // - soft keyboard is initially present at the screen and consumes the rest of the layout
+        // - color picker is added to the end of the layout
+        // - color picker is asked to draw itself
+        // - color picker calculates the area left to occupy
+        // - the whole layout haven't got recalculated its dimensions after keyboard hiding
+        // - color picker founds out that it has not enough space and throws exception
+        rootView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((LinearLayout)rootView).addView(fontColorPicker);
+            }
+        }, 500);
     }
 
     private void inactivateFontColor() {
@@ -287,7 +302,12 @@ public class TextEditorFragment extends Fragment {
                 bg.setColor(newColor);
             }
         });
-        ((LinearLayout)rootView).addView(fillColorPicker);
+        rootView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((LinearLayout)rootView).addView(fillColorPicker);
+            }
+        }, 500);
     }
 
     private void inactivateFillColor() {
