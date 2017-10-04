@@ -1,7 +1,11 @@
 package ru.jufy.myposh.adapters;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.Browser;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,11 +15,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.activities.SettingsResultActivity;
+import ru.jufy.myposh.activities.WebViewActivity;
+
+import static android.R.attr.key;
 
 /**
  * Created by Anna on 4/11/2017.
@@ -23,22 +32,36 @@ import ru.jufy.myposh.activities.SettingsResultActivity;
 
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.SettingsViewHolder> {
 
+    Activity mainActivity;
     List<SettingsItem> settingsItems;
 
-    public SettingsAdapter() {
+    public SettingsAdapter(Activity activity) {
+        mainActivity = activity;
         settingsItems = new ArrayList<>();
         settingsItems.add(new SettingsItem(R.drawable.settings_unbind,
                 R.string.settings_unbind_label,
                 R.string.settings_unbind_comment));
         settingsItems.add(new SettingsItem(R.drawable.settings_contacts,
                 R.string.settings_contacts_label,
-                R.string.settings_contacts_comment));
+                R.string.settings_contacts_comment,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openLinkInBrowser("http://kulon.jwma.ru/api/v1/contacts");
+                    }
+                }));
         settingsItems.add(new SettingsItem(R.drawable.settings_qa,
                 R.string.settings_qa_label,
                 R.string.settings_qa_comment));
         settingsItems.add(new SettingsItem(R.drawable.settings_address,
                 R.string.settings_address_label,
-                R.string.settings_address_comment));
+                R.string.settings_address_comment,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openLinkInBrowser("http://kulon.jwma.ru/api/v1/address");
+                    }
+                }));
         settingsItems.add(new SettingsItem(R.drawable.settings_address,
                 R.string.debug_info_label,
                 R.string.debug_info_comment,
@@ -49,6 +72,16 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
                         v.getContext().startActivity(i);
                     }
                 }));
+    }
+
+    private void openLinkInBrowser(String url) {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
+        Intent i = new Intent(mainActivity, WebViewActivity.class);
+        i.putExtra(WebViewActivity.URL, url);
+        i.putExtra(WebViewActivity.ACTION, WebViewActivity.ACTION_SHOW_WITH_HEADERS);
+        i.putExtra(WebViewActivity.HEADERS, headers);
+        mainActivity.startActivity(i);
     }
 
     @Override

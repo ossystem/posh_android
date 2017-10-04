@@ -45,7 +45,7 @@ public class SettingsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new SettingsAdapter();
+        adapter = new SettingsAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
         return rootView;

@@ -85,7 +85,8 @@ public class LoginActivity extends AppCompatActivity {
             String authLink = JsonHelper.getSocialAuthLink(getResult);
             Intent i = new Intent(this, WebViewActivity.class);
             Bundle b = new Bundle();
-            b.putString("link", authLink);
+            b.putString(WebViewActivity.URL, authLink);
+            b.putInt(WebViewActivity.ACTION, WebViewActivity.ACTION_AUTHORIZE);
             i.putExtras(b);
             startActivityForResult(i, 1);
         } catch (InterruptedException | ExecutionException e) {
