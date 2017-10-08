@@ -25,13 +25,19 @@ import ru.jufy.myposh.views.ArcLayout;
  * Created by Anna on 4/14/2017.
  */
 
-public class ImageGridFragment extends Fragment {
+public abstract class ImageGridFragment extends Fragment {
     protected View rootView;
     protected ImageAdapter adapter;
     protected RecyclerView recyclerView;
     protected List<Object> data;
 
+    private int lastDisplayedPage;
+    private int totalNumPages;
+
     protected void setupGrid(List<Object> images, boolean initialSetup) {
+        lastDisplayedPage = 1;
+        totalNumPages = 1;
+
         data = images;
         //calculate dimens
         Display display = getActivity().getWindowManager().getDefaultDisplay();
@@ -73,6 +79,38 @@ public class ImageGridFragment extends Fragment {
         }
 
         recyclerView.setAdapter(adapter);
+
+        RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                GridLayoutManager layoutManager = (GridLayoutManager)recyclerView.getLayoutManager();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+                if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                    loadMore();
+                }
+            }
+        };
+
+        recyclerView.addOnScrollListener(scrollListener);
+    }
+
+    private void loadMore() {
+        if (lastDisplayedPage < totalNumPages) {
+            List<Object> poshiksList = getAllPoshiksAtPage(++lastDisplayedPage);
+            adapter.addAll(poshiksList);
+        }
+    }
+
+    protected abstract List<Object> getAllPoshiksAtPage(int page);
+
+    protected void setTotalPagesNum(int value) {
+        totalNumPages = value;
+    }
+
+    protected void resetLastDisplayedPage() {
+        lastDisplayedPage = 1;
     }
 
     @NonNull

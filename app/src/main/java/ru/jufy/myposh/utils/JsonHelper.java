@@ -217,4 +217,14 @@ public class JsonHelper {
         }
         return result;
     }
+
+    public static int getTotalNumPages(String jsonString) {
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            return json.getJSONObject("pagination").getInt("totalPages");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

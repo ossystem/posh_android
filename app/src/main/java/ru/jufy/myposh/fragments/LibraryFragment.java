@@ -41,6 +41,11 @@ import static ru.jufy.myposh.utils.JsonHelper.getPurchasedImageList;
 
 
 public class LibraryFragment extends ImageGridFragment {
+    private static final int SHOW_PURCHASED = 0;
+    private static final int SHOW_HANDMADE = 1;
+
+    int currentListType = SHOW_PURCHASED;
+
     View shadowBg;
     FloatingActionButton fabText;
     private final TextEditorFragment textFrag;
@@ -56,9 +61,26 @@ public class LibraryFragment extends ImageGridFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_library, container, false);
         shadowBg = rootView.findViewById(R.id.shadow_bg);
+
+        rootView.findViewById(R.id.buttonPurchased).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SHOW_PURCHASED != currentListType) {
+                    showPurchased();
+                }
+            }
+        });
+
+        rootView.findViewById(R.id.buttonHandmade).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SHOW_HANDMADE != currentListType) {
+                    showHandmade();
+                }
+            }
+        });
 
         fabText = (FloatingActionButton)
                 rootView.findViewById(R.id.fab_text);
@@ -69,29 +91,62 @@ public class LibraryFragment extends ImageGridFragment {
             }
         });
 
-        List<Object> poshiksList = getPurchasedPoshiks();
-        poshiksList.addAll(getHandmadePoshiks());
+        currentListType = SHOW_PURCHASED;
+        resetLastDisplayedPage();
+        List<Object> poshiksList = getAllPoshiksAtPage(1);
         setupGrid(poshiksList, true);
 
         return rootView;
     }
 
-    private List<Object> getHandmadePoshiks() {
+    private void showPurchased() {
+        currentListType = SHOW_PURCHASED;
+        resetLastDisplayedPage();
+        List<Object> poshiksList = getAllPoshiksAtPage(1);
+        adapter.setData(poshiksList);
+    }
+
+    private void showHandmade() {
+        currentListType = SHOW_HANDMADE;
+        resetLastDisplayedPage();
+        List<Object> poshiksList = getAllPoshiksAtPage(1);
+        adapter.setData(poshiksList);
+    }
+
+    @Override
+    protected List<Object> getAllPoshiksAtPage(int page) {
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
         try {
-            String getResult = getRequest.execute(getHandmadeRequest()).get();
+            String getResult = getRequest.execute(getAllPoshiksAtPageRequest(page)).get();
             if (null == getResult) {
                 throw new InterruptedException();
             }
-            List<Object> result = JsonHelper.getHandmadeImageList(getResult);
-            if (result.size() > 0) {
-                result.add(0, getString(R.string.title_my_poshiks));
-            }
-            return result;
+            setTotalPagesNum(JsonHelper.getTotalNumPages(getResult));
+            return getPoshiksList(getResult);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return new ArrayList<>();
+    }
+
+    String[] getAllPoshiksAtPageRequest(int page) {
+        switch(currentListType) {
+            case SHOW_PURCHASED:
+                return getPurchasedRequest(page);
+            case SHOW_HANDMADE:
+                return getHandmadeRequest(page);
+        }
+        return null;
+    }
+
+    private List<Object> getPoshiksList(String jsonString) {
+        switch(currentListType) {
+            case SHOW_PURCHASED:
+                return JsonHelper.getPurchasedImageList(jsonString);
+            case SHOW_HANDMADE:
+                return JsonHelper.getHandmadeImageList(jsonString);
+        }
+        return null;
     }
 
     private void onFabTextClick() {
@@ -107,28 +162,12 @@ public class LibraryFragment extends ImageGridFragment {
         adapter.setClickListener(new ImageClickListener());
     }
 
-    private List<Object> getPurchasedPoshiks() {
-        HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
-        try {
-            String getResult = getRequest.execute(getPurchasedRequest()).get();
-            if (null == getResult) {
-                throw new InterruptedException();
-            }
-            List<Object> result = JsonHelper.getPurchasedImageList(getResult);
-            result.add(0, getString(R.string.title_purchases));
-            return result;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
+    private String[] getPurchasedRequest(int page) {
+        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/poshiks/purchase?page=" + page);
     }
 
-    private String[] getPurchasedRequest() {
-        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/poshiks/purchase");
-    }
-
-    private String[] getHandmadeRequest() {
-        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/poshiks/my");
+    private String[] getHandmadeRequest(int page) {
+        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/poshiks/my?page=" + page);
     }
 
     @Override

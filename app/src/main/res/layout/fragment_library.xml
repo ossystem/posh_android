@@ -7,10 +7,38 @@
     tools:context="ru.jufy.myposh.fragments.LibraryFragment">
 
 
+    <LinearLayout
+        android:id="@+id/libraryButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/image_recycler_view_padding_top"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonPurchased"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textAllCaps="false"
+            android:textSize="@dimen/header_item_font_size"
+            android:layout_weight="1"
+            android:text="@string/title_purchases" />
+
+        <Button
+            android:id="@+id/buttonHandmade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textAllCaps="false"
+            android:textSize="@dimen/header_item_font_size"
+            android:layout_weight="1"
+            android:text="@string/title_my_poshiks" />
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/image_recycler"
-        android:paddingTop="@dimen/image_recycler_view_padding_top"
         android:clipToPadding="false"
+        android:layout_below="@+id/libraryButtons"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

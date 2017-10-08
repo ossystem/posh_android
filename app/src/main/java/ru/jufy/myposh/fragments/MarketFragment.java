@@ -100,7 +100,8 @@ public class MarketFragment extends ImageGridFragment {
 
         arcLayout = (ArcLayout) rootView.findViewById(R.id.search_menu);
         shadowBg = rootView.findViewById(R.id.shadow_bg);
-        List<Object> poshiksList = getAllPoshiks();
+        resetLastDisplayedPage();
+        List<Object> poshiksList = getAllPoshiksAtPage(1);
         setupGrid(poshiksList, true);
 
         return rootView;
@@ -287,12 +288,13 @@ public class MarketFragment extends ImageGridFragment {
         return getRequestAuthorized(url.toString());
     }
 
-    private List<Object> getAllPoshiks() {
-        return getPoshiks(getMarketRequestAll());
+    @Override
+    protected List<Object> getAllPoshiksAtPage(int page) {
+        return getPoshiks(getMarketRequestAll(page));
     }
 
-    private String[] getMarketRequestAll() {
-        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/market");
+    private String[] getMarketRequestAll(int page) {
+        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/market?page=" + page);
     }
 
     private List<Object> getPoshiks(String[] requestParams) {
@@ -302,6 +304,7 @@ public class MarketFragment extends ImageGridFragment {
             if (null == getResult) {
                 throw new InterruptedException();
             }
+            setTotalPagesNum(JsonHelper.getTotalNumPages(getResult));
             return JsonHelper.getMarketImageList(getResult);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

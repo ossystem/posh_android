@@ -175,6 +175,18 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void add(Object item) {
+        this.data.add(item);
+        this.selected.add(false);
+        notifyItemInserted(this.data.size() - 1);
+    }
+
+    public void addAll(List<Object> items) {
+        for (Object item : items) {
+            add(item);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return data.size();

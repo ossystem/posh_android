@@ -54,12 +54,12 @@ public class WebViewActivity extends AppCompatActivity {
             myWebView.setWebViewClient(new WebViewClient() {
 
                 @Override
-                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    if (Uri.parse(request.getUrl().toString()).getHost().contains("kulon.jwma.ru")) {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    if (Uri.parse(url).getHost().contains("kulon.jwma.ru")) {
                         Intent intent = new Intent();
                         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
                         try {
-                            String getResult = getRequest.execute(request.getUrl().toString()).get();
+                            String getResult = getRequest.execute(url).get();
                             if (null == getResult) {
                                 throw new InterruptedException();
                             }
@@ -72,7 +72,7 @@ public class WebViewActivity extends AppCompatActivity {
                         }
                         return false;
                     } else {
-                        return super.shouldOverrideUrlLoading(view, request);
+                        return super.shouldOverrideUrlLoading(view, url);
                     }
                 }
             });

@@ -44,10 +44,9 @@ public class FavoritesFragment extends ImageGridFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
-        List<Object> favoritesList = getFavorites();
+        resetLastDisplayedPage();
+        List<Object> favoritesList = getAllPoshiksAtPage(1);
         setupGrid(favoritesList, true);
         adapter.setSupportsDoubleClick(false);
         cancelFab = (FloatingActionButton) rootView.findViewById(R.id.fab_cancel);
@@ -116,13 +115,15 @@ public class FavoritesFragment extends ImageGridFragment {
         return rootView;
     }
 
-    private List<Object> getFavorites() {
+    @Override
+    protected List<Object> getAllPoshiksAtPage(int page) {
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
         try {
-            String getResult = getRequest.execute(getFavoritesRequest()).get();
+            String getResult = getRequest.execute(getFavoritesRequest(page)).get();
             if (null == getResult) {
                 throw new InterruptedException();
             }
+            setTotalPagesNum(JsonHelper.getTotalNumPages(getResult));
             return JsonHelper.getFavoritesImageList(getResult);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -130,9 +131,9 @@ public class FavoritesFragment extends ImageGridFragment {
         return new ArrayList<>();
     }
 
-    private String[] getFavoritesRequest() {
+    private String[] getFavoritesRequest(int page) {
         String[] result = new String[3];
-        result[0] = "http://kulon.jwma.ru/api/v1/favorites";
+        result[0] = "http://kulon.jwma.ru/api/v1/favorites?page=" + page;
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
         token.append(MyPoshApplication.getCurrentToken().getToken());
@@ -144,7 +145,6 @@ public class FavoritesFragment extends ImageGridFragment {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     private  boolean isSelectionInProcess() {
