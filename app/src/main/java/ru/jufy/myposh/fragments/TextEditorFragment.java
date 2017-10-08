@@ -106,15 +106,10 @@ public class TextEditorFragment extends Fragment {
         });
 
         textEditor = (EditText)rootView.findViewById(R.id.textEditor);
-        textEditor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        textEditor.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (hasFocus) {
-                    imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
-                } else {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
+            public void onClick(View v) {
+                activateKeyboard();
             }
         });
         textEditor.setTextColor(initialFontColor);
