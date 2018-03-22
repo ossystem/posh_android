@@ -151,6 +151,28 @@ public class ImageFragment extends Fragment {
         return true;
     }
 
+    private boolean permissionGrantedStorage() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // When user pressed Deny and still wants to use this functionality, show the rationale
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // Here we can show the user a message with explanation why we need this permission
+                return false;
+            }
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_REQ_CODE);
+            return false;
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // When user pressed Deny and still wants to use this functionality, show the rationale
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Here we can show the user a message with explanation why we need this permission
+                return false;
+            }
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_REQ_CODE);
+            return false;
+        }
+        return true;
+    }
+
     public void performAllBleInteractions() {
         if (!mIsScanning) {
             scan();
@@ -225,6 +247,7 @@ public class ImageFragment extends Fragment {
     }
 
     private boolean downloadPoshik() {
+        permissionGrantedStorage();
         if (image.download()) {
             Toast.makeText(getActivity(), R.string.image_downloaded, Toast.LENGTH_SHORT).show();
             return true;
