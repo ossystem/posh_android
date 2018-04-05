@@ -44,6 +44,7 @@ public class ImageFragment extends Fragment {
     private View rootView;
     FloatingActionButton fabCancel;
     FloatingActionButton fabLikeTrash;
+    FloatingActionButton fabSet;
     FloatingActionButton fabBuyDownload;
     private Image image;
 
@@ -53,6 +54,8 @@ public class ImageFragment extends Fragment {
 
     private final static int REQUEST_PERMISSION_REQ_CODE = 34;
     private final static long SCAN_DURATION = 5000;
+
+    private boolean showPoshik;
 
     public ImageFragment() {
         super();
@@ -98,6 +101,15 @@ public class ImageFragment extends Fragment {
             }
         });
 
+        fabSet = (FloatingActionButton)rootView.findViewById(R.id.fab_set);
+        fabSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPoshik = true;
+                installImage();
+            }
+        });
+
         fabBuyDownload = (FloatingActionButton)rootView.findViewById(R.id.fab_buy_download);
         if (image.canDownload()) {
             setDownloadIcon();
@@ -105,8 +117,13 @@ public class ImageFragment extends Fragment {
         fabBuyDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (image.canDownload()) {
+                /*if (image.available()) {
+                    Toast.makeText(getActivity(), R.string.image_available, Toast.LENGTH_SHORT).show();
+                    installImage();
+                }
+                else */if (image.canDownload()) {
                     if (downloadPoshik()) {
+                        showPoshik = false;
                         installImage();
                     }
                 } else {
@@ -232,16 +249,30 @@ public class ImageFragment extends Fragment {
     };
 
     private void setPoshik() {
-        final DfuServiceInitiator starter = new DfuServiceInitiator(device.getAddress())
-                .setDeviceName(device.getName())
-                .setKeepBond(true)
-                .setForceDfu(false)
-                .setPacketsReceiptNotificationsEnabled(true)
-                .setPacketsReceiptNotificationsValue(12)
-                .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
-                .setCmdOrFile(false);
+        final DfuServiceInitiator starter;
+        if (showPoshik) {
+            starter = new DfuServiceInitiator(device.getAddress())
+                    .setDeviceName(device.getName())
+                    .setKeepBond(true)
+                    .setForceDfu(false)
+                    .setPacketsReceiptNotificationsEnabled(true)
+                    .setPacketsReceiptNotificationsValue(12)
+                    .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
+                    .setCmdOrFile(true)
+                    .setFileName(image.getTempFilename())
+                    .setCmd_op(1);
+        } else {
+            starter = new DfuServiceInitiator(device.getAddress())
+                    .setDeviceName(device.getName())
+                    .setKeepBond(true)
+                    .setForceDfu(false)
+                    .setPacketsReceiptNotificationsEnabled(true)
+                    .setPacketsReceiptNotificationsValue(12)
+                    .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
+                    .setCmdOrFile(false);
+            starter.setBinOrHex(DfuService.TYPE_SOFT_DEVICE, null, image.getDownloadedFile().getAbsolutePath()).setInitFile(null, null);
+        }
 
-        starter.setBinOrHex(DfuService.TYPE_SOFT_DEVICE, null, image.getDownloadedFile().getAbsolutePath()).setInitFile(null, null);
         Log.d("BOOT", " send command ");
         starter.start(getActivity(), DfuService.class);
     }

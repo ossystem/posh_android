@@ -75,6 +75,17 @@
             app:srcCompat="@drawable/icon_like" />
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/accent"
+            app:backgroundTint = "@color/primary"
+            app:rippleColor="@color/white_fab_ripple"
+            app:arc_origin="center"
+            app:arc_angle = "90"
+            app:srcCompat="@drawable/icon_install" />
+
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_buy_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

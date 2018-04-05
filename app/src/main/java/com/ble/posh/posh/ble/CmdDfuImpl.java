@@ -126,14 +126,17 @@ public class CmdDfuImpl extends BaseDfuImpl {
         final BluetoothGatt gatt = mGatt;
         final String name = intent.getStringExtra(DfuBaseService.EXTRA_FILE_NAME);
         writeCmd(mControlCharacteristic,'4',name);
+        Log.d("writeCmd","writeCmd: 4");
         if (mWait){
             synchronized (mLock) {
-                while ((mConnected && mError == 0 && !mAborted) || mPaused) {
+                while ((mConnected && mError == 0 && !mAborted) || mPaused || mCmdSend) {
                     try {
                         mLock.wait();
                     } catch (InterruptedException e) {
                         loge("Sleeping interrupted", e);
                     }
+                    Log.d("writeCmd","SEND writeCmd: 4");
+                    break;
                 }
                 if (mAborted)
                     throw new UploadAbortedException();
@@ -143,6 +146,8 @@ public class CmdDfuImpl extends BaseDfuImpl {
                     throw new DeviceDisconnectedException("Unable to write Op Code: device disconnected");
             }
         }
+
+        Log.d("writeCmd","disconnect");
         mGatt.disconnect();
     }
 

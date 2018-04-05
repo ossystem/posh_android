@@ -215,7 +215,7 @@ public class MarketImage extends Image {
     }
 
     @Override
-    protected String getTempFilename() {
+    public String getTempFilename() {
         return "market_" + Integer.toString(id) +
                 "." +
                 extension;

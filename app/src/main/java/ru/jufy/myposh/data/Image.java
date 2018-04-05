@@ -30,6 +30,16 @@ public abstract class Image {
         this.extension = extension;
     }
 
+    /*public boolean available() {
+        File file = new File(getCacheFolder(), getTempFilename());
+        if(file.exists()) {
+            tempFile = file;
+            return true;
+        } else {
+            return false;
+        }
+    }*/
+
     public boolean canLike() {
         return false;
     }
@@ -113,8 +123,13 @@ public abstract class Image {
     protected File createTempFile() {
         File cacheDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);//MyPoshApplication.getContext().getCacheDir();
         //File.createTempFile(filename.toString(), "jpeg", cacheDir);
+        //return new File(getCacheFolder(), getTempFilename());
         return new File(cacheDir, getTempFilename());
     }
 
-    protected abstract String getTempFilename();
+    /*protected File getCacheFolder() {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    }*/
+
+    public abstract String getTempFilename();
 }

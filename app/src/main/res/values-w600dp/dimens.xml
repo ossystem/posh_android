@@ -21,7 +21,7 @@
     <dimen name="image_recycler_view_padding_top">80dp</dimen>
     <dimen name="image_fragment_image_margin">10dp</dimen>
     <dimen name="image_fragment_progressbar_height">100dp</dimen>
-    <dimen name="arc_height">114dp</dimen>
+    <dimen name="arc_height">154dp</dimen>
     <dimen name="arc_radius">84dp</dimen>
     <dimen name="arc_axis_radius">104dp</dimen>
     <dimen name="image_fragment_bottom_arc_margin_top">-50dp</dimen>

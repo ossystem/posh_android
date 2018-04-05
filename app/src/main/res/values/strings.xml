@@ -85,4 +85,5 @@
     <string name="dfu_action_abort">Abort</string>
     <string name="dfu_status_error">Upload failed</string>
     <string name="dfu_status_error_msg">DFU process failed.</string>
+    <string name="image_available">Using image from cache</string>
 </resources>

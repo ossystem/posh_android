@@ -152,7 +152,7 @@ public class HandmadeImage extends Image {
     }
 
     @Override
-    protected String getTempFilename() {
+    public String getTempFilename() {
         StringBuilder filename = new StringBuilder("hm_");
         filename.append(Integer.toString(id));
         filename.append(".");
