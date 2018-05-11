@@ -47,7 +47,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openLinkInBrowser("http://kulon.jwma.ru/api/v1/contacts");
+                        openLinkInBrowser(MyPoshApplication.DOMAIN + "contacts");
                     }
                 }));
         settingsItems.add(new SettingsItem(R.drawable.settings_qa,
@@ -59,7 +59,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openLinkInBrowser("http://kulon.jwma.ru/api/v1/address");
+                        openLinkInBrowser(MyPoshApplication.DOMAIN + "address");
                     }
                 }));
         settingsItems.add(new SettingsItem(R.drawable.settings_address,

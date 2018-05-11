@@ -159,7 +159,7 @@ public class MarketFragment extends ImageGridFragment {
     }
 
     private String[] getMarketRequestTag(String tag) {
-        StringBuilder url = new StringBuilder("http://kulon.jwma.ru/api/v1/market?search=");
+        StringBuilder url = new StringBuilder(MyPoshApplication.DOMAIN + "artworks?search=");
         url.append(tag);
         return getRequestAuthorized(url.toString());
     }
@@ -180,7 +180,7 @@ public class MarketFragment extends ImageGridFragment {
 
     private String[] getTagsRequest() {
         String[] result = new String[3];
-        result[0] = "http://kulon.jwma.ru/api/v1/tags";
+        result[0] = MyPoshApplication.DOMAIN + "tags";
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
         token.append(MyPoshApplication.getCurrentToken().getToken());
@@ -224,7 +224,7 @@ public class MarketFragment extends ImageGridFragment {
 
     private String[] getCategoriesRequest() {
         String[] result = new String[3];
-        result[0] = "http://kulon.jwma.ru/api/v1/categories";
+        result[0] = MyPoshApplication.DOMAIN + "categories";
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
         token.append(MyPoshApplication.getCurrentToken().getToken());
@@ -283,7 +283,7 @@ public class MarketFragment extends ImageGridFragment {
     }
 
     private String[] getMarketRequestCategory(int id) {
-        StringBuilder url = new StringBuilder("http://kulon.jwma.ru/api/v1/market?category=");
+        StringBuilder url = new StringBuilder(MyPoshApplication.DOMAIN + "artworks?category=");
         url.append(id);
         return getRequestAuthorized(url.toString());
     }
@@ -294,7 +294,7 @@ public class MarketFragment extends ImageGridFragment {
     }
 
     private String[] getMarketRequestAll(int page) {
-        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/market?page=" + page);
+        return getRequestAuthorized(MyPoshApplication.DOMAIN + "artworks?page=" + page);
     }
 
     private List<Object> getPoshiks(String[] requestParams) {

@@ -13,6 +13,11 @@ public class KulonToken {
         this.expirationDate = null;
     }
 
+    public KulonToken(String token){
+        this.token = token;
+        this.expirationDate = null;
+    }
+
     public KulonToken(String token, Date expDate) {
         this.token = token;
         this.expirationDate = expDate;

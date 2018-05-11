@@ -73,7 +73,7 @@ public class EmailLoginFragment extends Fragment {
 
     private void resetPassword(String email) {
         String authReq[] = new String[2];
-        authReq[0] = "http://kulon.jwma.ru/api/v1/reset-password";
+        authReq[0] = MyPoshApplication.DOMAIN + "reset-password";
         authReq[1] = JsonHelper.convertEmail(email);
         HashMap<String, String> reqProps = new HashMap<>();
         reqProps.put("Content-Type", "application/json");
@@ -118,7 +118,7 @@ public class EmailLoginFragment extends Fragment {
 
     private void authorizeEmail(String email, String password) {
         String authReq[] = new String[2];
-        authReq[0] = "http://kulon.jwma.ru/api/v1/auth";
+        authReq[0] = MyPoshApplication.DOMAIN + "auth";
         authReq[1] = JsonHelper.convertEmailPassword(email, password);
         HashMap<String, String> reqProps = new HashMap<>();
         reqProps.put("Content-Type", "application/json");
@@ -178,7 +178,7 @@ public class EmailLoginFragment extends Fragment {
         String email = ((EditText)rootView.findViewById(R.id.emailInput)).getText().toString();
         String password = ((EditText)rootView.findViewById(R.id.passwordInput)).getText().toString();
         String authReq[] = new String[2];
-        authReq[0] = "http://kulon.jwma.ru/api/v1/registration";
+        authReq[0] = MyPoshApplication.DOMAIN + "registration";
         authReq[1] = JsonHelper.convertEmailPassword(email, password);
         HashMap<String, String> reqProps = new HashMap<>();
         reqProps.put("Content-Type", "application/json");

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 
+import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.fragments.EmailLoginFragment;
 import ru.jufy.myposh.fragments.LoginTypesFragment;
@@ -18,8 +19,8 @@ import ru.jufy.myposh.utils.JsonHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static String vkRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=vkontakte";
-    private static String fbRequest = "http://kulon.jwma.ru/api/v1/socialite?provider=facebook";
+    private static String vkRequest = MyPoshApplication.DOMAIN + "social/vkontakte";
+    private static String fbRequest = MyPoshApplication.DOMAIN + "social/facebook";
 
     private FragmentTransaction transaction;
     private LoginTypesFragment loginTypesFragment;

@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.activities.IntentDispatcherActivity;
 import ru.jufy.myposh.adapters.ImageAdapter;
@@ -163,11 +164,11 @@ public class LibraryFragment extends ImageGridFragment {
     }
 
     private String[] getPurchasedRequest(int page) {
-        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/poshiks/purchase?page=" + page);
+        return getRequestAuthorized(MyPoshApplication.DOMAIN + "poshiks/purchase?page=" + page);
     }
 
     private String[] getHandmadeRequest(int page) {
-        return getRequestAuthorized("http://kulon.jwma.ru/api/v1/poshiks/my?page=" + page);
+        return getRequestAuthorized(MyPoshApplication.DOMAIN + "poshiks/my?page=" + page);
     }
 
     @Override

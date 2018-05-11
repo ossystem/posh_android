@@ -68,7 +68,7 @@ public class MarketImage extends Image {
 
     @NonNull
     private StringBuilder getMarketLinkCommonPart() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/market/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "market/");
         link.append(id);
         return link;
     }
@@ -143,7 +143,7 @@ public class MarketImage extends Image {
 
     @Override
     public boolean unlike() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/favorites/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN +"favorites/");
         link.append(id);
         String imgUnFavRequest[] = new String[2];
         imgUnFavRequest[0] = link.toString();
@@ -190,7 +190,7 @@ public class MarketImage extends Image {
 
     @Override
     public boolean download() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/purchase/set/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "poshiks/purchase/set/");
         link.append(id);
 
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();

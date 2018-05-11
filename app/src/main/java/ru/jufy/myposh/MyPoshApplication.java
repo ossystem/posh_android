@@ -22,6 +22,9 @@ import ru.jufy.myposh.utils.KulonToken;
 
 public class MyPoshApplication extends Application {
 
+    private static final String DEBUG_URL = "https://posh.jwma.ru/api/v1/";
+    public static final String DOMAIN = DEBUG_URL;
+
     private static KulonToken currentToken = null;
     private static Timer expTimer = null;
 
@@ -75,7 +78,7 @@ class TimerTaskImpl extends TimerTask {
     @Override
     public void run() {
         String tokenRefreshRequest[] = new String[2];
-        tokenRefreshRequest[0] = "http://kulon.jwma.ru/api/v1/new-token";
+        tokenRefreshRequest[0] = MyPoshApplication.DOMAIN + "new-token";
         tokenRefreshRequest[1] = JsonHelper.convertTokenToJson();
         HashMap<String, String> reqProps = new HashMap<>();
         reqProps.put("Content-Type", "application/json");

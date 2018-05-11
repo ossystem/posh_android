@@ -44,7 +44,7 @@ public class HandmadeImage extends Image {
 
     @Override
     public boolean delete() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/my/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "poshiks/my/");
         link.append(id);
         String imgDelRequest[] = new String[2];
         imgDelRequest[0] = link.toString();
@@ -74,7 +74,7 @@ public class HandmadeImage extends Image {
     }
 
     private StringBuilder getHandmadeLinkCommonPart() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/my/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "poshiks/my/");
         link.append(id);
         return link;
     }
@@ -127,7 +127,7 @@ public class HandmadeImage extends Image {
 
     @Override
     public boolean download() {
-        StringBuilder link = new StringBuilder("http://kulon.jwma.ru/api/v1/poshiks/my/set/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "poshiks/my/set/");
         link.append(id);
 
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();

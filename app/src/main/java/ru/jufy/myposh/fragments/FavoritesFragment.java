@@ -133,7 +133,7 @@ public class FavoritesFragment extends ImageGridFragment {
 
     private String[] getFavoritesRequest(int page) {
         String[] result = new String[3];
-        result[0] = "http://kulon.jwma.ru/api/v1/favorites?page=" + page;
+        result[0] = MyPoshApplication.DOMAIN + "favorites?page=" + page;
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
         token.append(MyPoshApplication.getCurrentToken().getToken());

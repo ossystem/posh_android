@@ -345,7 +345,7 @@ public class TextEditorFragment extends Fragment {
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
         postRequest.setImage(image);
         String addPoshikRequest[] = new String[2];
-        addPoshikRequest[0] = "http://kulon.jwma.ru/api/v1/poshiks/my";
+        addPoshikRequest[0] = MyPoshApplication.DOMAIN + "poshiks/my";
         addPoshikRequest[1] = "Content-Disposition: form-data; name=\"poshik\"; filename=\"poshik.jpg\"" + postRequest.getCrLf()
                                 + "Content-Type: image/jpeg" + postRequest.getCrLf() + postRequest.getCrLf();
 

@@ -47,8 +47,7 @@ public class JsonHelper {
     public static KulonToken getToken(String jsonString) {
         try {
             JSONObject tokenData = getJsonObjectFromData(jsonString);
-            Date expDate = stringToDate(tokenData.getString("update_before"), "yyyy-MM-dd HH:mm:ss");
-            return new KulonToken(tokenData.getString("token"), expDate);
+            return new KulonToken(tokenData.getString("token"));
         } catch (JSONException e) {
             e.printStackTrace();
             return new KulonToken();
