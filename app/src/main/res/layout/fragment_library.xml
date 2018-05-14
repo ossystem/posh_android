@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ru.jufy.myposh.fragments.LibraryFragment">
+    tools:context=".ui.fragments.LibraryFragment">
 
 
     <LinearLayout
@@ -50,7 +50,7 @@
         android:background="@color/shadow_background"
         android:visibility="gone" />
 
-    <ru.jufy.myposh.views.ArcLayout
+    <ru.jufy.myposh.ui.views.ArcLayout
         android:id = "@id/arc_layout"
         android:layout_width="match_parent"
         android:layout_centerHorizontal="true"
@@ -66,6 +66,6 @@
             app:arc_origin="center"
             app:fabSize="mini"
             app:srcCompat="@drawable/icon_text" />
-    </ru.jufy.myposh.views.ArcLayout>
+    </ru.jufy.myposh.ui.views.ArcLayout>
 
 </RelativeLayout>

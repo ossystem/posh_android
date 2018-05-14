@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ru.jufy.myposh.fragments.MarketFragment">
+    tools:context=".ui.fragments.MarketFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/image_recycler"
@@ -21,7 +21,7 @@
         android:visibility="gone">
     </View>
 
-    <ru.jufy.myposh.views.ArcLayout
+    <ru.jufy.myposh.ui.views.ArcLayout
         android:id = "@id/arc_layout"
         android:layout_width="match_parent"
         android:layout_centerHorizontal="true"
@@ -38,7 +38,7 @@
             app:srcCompat="@drawable/ic_search_black_24dp"
             />
 
-    </ru.jufy.myposh.views.ArcLayout>
+    </ru.jufy.myposh.ui.views.ArcLayout>
 
     <com.ogaclejapan.arclayout.ArcLayout
         android:id="@+id/search_menu"

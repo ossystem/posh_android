@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ru.jufy.myposh.activities.ConfirmPictureActivity">
+    tools:context=".ui.activities.ConfirmPictureActivity">
  <!--
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -26,18 +26,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <ru.jufy.myposh.views.TouchImageView
+    <ru.jufy.myposh.ui.views.TouchImageView
         android:id = "@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:scaleType="centerInside"
         android:src="@drawable/red"/>
-    <ru.jufy.myposh.views.TransparentView
+    <ru.jufy.myposh.ui.views.TransparentView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent_white"/>
-    <ru.jufy.myposh.views.ArcLayout
+    <ru.jufy.myposh.ui.views.ArcLayout
         android:id = "@+id/arc_layout"
         android:layout_width="match_parent"
         android:layout_centerHorizontal="true"
@@ -53,7 +53,7 @@
             app:fabSize="normal"
             app:srcCompat="@drawable/delete_96"
             />
-    </ru.jufy.myposh.views.ArcLayout>
+    </ru.jufy.myposh.ui.views.ArcLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_confirm"

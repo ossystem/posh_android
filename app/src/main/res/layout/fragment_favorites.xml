@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.jufy.myposh.fragments.FavoritesFragment">
+    tools:context=".ui.fragments.FavoritesFragment">
 
 
     <android.support.v7.widget.RecyclerView
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <ru.jufy.myposh.views.ArcLayout
+    <ru.jufy.myposh.ui.views.ArcLayout
         android:id = "@+id/arc_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,5 +52,5 @@
             android:visibility="gone"
             app:srcCompat="@drawable/ic_select_all_black_24dp"
             />
-    </ru.jufy.myposh.views.ArcLayout>
+    </ru.jufy.myposh.ui.views.ArcLayout>
 </RelativeLayout>
