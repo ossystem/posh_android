@@ -6,9 +6,9 @@
 
 
     <!-- Bottom navigation-->
-    <string name="market">Market</string>
+    <string name="market">Store</string>
     <string name="favorites">Favorites</string>
-    <string name="my_library">My images</string>
+    <string name="my_library">Purchases</string>
     <string name="settings">Settings</string>
 
     <!--Settings -->
@@ -26,7 +26,6 @@
     <string name="toast_delete_favorite">Long press the image to delete</string>
     <string name="toast_delete_favorite_failed">Failed to delete images: </string>
     <string name="title_activity_login">LoginActivity</string>
-
     <string name="dfu_service_title">nRF Toolbox DFU Proxy</string>
 
     <string name="permission_title">Permission required</string>
@@ -86,4 +85,7 @@
     <string name="dfu_status_error">Upload failed</string>
     <string name="dfu_status_error_msg">DFU process failed.</string>
     <string name="image_available">Using image from cache</string>
+    <string name="hint_phone">Phone</string>
+    <string name="hint_code">Code</string>
+    <string name="send_code">Send code</string>
 </resources>

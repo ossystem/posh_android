@@ -19,44 +19,36 @@ import ru.jufy.myposh.utils.JsonHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static String vkRequest = MyPoshApplication.DOMAIN + "social/vkontakte";
+    private static String instagramRequest = MyPoshApplication.DOMAIN + "social/instagram";
     private static String fbRequest = MyPoshApplication.DOMAIN + "social/facebook";
 
-    private FragmentTransaction transaction;
-    private LoginTypesFragment loginTypesFragment;
-    private EmailLoginFragment emailLoginFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginTypesFragment = new LoginTypesFragment();
-        emailLoginFragment = new EmailLoginFragment();
 
-        showLoginTypes();
+        showEmailLogin();
     }
 
     private void showFragment(Fragment fragment) {
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.replace(R.id.fragment_frame, fragment);
         transaction.commit();
     }
 
-    public void authorizeVK() {
-        sendSocialAuthRequest(vkRequest);
+    public void authorizeInstagram() {
+        sendSocialAuthRequest(instagramRequest);
     }
 
     public void authorizeFB() {
         sendSocialAuthRequest(fbRequest);
     }
 
-    public void showLoginTypes() {
-        showFragment(loginTypesFragment);
-    }
     public void showEmailLogin() {
-        showFragment(emailLoginFragment);
+        showFragment(EmailLoginFragment.newInstance());
     }
 
     @Override

@@ -55,7 +55,7 @@ public class WebViewActivity extends AppCompatActivity {
 
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    if (Uri.parse(url).getHost().contains("kulon.jwma.ru")) {
+                    if (Uri.parse(url).getHost().contains("posh.jwma.ru")) {
                         Intent intent = new Intent();
                         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();
                         try {

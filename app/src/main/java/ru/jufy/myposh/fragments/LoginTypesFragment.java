@@ -24,14 +24,14 @@ public class LoginTypesFragment extends Fragment {
         rootView.findViewById(R.id.vk_login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LoginActivity)getActivity()).authorizeVK();
+                ((LoginActivity)getActivity()).authorizeInstagram();
             }
         });
 
         rootView.findViewById(R.id.imageViewVk).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LoginActivity)getActivity()).authorizeVK();
+                ((LoginActivity)getActivity()).authorizeInstagram();
             }
         });
 

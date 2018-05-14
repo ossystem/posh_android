@@ -1,17 +1,19 @@
 package ru.jufy.myposh.fragments;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import eightbitlab.com.blurview.BlurView;
+import eightbitlab.com.blurview.RenderScriptBlur;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.activities.LoginActivity;
@@ -23,29 +25,25 @@ import ru.jufy.myposh.utils.JsonHelper;
  */
 
 public class EmailLoginFragment extends Fragment {
-    protected View rootView;
+
+
+    public static EmailLoginFragment newInstance() {
+        Bundle args = new Bundle();
+
+        EmailLoginFragment fragment = new EmailLoginFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_email_login, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
-        rootView.findViewById(R.id.buttonBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((LoginActivity)getActivity()).showLoginTypes();
-            }
-        });
-
-        rootView.findViewById(R.id.buttonResetPassword).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = ((EditText)rootView.findViewById(R.id.emailInput)).getText().toString();
-                resetPassword(email);
-            }
-        });
-
-        rootView.findViewById(R.id.buttonForward).setOnClickListener(new View.OnClickListener() {
+        applyBlurOnBackground(rootView);
+/*        final EditText editText = (EditText) rootView.findViewById(R.id.phoneInput);
+        editText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());*/
+     /*   rootView.findViewById(R.id.buttonForward).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = ((EditText)rootView.findViewById(R.id.emailInput)).getText().toString();
@@ -64,11 +62,29 @@ public class EmailLoginFragment extends Fragment {
         rootView.findViewById(R.id.imageViewVkRec).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LoginActivity)getActivity()).authorizeVK();
+                ((LoginActivity)getActivity()).authorizeInstagram();
             }
-        });
+        });*/
 
         return rootView;
+    }
+
+    private void applyBlurOnBackground(View rootView) {
+        BlurView blurView = rootView.findViewById(R.id.blurView);
+
+        float radius = 5;
+
+        View decorView = getActivity().getWindow().getDecorView();
+        //Activity's root View. Can also be root View of your layout (preferably)
+        ViewGroup layout = rootView.findViewById(R.id.blurContainer);
+        //set background, if your root layout doesn't have one
+        Drawable windowBackground = decorView.getBackground();
+
+        blurView.setupWith(layout)
+                .windowBackground(windowBackground)
+                .blurAlgorithm(new RenderScriptBlur(getContext()))
+                .blurRadius(radius)
+                .setHasFixedTransformationMatrix(true);
     }
 
     private void resetPassword(String email) {
@@ -144,7 +160,7 @@ public class EmailLoginFragment extends Fragment {
         String message = JsonHelper.getMessage(postResult);
         if (message.contains("Login successful")) {
             MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(postResult));
-            ((LoginActivity)getActivity()).startMainActivity();
+            ((LoginActivity) getActivity()).startMainActivity();
         } else if (message.contains("Your email was entered incorrectly, or the user is not registered")) {
             startRegistration();
         } else if (message.contains("The password is incorrect")) {
@@ -175,7 +191,7 @@ public class EmailLoginFragment extends Fragment {
     }
 
     private void registerNewAccount() {
-        String email = ((EditText)rootView.findViewById(R.id.emailInput)).getText().toString();
+   /*     String email = ((EditText)rootView.findViewById(R.id.emailInput)).getText().toString();
         String password = ((EditText)rootView.findViewById(R.id.passwordInput)).getText().toString();
         String authReq[] = new String[2];
         authReq[0] = MyPoshApplication.DOMAIN + "registration";
@@ -193,14 +209,14 @@ public class EmailLoginFragment extends Fragment {
         } catch (InterruptedException | ExecutionException e) {
             showUnknownError();
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void onRegistrationResult(String postResult) {
         String message = JsonHelper.getMessage(postResult);
         if (message.contains("Thank you for registering! Please check your mail")) {
             MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(postResult));
-            ((LoginActivity)getActivity()).startMainActivity();
+            ((LoginActivity) getActivity()).startMainActivity();
         } else {
             showMessage(message);
         }

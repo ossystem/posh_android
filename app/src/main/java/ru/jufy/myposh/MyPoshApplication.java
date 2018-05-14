@@ -46,52 +46,7 @@ public class MyPoshApplication extends Application {
     }
 
     public static void onNewTokenObtained(KulonToken newToken) {
-        Date now = new Date();
-        if (newToken.getExpirationDate().getTime() < now.getTime()) {
-            Toast.makeText(app.getApplicationContext(), R.string.token_date_in_past, Toast.LENGTH_LONG).show();
-            return;
-        }
         currentToken = newToken;
-        startTokenExpTimer();
     }
 
-    private static void startTokenExpTimer() {
-        Date now = new Date();
-        long msToExp = currentToken.getExpirationDate().getTime() - now.getTime();
-        if (msToExp > MS_TO_START_REFRESH_BEFORE_TOKEN_EXP) {
-            msToExp -= MS_TO_START_REFRESH_BEFORE_TOKEN_EXP;
-        }
-
-        if (expTimer != null) {
-            expTimer.cancel();
-        }
-
-        expTimer = new Timer();
-        TimerTaskImpl mMyTimerTask = new TimerTaskImpl();
-
-        expTimer.schedule(mMyTimerTask, msToExp);
-    }
-}
-
-class TimerTaskImpl extends TimerTask {
-
-    @Override
-    public void run() {
-        String tokenRefreshRequest[] = new String[2];
-        tokenRefreshRequest[0] = MyPoshApplication.DOMAIN + "new-token";
-        tokenRefreshRequest[1] = JsonHelper.convertTokenToJson();
-        HashMap<String, String> reqProps = new HashMap<>();
-        reqProps.put("Content-Type", "application/json");
-        HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
-        postRequest.setRequestProperties(reqProps);
-        try {
-            String postResult = postRequest.execute(tokenRefreshRequest).get();
-            if (null == postResult) {
-                throw new InterruptedException();
-            }
-            MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(postResult));
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
 }

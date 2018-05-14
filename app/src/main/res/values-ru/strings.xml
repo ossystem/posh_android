@@ -86,4 +86,7 @@
     <string name="dfu_status_error">Upload failed</string>
     <string name="dfu_status_error_msg">DFU process failed.</string>
     <string name="image_available">Пошик найден в кеше</string>
+    <string name="hint_code">Код</string>
+    <string name="send_code">Отправить</string>
+    <string name="hint_phone">Телефон</string>
 </resources>
