@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ru.jufy.myposh.R;
-import ru.jufy.myposh.models.data.Image;
+import ru.jufy.myposh.entity.Image;
 
 /**
  * Created by Anna on 4/14/2017.

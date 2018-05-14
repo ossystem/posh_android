@@ -1,4 +1,4 @@
-package ru.jufy.myposh.models.data;
+package ru.jufy.myposh.entity;
 
 import android.content.Context;
 import android.os.Environment;
@@ -113,7 +113,7 @@ public abstract class Image {
         result[0] = url;
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
-        token.append(MyPoshApplication.getCurrentToken().getToken());
+        token.append(MyPoshApplication.Companion.getCurrentToken().getToken());
         result[2] = new String(token);
 
         return result;

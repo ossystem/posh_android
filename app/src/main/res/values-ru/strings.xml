@@ -89,4 +89,6 @@
     <string name="hint_code">Код</string>
     <string name="send_code">Отправить</string>
     <string name="hint_phone">Телефон</string>
+    <string name="share_to">Share</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.TimeZone;
 
 import ru.jufy.myposh.MyPoshApplication;
-import ru.jufy.myposh.models.data.Category;
-import ru.jufy.myposh.models.data.HandmadeImage;
-import ru.jufy.myposh.models.data.Image;
-import ru.jufy.myposh.models.data.KulonToken;
-import ru.jufy.myposh.models.data.MarketImage;
+import ru.jufy.myposh.entity.Category;
+import ru.jufy.myposh.entity.HandmadeImage;
+import ru.jufy.myposh.entity.Image;
+import ru.jufy.myposh.entity.KulonToken;
+import ru.jufy.myposh.entity.MarketImage;
 
 /**
  * Created by BorisDev on 31.07.2017.
@@ -51,7 +51,7 @@ public class JsonHelper {
             return new KulonToken(tokenData.getString("token"));
         } catch (JSONException e) {
             e.printStackTrace();
-            return new KulonToken();
+            return new KulonToken(null);
         }
     }
 
@@ -67,7 +67,7 @@ public class JsonHelper {
     public static String convertTokenToJson() {
         JSONObject data = new JSONObject();
         try {
-            data.put("token", MyPoshApplication.getCurrentToken().getToken());
+            data.put("token", MyPoshApplication.Companion.getCurrentToken().getToken());
         } catch (JSONException e) {
             e.printStackTrace();
         }

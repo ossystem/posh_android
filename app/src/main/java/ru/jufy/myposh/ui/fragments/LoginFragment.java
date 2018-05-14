@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jufy.mgtshr.ui.base.BaseFragment;
+
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -24,8 +28,7 @@ import ru.jufy.myposh.ui.utils.JsonHelper;
  * Created by BorisDev on 04.09.2017.
  */
 
-public class LoginFragment extends Fragment {
-
+public class LoginFragment extends BaseFragment {
 
     public static LoginFragment newInstance() {
         Bundle args = new Bundle();
@@ -89,7 +92,7 @@ public class LoginFragment extends Fragment {
 
     private void resetPassword(String email) {
         String authReq[] = new String[2];
-        authReq[0] = MyPoshApplication.DOMAIN + "reset-password";
+        authReq[0] = MyPoshApplication.Companion.getDOMAIN() + "reset-password";
         authReq[1] = JsonHelper.convertEmail(email);
         HashMap<String, String> reqProps = new HashMap<>();
         reqProps.put("Content-Type", "application/json");
@@ -134,7 +137,7 @@ public class LoginFragment extends Fragment {
 
     private void authorizeEmail(String email, String password) {
         String authReq[] = new String[2];
-        authReq[0] = MyPoshApplication.DOMAIN + "auth";
+        authReq[0] = MyPoshApplication.Companion.getDOMAIN() + "auth";
         authReq[1] = JsonHelper.convertEmailPassword(email, password);
         HashMap<String, String> reqProps = new HashMap<>();
         reqProps.put("Content-Type", "application/json");
@@ -159,7 +162,7 @@ public class LoginFragment extends Fragment {
     private void onAuthResult(String postResult) {
         String message = JsonHelper.getMessage(postResult);
         if (message.contains("Login successful")) {
-            MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(postResult));
+            MyPoshApplication.Companion.onNewTokenObtained(JsonHelper.getToken(postResult));
             ((LoginActivity) getActivity()).startMainActivity();
         } else if (message.contains("Your email was entered incorrectly, or the user is not registered")) {
             startRegistration();
@@ -215,7 +218,7 @@ public class LoginFragment extends Fragment {
     private void onRegistrationResult(String postResult) {
         String message = JsonHelper.getMessage(postResult);
         if (message.contains("Thank you for registering! Please check your mail")) {
-            MyPoshApplication.onNewTokenObtained(JsonHelper.getToken(postResult));
+            MyPoshApplication.Companion.onNewTokenObtained(JsonHelper.getToken(postResult));
             ((LoginActivity) getActivity()).startMainActivity();
         } else {
             showMessage(message);
@@ -226,7 +229,8 @@ public class LoginFragment extends Fragment {
         showMessage(getString(R.string.incorrect_password));
     }
 
-    private void showMessage(String message) {
+
+    /*private void showMessage(String message) {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle(getString(R.string.error));
         alertDialog.setMessage(message);
@@ -237,5 +241,10 @@ public class LoginFragment extends Fragment {
                     }
                 });
         alertDialog.show();
+    }*/
+
+    @Override
+    protected void setUp(@Nullable View view) {
+
     }
 }

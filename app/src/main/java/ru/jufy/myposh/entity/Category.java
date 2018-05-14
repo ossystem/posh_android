@@ -1,4 +1,4 @@
-package ru.jufy.myposh.models.data;
+package ru.jufy.myposh.entity;
 
 /**
  * Created by BorisDev on 11.08.2017.

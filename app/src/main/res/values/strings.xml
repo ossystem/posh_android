@@ -88,4 +88,6 @@
     <string name="hint_phone">Phone</string>
     <string name="hint_code">Code</string>
     <string name="send_code">Send code</string>
+    <string name="share_to">Share</string>
+    <string name="retry">Retry</string>
 </resources>

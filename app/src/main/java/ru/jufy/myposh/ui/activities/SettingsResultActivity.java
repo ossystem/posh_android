@@ -14,13 +14,10 @@ public class SettingsResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_result);
         TextView debugOutput = (TextView) findViewById(R.id.debugOutput);
-        if (null == MyPoshApplication.getCurrentToken()) {
+        if (null == MyPoshApplication.Companion.getCurrentToken()) {
             debugOutput.setText("No token available");
         } else {
-            String expDate = (null == MyPoshApplication.getCurrentToken().getExpirationDate()) ? "No expiration date"
-                    : MyPoshApplication.getCurrentToken().getExpirationDate().toString();
-            debugOutput.setText("Token:\n" + MyPoshApplication.getCurrentToken().getToken()
-                    + "\nExpiration date:\n" + expDate);
+            debugOutput.setText("Token:\n" + MyPoshApplication.Companion.getCurrentToken().getToken());
         }
     }
 }

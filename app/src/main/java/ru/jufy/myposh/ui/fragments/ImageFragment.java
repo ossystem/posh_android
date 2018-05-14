@@ -34,7 +34,7 @@ import java.util.List;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.ui.activities.MainActivity;
-import ru.jufy.myposh.models.data.Image;
+import ru.jufy.myposh.entity.Image;
 
 /**
  * Created by BorisDev on 07.08.2017.
@@ -139,7 +139,7 @@ public class ImageFragment extends Fragment {
 
     private void setDownloadIcon() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fabBuyDownload.setImageDrawable(getResources().getDrawable(R.drawable.icon_install, MyPoshApplication.getContext().getTheme()));
+            fabBuyDownload.setImageDrawable(getResources().getDrawable(R.drawable.icon_install, MyPoshApplication.Companion.getContext().getTheme()));
         } else {
             fabBuyDownload.setImageDrawable(getResources().getDrawable(R.drawable.icon_install));
         }
@@ -309,7 +309,7 @@ public class ImageFragment extends Fragment {
 
     private void setIcon(ImageView view, @DrawableRes int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            view.setImageDrawable(getResources().getDrawable(id, MyPoshApplication.getContext().getTheme()));
+            view.setImageDrawable(getResources().getDrawable(id, MyPoshApplication.Companion.getContext().getTheme()));
         } else {
             view.setImageDrawable(getResources().getDrawable(id));
         }

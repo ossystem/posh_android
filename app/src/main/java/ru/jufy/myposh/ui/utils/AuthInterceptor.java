@@ -17,7 +17,7 @@ public class AuthInterceptor implements Interceptor {
     public synchronized Response intercept(Chain chain) throws IOException {
         final Request original = chain.request();
         final Request.Builder requestBuilder = original.newBuilder()
-                .header("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken())
+                .header("Authorization", "Bearer " + MyPoshApplication.Companion.getCurrentToken().getToken())
                 .method(original.method(), original.body());
         return chain.proceed(requestBuilder.build());
     }

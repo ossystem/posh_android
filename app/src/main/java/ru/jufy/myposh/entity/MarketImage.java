@@ -1,4 +1,4 @@
-package ru.jufy.myposh.models.data;
+package ru.jufy.myposh.entity;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -68,7 +68,7 @@ public class MarketImage extends Image {
 
     @NonNull
     private StringBuilder getMarketLinkCommonPart() {
-        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "market/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.Companion.getDOMAIN() + "market/");
         link.append(id);
         return link;
     }
@@ -125,7 +125,7 @@ public class MarketImage extends Image {
         imgFavRequest[0] = link.toString();
         imgFavRequest[1] = "";
         HashMap<String, String> reqProps = new HashMap<>();
-        reqProps.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
+        reqProps.put("Authorization", "Bearer " + MyPoshApplication.Companion.getCurrentToken().getToken());
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
         postRequest.setRequestProperties(reqProps);
         try {
@@ -143,13 +143,13 @@ public class MarketImage extends Image {
 
     @Override
     public boolean unlike() {
-        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN +"favorites/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.Companion.getDOMAIN() +"favorites/");
         link.append(id);
         String imgUnFavRequest[] = new String[2];
         imgUnFavRequest[0] = link.toString();
         imgUnFavRequest[1] = "";
         HashMap<String, String> reqProps = new HashMap<>();
-        reqProps.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
+        reqProps.put("Authorization", "Bearer " + MyPoshApplication.Companion.getCurrentToken().getToken());
         HttpDelAsyncTask delRequest = new HttpDelAsyncTask();
         delRequest.setRequestProperties(reqProps);
         try {
@@ -172,7 +172,7 @@ public class MarketImage extends Image {
         imgBuyRequest[0] = link.toString();
         imgBuyRequest[1] = "";
         HashMap<String, String> reqProps = new HashMap<>();
-        reqProps.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
+        reqProps.put("Authorization", "Bearer " + MyPoshApplication.Companion.getCurrentToken().getToken());
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
         postRequest.setRequestProperties(reqProps);
         try {
@@ -190,7 +190,7 @@ public class MarketImage extends Image {
 
     @Override
     public boolean download() {
-        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "poshiks/purchase/set/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.Companion.getDOMAIN() + "poshiks/purchase/set/");
         link.append(id);
 
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();

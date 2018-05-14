@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutionException;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.ui.activities.IntentDispatcherActivity;
-import ru.jufy.myposh.models.data.Image;
 import ru.jufy.myposh.ui.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.ui.utils.JsonHelper;
 
@@ -143,11 +142,11 @@ public class LibraryFragment extends ImageGridFragment {
     }
 
     private String[] getPurchasedRequest(int page) {
-        return getRequestAuthorized(MyPoshApplication.DOMAIN + "poshiks/purchase?page=" + page);
+        return getRequestAuthorized(MyPoshApplication.Companion.getDOMAIN() + "poshiks/purchase?page=" + page);
     }
 
     private String[] getHandmadeRequest(int page) {
-        return getRequestAuthorized(MyPoshApplication.DOMAIN + "poshiks/my?page=" + page);
+        return getRequestAuthorized(MyPoshApplication.Companion.getDOMAIN() + "poshiks/my?page=" + page);
     }
 
     @Override

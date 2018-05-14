@@ -15,8 +15,7 @@ import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.ui.adapters.ImageAdapter;
 import ru.jufy.myposh.ui.adapters.ImageGridDecoration;
-import ru.jufy.myposh.models.data.Image;
-import ru.jufy.myposh.models.data.ImageRepository;
+import ru.jufy.myposh.entity.Image;
 
 /**
  * Created by Anna on 4/14/2017.
@@ -116,7 +115,7 @@ public abstract class ImageGridFragment extends Fragment {
         result[0] = url;
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
-        token.append(MyPoshApplication.getCurrentToken().getToken());
+        token.append(MyPoshApplication.Companion.getCurrentToken().getToken());
         result[2] = new String(token);
 
         return result;

@@ -340,12 +340,12 @@ public class TextEditorFragment extends Fragment {
         HttpPostAsyncTask postRequest = new HttpPostAsyncTask();
         postRequest.setImage(image);
         String addPoshikRequest[] = new String[2];
-        addPoshikRequest[0] = MyPoshApplication.DOMAIN + "poshiks/my";
+        addPoshikRequest[0] = MyPoshApplication.Companion.getDOMAIN() + "poshiks/my";
         addPoshikRequest[1] = "Content-Disposition: form-data; name=\"poshik\"; filename=\"poshik.jpg\"" + postRequest.getCrLf()
                                 + "Content-Type: image/jpeg" + postRequest.getCrLf() + postRequest.getCrLf();
 
         HashMap<String, String> reqProps = new HashMap<>();
-        reqProps.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
+        reqProps.put("Authorization", "Bearer " + MyPoshApplication.Companion.getCurrentToken().getToken());
         reqProps.put("Cache-Control", "no-cache");
         reqProps.put("Content-Type", "multipart/form-data; boundary=" + postRequest.getBoundary());
         postRequest.setRequestProperties(reqProps);
@@ -363,7 +363,7 @@ public class TextEditorFragment extends Fragment {
 
     private void setIcon(ImageView view, @DrawableRes int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            view.setImageDrawable(getResources().getDrawable(id, MyPoshApplication.getContext().getTheme()));
+            view.setImageDrawable(getResources().getDrawable(id, MyPoshApplication.Companion.getContext().getTheme()));
         } else {
             view.setImageDrawable(getResources().getDrawable(id));
         }

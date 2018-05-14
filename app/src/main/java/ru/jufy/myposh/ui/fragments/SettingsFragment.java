@@ -37,7 +37,7 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView =  inflater.inflate(R.layout.fragment_settings, container, false);
 
-        recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler);
+        recyclerView = rootView.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

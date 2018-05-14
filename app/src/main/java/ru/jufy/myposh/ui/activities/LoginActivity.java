@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.jufy.mgtshr.ui.base.BaseActivity;
+
 import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.MyPoshApplication;
@@ -16,19 +18,17 @@ import ru.jufy.myposh.ui.fragments.LoginFragment;
 import ru.jufy.myposh.ui.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.ui.utils.JsonHelper;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
-    private static String instagramRequest = MyPoshApplication.DOMAIN + "social/instagram";
-    private static String fbRequest = MyPoshApplication.DOMAIN + "social/facebook";
+    private static String instagramRequest = MyPoshApplication.Companion.getDOMAIN() + "social/instagram";
+    private static String fbRequest = MyPoshApplication.Companion.getDOMAIN() + "social/facebook";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
-        showEmailLogin();
+        setUp();
     }
 
     private void showFragment(Fragment fragment) {
@@ -85,5 +85,10 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.social_auth_failed, Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void setUp() {
+        showEmailLogin();
     }
 }

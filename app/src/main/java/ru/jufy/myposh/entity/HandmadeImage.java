@@ -1,4 +1,4 @@
-package ru.jufy.myposh.models.data;
+package ru.jufy.myposh.entity;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.ui.utils.GlideApp;
+import ru.jufy.myposh.ui.utils.PoshAppGlideModule;
 import ru.jufy.myposh.ui.utils.HttpDelAsyncTask;
 import ru.jufy.myposh.ui.utils.HttpGetAsyncTask;
 
@@ -44,13 +45,13 @@ public class HandmadeImage extends Image {
 
     @Override
     public boolean delete() {
-        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "poshiks/my/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.Companion.getDOMAIN() + "poshiks/my/");
         link.append(id);
         String imgDelRequest[] = new String[2];
         imgDelRequest[0] = link.toString();
         imgDelRequest[1] = "";
         HashMap<String, String> reqProps = new HashMap<>();
-        reqProps.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
+        reqProps.put("Authorization", "Bearer " + MyPoshApplication.Companion.getCurrentToken().getToken());
         HttpDelAsyncTask delRequest = new HttpDelAsyncTask();
         delRequest.setRequestProperties(reqProps);
         try {
@@ -74,7 +75,7 @@ public class HandmadeImage extends Image {
     }
 
     private StringBuilder getHandmadeLinkCommonPart() {
-        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "poshiks/my/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.Companion.getDOMAIN() + "poshiks/my/");
         link.append(id);
         return link;
     }
@@ -127,7 +128,7 @@ public class HandmadeImage extends Image {
 
     @Override
     public boolean download() {
-        StringBuilder link = new StringBuilder(MyPoshApplication.DOMAIN + "poshiks/my/set/");
+        StringBuilder link = new StringBuilder(MyPoshApplication.Companion.getDOMAIN() + "poshiks/my/set/");
         link.append(id);
 
         HttpGetAsyncTask getRequest = new HttpGetAsyncTask();

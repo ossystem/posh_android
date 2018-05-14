@@ -39,7 +39,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openLinkInBrowser(MyPoshApplication.DOMAIN + "contacts");
+                        openLinkInBrowser(MyPoshApplication.Companion.getDOMAIN() + "contacts");
                     }
                 }));
         settingsItems.add(new SettingsItem(R.drawable.settings_qa,
@@ -51,7 +51,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        openLinkInBrowser(MyPoshApplication.DOMAIN + "address");
+                        openLinkInBrowser(MyPoshApplication.Companion.getDOMAIN() + "address");
                     }
                 }));
         settingsItems.add(new SettingsItem(R.drawable.settings_address,
@@ -68,7 +68,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
 
     private void openLinkInBrowser(String url) {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + MyPoshApplication.getCurrentToken().getToken());
+        headers.put("Authorization", "Bearer " + MyPoshApplication.Companion.getCurrentToken().getToken());
         Intent i = new Intent(mainActivity, WebViewActivity.class);
         i.putExtra(WebViewActivity.URL, url);
         i.putExtra(WebViewActivity.ACTION, WebViewActivity.ACTION_SHOW_WITH_HEADERS);

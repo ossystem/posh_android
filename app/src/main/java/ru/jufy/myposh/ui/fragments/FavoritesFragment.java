@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.ui.adapters.ImageAdapter;
 import ru.jufy.myposh.R;
-import ru.jufy.myposh.models.data.Image;
+import ru.jufy.myposh.entity.Image;
 import ru.jufy.myposh.ui.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.ui.utils.JsonHelper;
 
@@ -133,10 +133,10 @@ public class FavoritesFragment extends ImageGridFragment {
 
     private String[] getFavoritesRequest(int page) {
         String[] result = new String[3];
-        result[0] = MyPoshApplication.DOMAIN + "favorites?page=" + page;
+        result[0] = MyPoshApplication.Companion.getDOMAIN() + "favorites?page=" + page;
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
-        token.append(MyPoshApplication.getCurrentToken().getToken());
+        token.append(MyPoshApplication.Companion.getCurrentToken().getToken());
         result[2] = new String(token);
 
         return result;

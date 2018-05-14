@@ -35,7 +35,7 @@ import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
-import ru.jufy.myposh.models.data.Category;
+import ru.jufy.myposh.entity.Category;
 import ru.jufy.myposh.ui.utils.AnimatorUtils;
 import ru.jufy.myposh.ui.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.ui.utils.JsonHelper;
@@ -159,7 +159,7 @@ public class MarketFragment extends ImageGridFragment {
     }
 
     private String[] getMarketRequestTag(String tag) {
-        StringBuilder url = new StringBuilder(MyPoshApplication.DOMAIN + "artworks?search=");
+        StringBuilder url = new StringBuilder(MyPoshApplication.Companion.getDOMAIN() + "artworks?search=");
         url.append(tag);
         return getRequestAuthorized(url.toString());
     }
@@ -180,10 +180,10 @@ public class MarketFragment extends ImageGridFragment {
 
     private String[] getTagsRequest() {
         String[] result = new String[3];
-        result[0] = MyPoshApplication.DOMAIN + "tags";
+        result[0] = MyPoshApplication.Companion.getDOMAIN() + "tags";
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
-        token.append(MyPoshApplication.getCurrentToken().getToken());
+        token.append(MyPoshApplication.Companion.getCurrentToken().getToken());
         result[2] = new String(token);
 
         return result;
@@ -224,10 +224,10 @@ public class MarketFragment extends ImageGridFragment {
 
     private String[] getCategoriesRequest() {
         String[] result = new String[3];
-        result[0] = MyPoshApplication.DOMAIN + "categories";
+        result[0] = MyPoshApplication.Companion.getDOMAIN() + "categories";
         result[1] = "Authorization";
         StringBuilder token = new StringBuilder("Bearer ");
-        token.append(MyPoshApplication.getCurrentToken().getToken());
+        token.append(MyPoshApplication.Companion.getCurrentToken().getToken());
         result[2] = new String(token);
 
         return result;
@@ -283,7 +283,7 @@ public class MarketFragment extends ImageGridFragment {
     }
 
     private String[] getMarketRequestCategory(int id) {
-        StringBuilder url = new StringBuilder(MyPoshApplication.DOMAIN + "artworks?category=");
+        StringBuilder url = new StringBuilder(MyPoshApplication.Companion.getDOMAIN() + "artworks?category=");
         url.append(id);
         return getRequestAuthorized(url.toString());
     }
@@ -294,7 +294,7 @@ public class MarketFragment extends ImageGridFragment {
     }
 
     private String[] getMarketRequestAll(int page) {
-        return getRequestAuthorized(MyPoshApplication.DOMAIN + "artworks?page=" + page);
+        return getRequestAuthorized(MyPoshApplication.Companion.getDOMAIN() + "artworks?page=" + page);
     }
 
     private List<Object> getPoshiks(String[] requestParams) {
