@@ -21,14 +21,11 @@ class ErrorHandler @Inject constructor(
     }
 
     fun proceed(error: Throwable, messageListener: (String) -> Unit = {}) {
-        if (error is HttpException){
-            messageListener(error.response().errorBody()!!.getErrorMessage())
-        } else if (error is SocketTimeoutException) {
-            messageListener(resourceManager.getString(R.string.no_connectivity_error))
-        } else if (error is IOException) {
-            messageListener(resourceManager.getString(R.string.no_connectivity_error))
-        } else {
-            messageListener(resourceManager.getString(R.string.unknown_error))
+        when (error) {
+            is HttpException -> messageListener(error.response().errorBody()!!.getErrorMessage())
+            is SocketTimeoutException -> messageListener(resourceManager.getString(R.string.no_connectivity_error))
+            is IOException -> messageListener(resourceManager.getString(R.string.no_connectivity_error))
+            else -> messageListener(resourceManager.getString(R.string.unknown_error))
         }
     }
 

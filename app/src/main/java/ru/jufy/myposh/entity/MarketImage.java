@@ -36,11 +36,13 @@ public class MarketImage extends Image {
 
     private boolean isFavorite;
     private boolean isPurchased;
+    private String link;
 
-    public MarketImage(int id, String extension, boolean isFavorite, boolean isPurchased) {
+    public MarketImage(String id, String extension, boolean isFavorite, boolean isPurchased, String link) {
         super(id, extension);
         this.isFavorite = isFavorite;
         this.isPurchased = isPurchased;
+        this.link = link;
     }
 
     @Override
@@ -60,23 +62,25 @@ public class MarketImage extends Image {
 
     @Override
     public void showSmall(Context context, ImageView view, ProgressBar progressBar) {
+/*
         StringBuilder link = getMarketLinkCommonPart();
         link.append("/img?size=small");
+*/
 
-        showImage(context, view, progressBar, link);
+        showImage(context, view, progressBar, getMarketLinkCommonPart());
     }
 
     @NonNull
     private StringBuilder getMarketLinkCommonPart() {
-        StringBuilder link = new StringBuilder(MyPoshApplication.Companion.getDOMAIN() + "market/");
-        link.append(id);
+        StringBuilder link = new StringBuilder(this.link);
+        /*link.append(id);*/
         return link;
     }
 
     @Override
     public void showMiddle(Context context, ImageView view, ProgressBar progressBar) {
         StringBuilder link = getMarketLinkCommonPart();
-        link.append("/img?size=middle");
+        /*link.append("/img?size=middle");*/
 
         showImage(context, view, progressBar, link);
     }
@@ -84,7 +88,7 @@ public class MarketImage extends Image {
     @Override
     public void showBig(Context context, ImageView view, ProgressBar progressBar) {
         StringBuilder link = getMarketLinkCommonPart();
-        link.append("/img?size=big");
+        /*link.append("/img?size=big");*/
 
         showImage(context, view, progressBar, link);
     }
@@ -216,7 +220,7 @@ public class MarketImage extends Image {
 
     @Override
     public String getTempFilename() {
-        return "market_" + Integer.toString(id) +
+        return "market_" + id +
                 "." +
                 extension;
     }

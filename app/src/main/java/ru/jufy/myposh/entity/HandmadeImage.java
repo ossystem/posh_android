@@ -34,7 +34,7 @@ import ru.jufy.myposh.ui.utils.HttpGetAsyncTask;
 
 public class HandmadeImage extends Image {
 
-    public HandmadeImage(int id, String extension) {
+    public HandmadeImage(String id, String extension) {
         super(id, extension);
     }
 
@@ -155,7 +155,7 @@ public class HandmadeImage extends Image {
     @Override
     public String getTempFilename() {
         StringBuilder filename = new StringBuilder("hm_");
-        filename.append(Integer.toString(id));
+        filename.append(id);
         filename.append(".");
         filename.append(extension);
 

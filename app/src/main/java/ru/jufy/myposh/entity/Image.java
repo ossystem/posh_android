@@ -19,15 +19,19 @@ import ru.jufy.myposh.ui.utils.GlideApp;
  */
 
 public abstract class Image {
-    protected int id;
+    protected String id;
     protected int size;
     protected String extension;
 
     protected File tempFile = null;
 
-    public Image(int id, String extension) {
+    public Image(String id, String extension) {
         this.id = id;
-        this.extension = extension;
+        if (extension.startsWith("image/")) {
+            this.extension = extension.substring(extension.indexOf("/"), extension.length());
+        } else {
+            this.extension = extension;
+        }
     }
 
     /*public boolean available() {
@@ -57,7 +61,7 @@ public abstract class Image {
     }
 
     public boolean isMe(Image imgToCompare) {
-        return imgToCompare.id == id;
+        return imgToCompare.id.equals(id);
     }
 
     public void setSize(int size) {

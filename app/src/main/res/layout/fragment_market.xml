@@ -32,9 +32,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_position = "middle"
-            app:rippleColor="@color/light_fab_ripple"
-            app:backgroundTint="@color/light_fab"
-            android:tint="@color/light_fab_fg"
+            android:tint="@color/accent"
+            app:backgroundTint="@color/primary"
+            app:rippleColor="@color/white_fab_ripple"
             app:srcCompat="@drawable/ic_search_black_24dp"
             />
 

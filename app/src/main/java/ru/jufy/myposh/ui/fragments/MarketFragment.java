@@ -294,7 +294,7 @@ public class MarketFragment extends ImageGridFragment {
     }
 
     private String[] getMarketRequestAll(int page) {
-        return getRequestAuthorized(MyPoshApplication.Companion.getDOMAIN() + "artworks?page=" + page);
+        return getRequestAuthorized(MyPoshApplication.Companion.getDOMAIN() + "artworks");
     }
 
     private List<Object> getPoshiks(String[] requestParams) {
@@ -304,7 +304,7 @@ public class MarketFragment extends ImageGridFragment {
             if (null == getResult) {
                 throw new InterruptedException();
             }
-            setTotalPagesNum(JsonHelper.getTotalNumPages(getResult));
+         //   setTotalPagesNum(JsonHelper.getTotalNumPages(getResult));
             return JsonHelper.getMarketImageList(getResult);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

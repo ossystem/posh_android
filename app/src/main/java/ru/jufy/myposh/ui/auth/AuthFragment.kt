@@ -53,8 +53,6 @@ class AuthFragment : BaseFragment(), AuthMvpView {
             return@setOnEditorActionListener false
         }
 
-
-
         buttonBack.setOnClickListener { presenter.onBackPressed() }
         imageViewFbRec.setOnClickListener { navigateTo(Screens.AUTHENTICATE_SOCIAL, SocialTypes.FB) }
         imageViewVkRec.setOnClickListener { navigateTo(Screens.AUTHENTICATE_SOCIAL, SocialTypes.INSTAGRAM) }
@@ -153,7 +151,6 @@ class AuthFragment : BaseFragment(), AuthMvpView {
     }
 
     companion object {
-
         fun newInstance(): AuthFragment {
             val args = Bundle()
 
