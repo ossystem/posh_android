@@ -4,7 +4,7 @@ import ru.jufy.myposh.di.PerFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import ru.jufy.myposh.di.module.fragment.LoginFragmentModule
-import ru.jufy.myposh.ui.fragments.LoginFragment
+import ru.jufy.myposh.ui.auth.AuthFragment
 
 /**
  * Created by rolea on 01.03.2018.
@@ -13,5 +13,5 @@ import ru.jufy.myposh.ui.fragments.LoginFragment
 abstract class LoginActivityModule {
     @PerFragment
     @ContributesAndroidInjector(modules = arrayOf(LoginFragmentModule::class))
-    internal abstract fun tabInjector(): LoginFragment
+    internal abstract fun tabInjector(): AuthFragment
 }

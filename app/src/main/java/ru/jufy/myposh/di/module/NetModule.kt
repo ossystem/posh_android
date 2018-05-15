@@ -14,9 +14,12 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.jufy.myposh.BuildConfig
-import ru.jufy.myposh.models.data.server.ApiService
-import ru.jufy.myposh.models.data.server.interceptors.AuthenticationInterceptor
-import ru.jufy.myposh.models.storage.UserPreferences
+import ru.jufy.myposh.model.data.server.ApiService
+import ru.jufy.myposh.model.data.server.interceptors.AuthenticationInterceptor
+import ru.jufy.myposh.model.interactor.AuthInteractor
+import ru.jufy.myposh.model.storage.UserPreferences
+import ru.jufy.myposh.model.system.ResourceManager
+import ru.jufy.myposh.presentation.global.ErrorHandler
 import java.io.IOException
 import java.io.InputStream
 import java.lang.reflect.Type
@@ -42,7 +45,7 @@ import javax.net.ssl.TrustManagerFactory
 @Module
 class NetModule {
 
-    private val DEBUG_BASE_URL = "https://posh.jwma.ru/api/v1/"
+    private val DEBUG_BASE_URL = "https://posh.jwma.ru/"
     private val BASE_URL = ""
     private var mApplication: Application? = null
 
@@ -68,6 +71,11 @@ class NetModule {
             return certificate
         }
 
+
+    @Provides
+    @PerApplication
+    internal fun provideErrorHandler(interactor: AuthInteractor, resourceManager: ResourceManager)
+            = ErrorHandler(interactor, resourceManager)
 
     // loading CAs from Resources
     // saving your certificate.crt on raw package in your resources// FIXME:insert certificate for mgts when https will be available
@@ -155,7 +163,6 @@ class NetModule {
 
 
     /*Network service*/
-
     @Provides
     @PerApplication
     fun providesApiService(retrofit: Retrofit): ApiService {
@@ -166,7 +173,7 @@ class NetModule {
     @Provides
     @PerApplication
     internal fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
-        val url = BASE_URL
+        val url = DEBUG_BASE_URL
 
         return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))

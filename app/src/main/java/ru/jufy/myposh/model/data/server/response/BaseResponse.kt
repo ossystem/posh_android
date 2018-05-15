@@ -1,4 +1,4 @@
-package ru.jufy.myposh.models.data.server.response
+package ru.jufy.myposh.model.data.server.response
 
 /**
  * Created by rolea on 23.03.2018.

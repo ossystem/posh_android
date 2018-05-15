@@ -1,4 +1,4 @@
-package ru.jufy.myposh.models.data.server.interceptors;
+package ru.jufy.myposh.model.data.server.interceptors;
 
 
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-import ru.jufy.myposh.models.storage.UserPreferences;
+import ru.jufy.myposh.model.storage.UserPreferences;
 
 /**
  * Created by rolea on 6/10/2017.

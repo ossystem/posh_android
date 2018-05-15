@@ -40,8 +40,8 @@
             android:layout_height="wrap_content"
             app:elevation="@dimen/bnm_elevation"
             app:itemBackground="@color/primary"
-            app:itemIconTint="@color/bottom_nav_foreground"
-            app:itemTextColor="@color/bottom_nav_foreground"
+            app:itemIconTint="@drawable/nav_item_color_state"
+            app:itemTextColor="@drawable/nav_item_color_state"
             app:menu="@menu/bottom_navigation_menu" />
     </LinearLayout>
 

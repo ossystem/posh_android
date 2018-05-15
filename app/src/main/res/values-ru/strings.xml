@@ -60,6 +60,8 @@
     <string name="button_vk_login">Войти с помощью VK</string>
     <string name="button_email_login">Используя почту</string>
     <string name="title_category">Категория</string>
+    <string name="code_format_incorrect"> Код должен состоять из четырех цифр</string>
+    <string name="phone_format_incorrect">Неправильный формат телефона</string>
     <string name="email_format_incorrect">Неправильный формат электронной почты.</string>
     <string name="no_user_exist">Пользователь с такой почтой не существует.</string>
     <string name="password_reset_success">Пароль успешно сброшен. Пожалуйста, проверьте почту.</string>
@@ -87,8 +89,11 @@
     <string name="dfu_status_error_msg">DFU process failed.</string>
     <string name="image_available">Пошик найден в кеше</string>
     <string name="hint_code">Код</string>
-    <string name="send_code">Отправить</string>
+    <string name="send_code">Отправить код</string>
     <string name="hint_phone">Телефон</string>
-    <string name="share_to">Share</string>
-    <string name="retry">Retry</string>
+    <string name="share_to">Поделиться</string>
+    <string name="retry">Повторить</string>
+    <string name="unknown_error">Неизвестная ошибкаr</string>
+    <string name="network_error">Ошибка сети</string>
+    <string name="no_connectivity_error">Вы в оффлайне</string>
 </resources>

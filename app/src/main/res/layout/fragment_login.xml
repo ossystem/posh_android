@@ -49,6 +49,12 @@
             app:allowed_chars="1234567890"
             app:keep_hint="false"
             app:mask="+7(###) ###-##-##" />
+        <ProgressBar
+            android:id="@+id/phoneProgressBar"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="@dimen/fb_vk_rectangled_width_height"
+            android:layout_height="@dimen/fb_vk_rectangled_width_height" />
 
         <Button
             android:id="@+id/buttonSend"
@@ -63,20 +69,27 @@
             android:textSize="@dimen/email_login_button_font_size" />
 
         <EditText
-            android:id="@+id/passwordInput"
+            android:id="@+id/codeInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:layout_marginTop="@dimen/gap_between_email_and_passwd"
             android:drawableLeft="@drawable/ic_code"
             android:drawablePadding="8dp"
-            android:ems="10"
+            android:ems="4"
             android:hint="@string/hint_code"
             android:inputType="textPassword"
             android:maxLines="1"
             android:textSize="@dimen/email_passwd_input_font_size" />
+        <ProgressBar
+            android:id="@+id/codeProgressBar"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="@dimen/fb_vk_rectangled_width_height"
+            android:layout_height="@dimen/fb_vk_rectangled_width_height" />
 
         <LinearLayout
+            android:id="@+id/buttonsNavigation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"

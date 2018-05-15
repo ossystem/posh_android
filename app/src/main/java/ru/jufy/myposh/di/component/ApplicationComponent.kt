@@ -11,15 +11,16 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import retrofit2.Retrofit
 import ru.jufy.myposh.MyPoshApplication
-import ru.jufy.myposh.models.data.server.ApiService
-import ru.jufy.myposh.models.storage.UserPreferences
+import ru.jufy.myposh.di.module.RepositoryModule
+import ru.jufy.myposh.model.data.server.ApiService
+import ru.jufy.myposh.model.storage.UserPreferences
 
 /**
  * Created by rolea on 4/22/2017.
  */
 
 @PerApplication
-@Component(modules = arrayOf(AppModule::class, NetModule::class, DataBaseModule::class))
+@Component(modules = arrayOf(AppModule::class, NetModule::class, DataBaseModule::class, RepositoryModule::class))
 interface ApplicationComponent : AndroidInjector<MyPoshApplication> {
 
     @ApplicationContext

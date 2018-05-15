@@ -60,6 +60,8 @@
     <string name="button_email_login">with e-mail</string>
     <string name="title_category">Category</string>
     <string name="email_format_incorrect">Email format is incorrect.</string>
+    <string name="code_format_incorrect"> Code should consist of 4 digits</string>
+    <string name="phone_format_incorrect">Phone format is incorrect.</string>
     <string name="no_user_exist">The user is not found.</string>
     <string name="password_reset_success">Password has been successfully resetted. Please check your email.</string>
 
@@ -90,4 +92,7 @@
     <string name="send_code">Send code</string>
     <string name="share_to">Share</string>
     <string name="retry">Retry</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="network_error">Network error</string>
+    <string name="no_connectivity_error">You are offline</string>
 </resources>

@@ -70,6 +70,7 @@ abstract class BaseFragment : Fragment(), MvpView, EmptyView, HasSupportFragment
         super.onAttach(context)
         if (context is BaseActivity) {
             val activity = context as BaseActivity?
+            this.baseActivity = activity
             activity!!.onFragmentAttached()
         }
     }

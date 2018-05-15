@@ -22,7 +22,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.not_found_view.*
 import ru.jufy.myposh.R
-import ru.jufy.myposh.ui.activities.LoginActivity
+import ru.jufy.myposh.ui.activities.LaunchActivity
 import ru.jufy.myposh.ui.global.EmptyView
 import ru.jufy.myposh.ui.global.MvpView
 import javax.inject.Inject
@@ -129,9 +129,7 @@ abstract class BaseActivity : AppCompatActivity(), MvpView, EmptyView, BaseFragm
     }
 
     override fun onError(message: String) {
-        if (message != null) {
-            showSnackBar(message)
-        }
+        showMessage(getString(R.string.error), message)
     }
 
     override fun changeNotFoundState(visibility: Boolean) {
@@ -153,10 +151,10 @@ abstract class BaseActivity : AppCompatActivity(), MvpView, EmptyView, BaseFragm
     }
 
     override fun onAuthError() {
-        val newIntent = Intent(this, LoginActivity::class.java)
+        val newIntent = Intent(this, LaunchActivity::class.java)
         newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        // newIntent.putExtra(LoginActivity.Companion.IS_LOGOUT, true)
+        // newIntent.putExtra(LaunchActivity.Companion.IS_LOGOUT, true)
         startActivity(newIntent)
         finish()
     }

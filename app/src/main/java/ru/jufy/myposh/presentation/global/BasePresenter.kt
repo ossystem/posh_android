@@ -2,11 +2,11 @@ package ru.jufy.myposh.presentation.global
 
 import io.reactivex.disposables.CompositeDisposable
 import ru.jufy.myposh.ui.global.MvpView
+import javax.inject.Inject
 
-class BasePresenter<V:MvpView>:MvpPresenter<V> {
+open class BasePresenter<V:MvpView> @Inject constructor():MvpPresenter<V> {
     private var mMvpView: V? = null
     protected var disposable: CompositeDisposable = CompositeDisposable()
-
 
     override fun onAttach(mvpView: V) {
         mMvpView = mvpView
@@ -23,7 +23,6 @@ class BasePresenter<V:MvpView>:MvpPresenter<V> {
     override fun onResume() {
 
     }
-
 
     override fun onPause() {
         if (!disposable.isDisposed) {

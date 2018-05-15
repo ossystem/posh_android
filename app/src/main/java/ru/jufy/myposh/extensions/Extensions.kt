@@ -22,7 +22,9 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.webkit.URLUtil
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import ru.jufy.myposh.R
@@ -43,6 +45,13 @@ fun ImageView.tint(colorRes: Int) = this.setColorFilter(this.context.color(color
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
+}
+
+fun EditText.showKeyboardAndFocus(context: Context?){
+    this.requestFocus()
+    this.setSelection(0)
+    val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
 
 fun View.visible(visible: Boolean) {

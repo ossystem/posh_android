@@ -13,7 +13,7 @@ import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import ru.jufy.myposh.MyPoshApplication
 import ru.jufy.myposh.di.module.activity.LoginActivityModule
-import ru.jufy.myposh.ui.activities.LoginActivity
+import ru.jufy.myposh.ui.activities.LaunchActivity
 
 /**
  * Created by rolea on 14.09.2017.
@@ -38,6 +38,6 @@ abstract class AppModule {
 
     @PerActivity
     @ContributesAndroidInjector(modules = arrayOf(LoginActivityModule::class))
-    internal abstract fun loginActivityInjector(): LoginActivity
+    internal abstract fun loginActivityInjector(): LaunchActivity
 
 }

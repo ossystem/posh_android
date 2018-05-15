@@ -4,25 +4,26 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.jufy.mgtshr.ui.base.BaseActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
-import ru.jufy.myposh.ui.fragments.LoginFragment;
+import ru.jufy.myposh.entity.SocialTypes;
+import ru.jufy.myposh.ui.auth.AuthFragment;
 import ru.jufy.myposh.ui.utils.HttpGetAsyncTask;
 import ru.jufy.myposh.ui.utils.JsonHelper;
 
-public class LoginActivity extends BaseActivity {
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 
-    private static String instagramRequest = MyPoshApplication.Companion.getDOMAIN() + "social/instagram";
-    private static String fbRequest = MyPoshApplication.Companion.getDOMAIN() + "social/facebook";
-
+public class LaunchActivity extends BaseActivity {
+    private static String socialRequest = MyPoshApplication.Companion.getDOMAIN() + "social/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +38,8 @@ public class LoginActivity extends BaseActivity {
         transaction.replace(R.id.fragment_frame, fragment);
         transaction.commit();
     }
-
-    public void authorizeInstagram() {
-        sendSocialAuthRequest(instagramRequest);
-    }
-
-    public void authorizeFB() {
-        sendSocialAuthRequest(fbRequest);
-    }
-
     public void showEmailLogin() {
-        showFragment(LoginFragment.newInstance());
+        showFragment(AuthFragment.Companion.newInstance());
     }
 
     @Override
@@ -64,6 +56,7 @@ public class LoginActivity extends BaseActivity {
 
     public void startMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
     }
 
@@ -90,5 +83,10 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void setUp() {
         showEmailLogin();
+    }
+
+    public void authorizeSocial(@NotNull SocialTypes socialTypes) {
+        final String fullSocialUrl = socialRequest+socialTypes.getValue();
+        sendSocialAuthRequest(fullSocialUrl);
     }
 }

@@ -4,7 +4,8 @@ import android.app.Application
 import ru.jufy.myposh.di.PerApplication
 import dagger.Module
 import dagger.Provides
-import ru.jufy.myposh.models.storage.UserPreferences
+import ru.jufy.myposh.model.storage.UserPreferences
+import ru.jufy.myposh.model.system.ResourceManager
 
 /**
  * Created by rolea on 17.09.2017.
@@ -18,4 +19,9 @@ class DataBaseModule {
         return UserPreferences(application)
     }
 
+    @Provides
+    @PerApplication
+    internal fun provideResourceManager(application: Application):ResourceManager {
+        return ResourceManager(application)
+    }
 }

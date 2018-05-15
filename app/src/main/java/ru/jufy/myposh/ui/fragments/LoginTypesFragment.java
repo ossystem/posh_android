@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ru.jufy.myposh.R;
-import ru.jufy.myposh.ui.activities.LoginActivity;
+import ru.jufy.myposh.ui.activities.LaunchActivity;
 
 /**
  * Created by BorisDev on 03.09.2017.
@@ -21,38 +21,11 @@ public class LoginTypesFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_login_types, container, false);
 
-        rootView.findViewById(R.id.vk_login_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((LoginActivity)getActivity()).authorizeInstagram();
-            }
-        });
-
-        rootView.findViewById(R.id.imageViewVk).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((LoginActivity)getActivity()).authorizeInstagram();
-            }
-        });
-
-        rootView.findViewById(R.id.fb_login_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((LoginActivity)getActivity()).authorizeFB();
-            }
-        });
-
-        rootView.findViewById(R.id.imageViewFb).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((LoginActivity)getActivity()).authorizeFB();
-            }
-        });
 
         rootView.findViewById(R.id.email_login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LoginActivity)getActivity()).showEmailLogin();
+                ((LaunchActivity)getActivity()).showEmailLogin();
             }
         });
 

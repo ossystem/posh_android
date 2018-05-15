@@ -1,4 +1,4 @@
-package ru.jufy.myposh.models.storage
+package ru.jufy.myposh.model.storage
 
 import android.content.Context
 import android.content.SharedPreferences
