@@ -37,7 +37,6 @@ class MyPoshApplication : Application() , HasActivityInjector {
     }
 
     companion object {
-
         private val DEBUG_URL = "https://posh.jwma.ru/api/v1/"
         val DOMAIN = DEBUG_URL
 

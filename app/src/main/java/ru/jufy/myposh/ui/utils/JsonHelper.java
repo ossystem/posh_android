@@ -172,36 +172,6 @@ public class JsonHelper {
         return result;
     }
 
-    @NonNull
-    public static String convertEmail(String email) {
-        return convertEmailPassword(email, null);
-    }
-
-    @NonNull
-    public static String convertEmailPassword(String email, String password) {
-        JSONObject data = new JSONObject();
-        try {
-            data.put("email", email);
-            if (null != password) {
-                data.put("password", password);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return data.toString();
-    }
-
-    @NonNull
-    public static String getMessage(String jsonString) {
-        String result = "";
-        try {
-            JSONObject json = new JSONObject(jsonString);
-            result = json.getString("message");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
 
     public static int getTotalNumPages(String jsonString) {
         try {

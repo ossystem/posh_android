@@ -53,8 +53,9 @@ public abstract class ImageGridFragment extends Fragment {
                 (int)imgSize, true);
 
         //grid properties
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.image_recycler);
+        recyclerView = rootView.findViewById(R.id.image_recycler);
         recyclerView.getItemAnimator().setChangeDuration(0);
+
         if (initialSetup) {
             GridLayoutManager manager = new GridLayoutManager(getContext(), rowNumber);
             manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
