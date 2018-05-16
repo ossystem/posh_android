@@ -67,12 +67,8 @@ abstract class BaseActivity : AppCompatActivity(), MvpView, EmptyView, BaseFragm
     }
 
     override fun hideProgress() {
-        if (progressBar != null) progressBar!!.visibility = View.GONE
-        if (mainRootContainer != null) mainRootContainer!!.visibility = View.VISIBLE
-        /*if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-            animatedView = null;
-        }*/
+        progressBar?.visibility = View.GONE
+        mainRootContainer?.visibility = View.VISIBLE
     }
 
 
@@ -117,9 +113,7 @@ abstract class BaseActivity : AppCompatActivity(), MvpView, EmptyView, BaseFragm
 
 
     override fun showMessage(message: String) {
-        if (message != null) {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        }
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onLoadingError() {
@@ -140,9 +134,7 @@ abstract class BaseActivity : AppCompatActivity(), MvpView, EmptyView, BaseFragm
     }
 
     override fun changeNotFoundButton(visibility: Boolean) {
-
         retryButton?.visibility = if (visibility) View.VISIBLE else View.GONE
-
     }
 
     override fun changeNotFoundTitle(title: String) {

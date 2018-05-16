@@ -39,11 +39,9 @@ abstract class BaseFragment : Fragment(), MvpView, EmptyView, HasSupportFragment
     @Inject
     lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
 
-    private val textCartItemCount: TextView? = null
-    protected var cartBadge: MenuItem? = null
-
     var baseActivity: BaseActivity? = null
         private set
+
     val isTelephoneAvailable: Boolean
         get() {
             val pm = context!!.packageManager
@@ -97,15 +95,11 @@ abstract class BaseFragment : Fragment(), MvpView, EmptyView, HasSupportFragment
 
 
     override fun onError(message: String) {
-        if (baseActivity != null) {
-            baseActivity?.onError(message)
-        }
+        baseActivity?.onError(message)
     }
 
     override fun onError(@StringRes resId: Int) {
-        if (baseActivity != null) {
-            baseActivity?.onError(resId)
-        }
+        baseActivity?.onError(resId)
     }
 
 
@@ -144,11 +138,6 @@ abstract class BaseFragment : Fragment(), MvpView, EmptyView, HasSupportFragment
         }
     }
 
-    fun updateData() {
-
-    }
-
-
     override fun supportFragmentInjector(): AndroidInjector<Fragment>? {
         return childFragmentInjector
     }
@@ -169,12 +158,10 @@ abstract class BaseFragment : Fragment(), MvpView, EmptyView, HasSupportFragment
     }
 
     override fun changeNotFoundState(visibility: Boolean) {
-        if (progressBar != null) progressBar!!.visibility = View.GONE
-        if (mainRootContainer != null)
-            mainRootContainer!!.visibility = if (visibility) View.GONE else View.VISIBLE
-        if (notFountTitle != null) {
-            notFountTitle!!.visibility = if (visibility) View.VISIBLE else View.GONE
-        }
+        progressBar?.visibility = View.GONE
+        mainRootContainer?.visibility = if (visibility) View.GONE else View.VISIBLE
+        notFountTitle?.visibility = if (visibility) View.VISIBLE else View.GONE
+
     }
 
     override fun changeNotFoundButton(visibility: Boolean) {
@@ -184,12 +171,11 @@ abstract class BaseFragment : Fragment(), MvpView, EmptyView, HasSupportFragment
     }
 
     protected fun setTitleToolbar(title: String) {
-        (activity as AppCompatActivity).supportActionBar?.title = title
+        baseActivity?.setToolbarTitle(title)
     }
 
     override fun changeNotFoundTitle(title: String) {
-        if (notFountTitle != null)
-            notFountTitle!!.text = title
+        notFountTitle?.text = title
     }
 
 
