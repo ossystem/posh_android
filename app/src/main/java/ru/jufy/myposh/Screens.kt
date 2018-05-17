@@ -14,4 +14,8 @@ object Screens {
     const val PICK_IMAGE_INTENT = "get image intent"
     const val AUTHENTICATE_SOCIAL = "AUTHENTICATE_SOCIAL"
     // specific screens
+    const val STORE_SCREEN = "STORE"
+    const val PURCHASES_SCREEN = "PURCHASES_SCREEN"
+    const val FAVOURITES = "FAVOURITES"
+    const val SETTINGS_SCREEN = "SETTINGS_SCREEN"
 }
