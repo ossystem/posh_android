@@ -4,14 +4,11 @@ import android.app.Application
 import android.content.Context
 import ru.jufy.myposh.di.ApplicationContext
 import ru.jufy.myposh.di.PerApplication
-import ru.jufy.myposh.di.module.AppModule
-import ru.jufy.myposh.di.module.DataBaseModule
-import ru.jufy.myposh.di.module.NetModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import retrofit2.Retrofit
 import ru.jufy.myposh.MyPoshApplication
-import ru.jufy.myposh.di.module.RepositoryModule
+import ru.jufy.myposh.di.module.*
 import ru.jufy.myposh.model.data.server.ApiService
 import ru.jufy.myposh.model.storage.UserPreferences
 
@@ -20,7 +17,8 @@ import ru.jufy.myposh.model.storage.UserPreferences
  */
 
 @PerApplication
-@Component(modules = arrayOf(AppModule::class, NetModule::class, DataBaseModule::class, RepositoryModule::class))
+@Component(modules = arrayOf(AppModule::class, NetModule::class, DataBaseModule::class, RepositoryModule::class,
+        NavigationModule::class, LocalNavigationModule::class))
 interface ApplicationComponent : AndroidInjector<MyPoshApplication> {
 
     @ApplicationContext

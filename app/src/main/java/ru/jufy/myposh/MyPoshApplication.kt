@@ -40,7 +40,7 @@ class MyPoshApplication : Application() , HasActivityInjector {
         private val DEBUG_URL = "https://posh.jwma.ru/api/v1/"
         val DOMAIN = DEBUG_URL
 
-        var currentToken: KulonToken? = null
+        var currentToken: KulonToken? = KulonToken("")
             private set
 
         private var app: MyPoshApplication? = null

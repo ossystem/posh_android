@@ -24,14 +24,15 @@ public fun ResponseBody.getErrorMessage(): String {
     return try {
         var errorMessage = ""
         val gson = Gson()
-        val jsonObj = gson.fromJson(this.string(), JsonElement::class.java).asJsonObject
+        val responseString = this.string()
+        val jsonObj = gson.fromJson(responseString, JsonElement::class.java).asJsonObject
         val error = jsonObj.get("error")
         if (error != null){
             val validationErrorType = object : TypeToken<ApiError<ValidationError>>() {}.type
-            val errorApiError = Gson().fromJson<ApiError<ValidationError>>(this.string(), validationErrorType)
+            val errorApiError = Gson().fromJson<ApiError<ValidationError>>(responseString, validationErrorType)
             errorMessage = errorApiError.error.message
         } else {
-            val errorApiError = Gson().fromJson<ValidationListError>(this.string(), ValidationListError::class.java)
+            val errorApiError = Gson().fromJson<ValidationListError>(responseString, ValidationListError::class.java)
             for (message in errorApiError.errors.values) errorMessage+= "$message + \n"
         }
 

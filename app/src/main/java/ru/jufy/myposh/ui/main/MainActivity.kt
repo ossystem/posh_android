@@ -1,11 +1,10 @@
-package ru.jufy.myposh.ui.activities
+package ru.jufy.myposh.ui.main
 
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -14,12 +13,10 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.jufy.mgtshr.extensions.disableShiftMode
-import kotlinx.android.synthetic.main.activity_splash.*
+import com.jufy.mgtshr.ui.base.BaseActivity
 
 import java.io.File
 import java.io.IOException
@@ -27,13 +24,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import ru.jufy.myposh.R
+import ru.jufy.myposh.ui.activities.ConfirmPictureActivity
+import ru.jufy.myposh.ui.activities.IntentDispatcherActivity
 import ru.jufy.myposh.ui.fragments.FavoritesFragment
 import ru.jufy.myposh.ui.fragments.LibraryFragment
 import ru.jufy.myposh.ui.fragments.MarketFragment
 import ru.jufy.myposh.ui.fragments.SettingsFragment
 
-class MainActivity : AppCompatActivity(), IntentDispatcherActivity {
-
+class MainActivity : BaseActivity(), IntentDispatcherActivity {
     private lateinit var marketFragment: MarketFragment
     private lateinit var libraryFragment: LibraryFragment
     private lateinit var favoritesFragment: FavoritesFragment
@@ -55,9 +53,12 @@ class MainActivity : AppCompatActivity(), IntentDispatcherActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
 
+        setUp()
+    }
+
+    override fun setUp() {
         initFragments()
         setupBottomNav()
         showMarket()
@@ -74,10 +75,10 @@ class MainActivity : AppCompatActivity(), IntentDispatcherActivity {
 
     fun showCurrentFragment() {
         when (currentFragment) {
-            MainActivity.MainFragments.MARKET -> showMarket()
-            MainActivity.MainFragments.LIBRARY -> showLibrary()
-            MainActivity.MainFragments.FAVORITES -> showFavorites()
-            MainActivity.MainFragments.SETTINGS -> showSettings()
+            MainFragments.MARKET -> showMarket()
+            MainFragments.LIBRARY -> showLibrary()
+            MainFragments.FAVORITES -> showFavorites()
+            MainFragments.SETTINGS -> showSettings()
         }
     }
 

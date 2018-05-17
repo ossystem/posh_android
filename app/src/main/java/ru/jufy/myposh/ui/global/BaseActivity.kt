@@ -22,7 +22,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.not_found_view.*
 import ru.jufy.myposh.R
-import ru.jufy.myposh.ui.activities.LaunchActivity
+import ru.jufy.myposh.ui.launch.LaunchActivity
 import ru.jufy.myposh.ui.global.EmptyView
 import ru.jufy.myposh.ui.global.MvpView
 import javax.inject.Inject

@@ -16,7 +16,7 @@ import java.util.List;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.ui.activities.SettingsResultActivity;
-import ru.jufy.myposh.ui.activities.WebViewActivity;
+import ru.jufy.myposh.ui.global.WebViewActivity;
 
 /**
  * Created by Anna on 4/11/2017.
@@ -70,9 +70,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + MyPoshApplication.Companion.getCurrentToken().getToken());
         Intent i = new Intent(mainActivity, WebViewActivity.class);
-        i.putExtra(WebViewActivity.URL, url);
-        i.putExtra(WebViewActivity.ACTION, WebViewActivity.ACTION_SHOW_WITH_HEADERS);
-        i.putExtra(WebViewActivity.HEADERS, headers);
+        i.putExtra(WebViewActivity.Companion.getURL(), url);
+        i.putExtra(WebViewActivity.Companion.getACTION(), WebViewActivity.Companion.getACTION_SHOW_WITH_HEADERS());
+        i.putExtra(WebViewActivity.Companion.getHEADERS(), headers);
         mainActivity.startActivity(i);
     }
 

@@ -59,13 +59,7 @@
             android:id="@+id/fab_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
-            android:tint="@color/accent"
-            app:arc_origin="center"
-            app:backgroundTint="@color/primary"
-            app:fabSize="mini"
-            app:rippleColor="@color/white_fab_ripple"
-            app:srcCompat="@drawable/icon_text" />
+            app:srcCompat="@drawable/ic_logo" />
     </ru.jufy.myposh.ui.views.ArcLayout>
 
 </RelativeLayout>

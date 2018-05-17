@@ -5,14 +5,15 @@ import dagger.Provides
 import ru.jufy.myposh.di.PerFragment
 import ru.jufy.myposh.model.interactor.AuthInteractor
 import ru.jufy.myposh.presentation.global.ErrorHandler
-import ru.jufy.myposh.presentation.auth.AuthPresenter
-import ru.jufy.myposh.presentation.auth.AuthMvpView
+import ru.jufy.myposh.presentation.auth.phone.AuthPresenter
+import ru.jufy.myposh.presentation.auth.phone.AuthMvpView
+import ru.terrakok.cicerone.Router
 
 @Module
 object LoginFragmentModule {
     @JvmStatic
     @Provides
     @PerFragment
-    internal fun likesPresenter(newsInteractor: AuthInteractor, errorHandler: ErrorHandler)
-            :AuthPresenter<AuthMvpView> = AuthPresenter(newsInteractor, errorHandler)
+    internal fun authPresenter(newsInteractor: AuthInteractor, errorHandler: ErrorHandler, router: Router)
+            : AuthPresenter<AuthMvpView> = AuthPresenter(newsInteractor, errorHandler, router)
 }

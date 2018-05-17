@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import ru.jufy.myposh.ui.activities.MainActivity;
+import ru.jufy.myposh.ui.main.MainActivity;
 
 /**
  * Created by Admin on 24.07.2017.

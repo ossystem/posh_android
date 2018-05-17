@@ -42,7 +42,7 @@ import java.util.concurrent.ExecutionException;
 
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
-import ru.jufy.myposh.ui.activities.MainActivity;
+import ru.jufy.myposh.ui.main.MainActivity;
 import ru.jufy.myposh.ui.utils.HttpPostAsyncTask;
 import ru.jufy.myposh.ui.views.ClippingRelativeLayout;
 

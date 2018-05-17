@@ -1,16 +1,19 @@
-package ru.jufy.myposh.presentation.auth
+package ru.jufy.myposh.presentation.auth.phone
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.jufy.myposh.MyPoshApplication
 import ru.jufy.myposh.Screens
+import ru.jufy.myposh.entity.SocialTypes
 import ru.jufy.myposh.model.interactor.AuthInteractor
 import ru.jufy.myposh.presentation.global.BasePresenter
 import ru.jufy.myposh.presentation.global.ErrorHandler
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class AuthPresenter<V : AuthMvpView> @Inject constructor(val interactor: AuthInteractor,
-                                                         val errorHandler: ErrorHandler) : BasePresenter<V>() {
+                                                         val errorHandler: ErrorHandler,
+                                                         val router: Router) : BasePresenter<V>() {
     private lateinit var phone: String
 
     private var isPhoneView: Boolean = true
@@ -52,15 +55,19 @@ class AuthPresenter<V : AuthMvpView> @Inject constructor(val interactor: AuthInt
                         {
                             //TODO:Remove when finish to refactor legacy code
                             MyPoshApplication.onNewTokenObtained(it)
-                            getMvpView()?.navigateTo(Screens.MAIN_ACTIVITY_SCREEN)
+                            router.newRootScreen(Screens.MAIN_ACTIVITY_SCREEN)
                         },
                         { errorHandler.proceed(it, { getMvpView()?.onError(it) }) }
                 )
     }
 
+    fun authSocialClicked(socialTypes: SocialTypes) {
+        router.navigateTo(Screens.AUTHENTICATE_SOCIAL, socialTypes)
+    }
+
     fun onBackPressed() {
         if (isPhoneView) {
-            //   router.exit()
+            router.exit()
         } else {
             isPhoneView = true
             getMvpView()?.toggleCodeView(false)

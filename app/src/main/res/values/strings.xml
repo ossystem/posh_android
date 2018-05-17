@@ -95,4 +95,5 @@
     <string name="unknown_error">Unknown error</string>
     <string name="network_error">Network error</string>
     <string name="no_connectivity_error">You are offline</string>
+    <string name="progress_message">Loading</string>
 </resources>

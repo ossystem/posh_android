@@ -5,6 +5,7 @@ import dagger.Provides
 import ru.jufy.myposh.di.PerApplication
 import ru.jufy.myposh.model.data.server.ApiService
 import ru.jufy.myposh.model.interactor.AuthInteractor
+import ru.jufy.myposh.model.interactor.BaseInteractor
 import ru.jufy.myposh.model.repository.AuthRepository
 import ru.jufy.myposh.model.repository.BaseRepository
 import ru.jufy.myposh.model.storage.UserPreferences
@@ -22,6 +23,10 @@ class RepositoryModule {
     internal fun provideUserRepository(preferences: UserPreferences, apiService: ApiService): AuthRepository {
         return AuthRepository(apiService, preferences)
     }
+
+    @Provides
+    @PerApplication
+    internal fun provideBaseInteractor(baseRepository: BaseRepository) = BaseInteractor(baseRepository)
 
     @Provides
     @PerApplication

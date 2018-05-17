@@ -9,11 +9,9 @@ import com.jufy.mgtshr.ui.base.BaseFragment
 import eightbitlab.com.blurview.RenderScriptBlur
 import kotlinx.android.synthetic.main.fragment_login.*
 import ru.jufy.myposh.R
-import ru.jufy.myposh.Screens
 import ru.jufy.myposh.entity.SocialTypes
-import ru.jufy.myposh.presentation.auth.AuthPresenter
-import ru.jufy.myposh.presentation.auth.AuthMvpView
-import ru.jufy.myposh.ui.activities.LaunchActivity
+import ru.jufy.myposh.presentation.auth.phone.AuthPresenter
+import ru.jufy.myposh.presentation.auth.phone.AuthMvpView
 import ru.jufy.myposh.ui.utils.ValidationUtils
 import javax.inject.Inject
 
@@ -54,8 +52,8 @@ class AuthFragment : BaseFragment(), AuthMvpView {
         }
 
         buttonBack.setOnClickListener { presenter.onBackPressed() }
-        imageViewFbRec.setOnClickListener { navigateTo(Screens.AUTHENTICATE_SOCIAL, SocialTypes.FB) }
-        imageViewVkRec.setOnClickListener { navigateTo(Screens.AUTHENTICATE_SOCIAL, SocialTypes.INSTAGRAM) }
+        imageViewFbRec.setOnClickListener { presenter.authSocialClicked(SocialTypes.FB) }
+        imageViewVkRec.setOnClickListener { presenter.authSocialClicked(SocialTypes.INSTAGRAM) }
 
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         phoneInput.showKeyboardAndFocus(context)
@@ -137,17 +135,9 @@ class AuthFragment : BaseFragment(), AuthMvpView {
         codeProgressBar?.visible(isLoading)
     }
 
-    override fun navigateTo(screenKey: String, data: Any?) {
-        // prepare for cicerone code
-        hideKeyboard()
-        when (screenKey) {
-            Screens.MAIN_ACTIVITY_SCREEN -> (activity as LaunchActivity).startMainActivity()
-            Screens.AUTHENTICATE_SOCIAL -> {
-                data?.apply {
-                    (activity as LaunchActivity).authorizeSocial((this as SocialTypes))
-                }
-            }
-        }
+    override fun onDestroyView() {
+        presenter.onDetach()
+        super.onDestroyView()
     }
 
     companion object {

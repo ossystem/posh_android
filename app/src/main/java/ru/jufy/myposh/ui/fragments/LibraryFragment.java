@@ -61,19 +61,10 @@ public class LibraryFragment extends ImageGridFragment {
             }
         });
 
-        fabText = (FloatingActionButton)
-                rootView.findViewById(R.id.fab_text);
-        fabText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onFabTextClick();
-            }
-        });
-
         currentListType = SHOW_PURCHASED;
-        resetLastDisplayedPage();
+    /*    resetLastDisplayedPage();
         List<Object> poshiksList = getAllPoshiksAtPage(1);
-        setupGrid(poshiksList, true);
+        setupGrid(poshiksList, true);*/
 
         return rootView;
     }
@@ -126,13 +117,6 @@ public class LibraryFragment extends ImageGridFragment {
                 return JsonHelper.getHandmadeImageList(jsonString);
         }
         return null;
-    }
-
-    private void onFabTextClick() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        transaction.replace(R.id.fragment_frame, textFrag);
-        transaction.commit();
     }
 
     @Override

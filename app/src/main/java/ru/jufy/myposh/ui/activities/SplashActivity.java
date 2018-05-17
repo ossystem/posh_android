@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import ru.jufy.myposh.ui.main.MainActivity;
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
