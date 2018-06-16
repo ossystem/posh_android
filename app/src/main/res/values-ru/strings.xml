@@ -93,8 +93,10 @@
     <string name="hint_phone">Телефон</string>
     <string name="share_to">Поделиться</string>
     <string name="retry">Повторить</string>
+    <string name="balance_title">Баланс: %d POSH</string>
     <string name="unknown_error">Неизвестная ошибкаr</string>
     <string name="network_error">Ошибка сети</string>
     <string name="no_connectivity_error">Вы в оффлайне</string>
     <string name="progress_message">Загружается</string>
+    <string name="artist">Художник</string>
 </resources>

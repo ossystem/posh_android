@@ -11,10 +11,12 @@ import com.jufy.mgtshr.ui.base.BaseFragment
 import com.jufy.mgtshr.ui.subnavigation.LocalCiceroneHolder
 import ru.jufy.myposh.R
 import ru.jufy.myposh.Screens
+import ru.jufy.myposh.entity.MarketImage
 import ru.jufy.myposh.presentation.global.RouterProvider
 import ru.jufy.myposh.ui.fragments.FavoritesFragment
+import ru.jufy.myposh.ui.artwork.detail.ImageFragment
 import ru.jufy.myposh.ui.fragments.LibraryFragment
-import ru.jufy.myposh.ui.fragments.MarketFragment
+import ru.jufy.myposh.ui.store.MarketFragment
 import ru.jufy.myposh.ui.fragments.SettingsFragment
 import ru.jufy.myposh.ui.global.BackButtonListener
 import ru.terrakok.cicerone.Cicerone
@@ -30,7 +32,7 @@ class TabContainerFragment : BaseFragment(), RouterProvider, BackButtonListener 
     private val navigator: Navigator by lazy {
         return@lazy object : SupportAppNavigator(activity, childFragmentManager, R.id.ftc_container) {
             override fun createActivityIntent(context: Context?, screenKey: String?, data: Any?): Intent? {
-                return null;
+                return null
             }
 
             override fun createFragment(screenKey: String?, data: Any?): Fragment? {
@@ -39,6 +41,7 @@ class TabContainerFragment : BaseFragment(), RouterProvider, BackButtonListener 
                     Screens.PURCHASES_SCREEN -> LibraryFragment.newInstance()
                     Screens.FAVOURITES -> FavoritesFragment.newInstance()
                     Screens.SETTINGS_SCREEN ->SettingsFragment.newInstance()
+                    Screens.DETAIL_ARTWORK-> ImageFragment.newInstance(data as MarketImage)
                     else -> null
                 }
             }

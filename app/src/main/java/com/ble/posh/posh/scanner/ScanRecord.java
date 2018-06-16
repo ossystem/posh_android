@@ -78,7 +78,7 @@ public class ScanRecord {
     }
 
     /**
-     * Returns the manufacturer specific data associated with the manufacturer id. Returns
+     * Returns the manufacturer specific data associated with the manufacturer oldId. Returns
      * {@code null} if the {@code manufacturerId} is not found.
      */
     @Nullable

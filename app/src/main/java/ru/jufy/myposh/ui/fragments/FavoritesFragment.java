@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -30,14 +32,8 @@ public class FavoritesFragment extends ImageGridFragment {
     private FloatingActionButton selectAllFab;
 
 
-    public FavoritesFragment() {
-        // Required empty public constructor
-    }
-
-
     public static FavoritesFragment newInstance() {
-        FavoritesFragment fragment = new FavoritesFragment();
-        return fragment;
+        return new FavoritesFragment();
     }
 
 
@@ -45,11 +41,9 @@ public class FavoritesFragment extends ImageGridFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
-        resetLastDisplayedPage();
-        List<Object> favoritesList = getAllPoshiksAtPage(1);
-        setupGrid(favoritesList, true);
-        adapter.setSupportsDoubleClick(false);
-        cancelFab = (FloatingActionButton) rootView.findViewById(R.id.fab_cancel);
+
+
+        cancelFab = rootView.findViewById(R.id.fab_cancel);
         cancelFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +51,7 @@ public class FavoritesFragment extends ImageGridFragment {
                 hideFab(cancelFab, selectAllFab);
             }
         });
-        deleteFab = (FloatingActionButton) rootView.findViewById(R.id.fab_delete);
+        deleteFab = rootView.findViewById(R.id.fab_delete);
         deleteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +99,7 @@ public class FavoritesFragment extends ImageGridFragment {
 
             }
         });
-        selectAllFab = (FloatingActionButton) rootView.findViewById(R.id.fab_select_all);
+        selectAllFab = rootView.findViewById(R.id.fab_select_all);
         selectAllFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +107,20 @@ public class FavoritesFragment extends ImageGridFragment {
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        resetLastDisplayedPage();
+        List<Object> favoritesList = getAllPoshiksAtPage(1);
+        setupGrid(favoritesList, true);
+        adapter.setSupportsDoubleClick(false);
+    }
+
+    @Override
+    protected void setUp(@Nullable View view) {
+
     }
 
     @Override

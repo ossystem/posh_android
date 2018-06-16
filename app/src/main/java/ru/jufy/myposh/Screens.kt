@@ -18,4 +18,5 @@ object Screens {
     const val PURCHASES_SCREEN = "PURCHASES_SCREEN"
     const val FAVOURITES = "FAVOURITES"
     const val SETTINGS_SCREEN = "SETTINGS_SCREEN"
+    const val DETAIL_ARTWORK = "DETAIL_ARTWORK"
 }

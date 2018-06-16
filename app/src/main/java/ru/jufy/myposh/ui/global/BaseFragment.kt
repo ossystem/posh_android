@@ -32,6 +32,7 @@ import javax.inject.Inject
  */
 
 abstract class BaseFragment : Fragment(), MvpView, EmptyView, HasSupportFragmentInjector {
+
     protected val SHARE_PERMISSION_KEY = 1
 
     protected var SHARE_PERMISSION = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -75,6 +76,10 @@ abstract class BaseFragment : Fragment(), MvpView, EmptyView, HasSupportFragment
 
     override fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showMessage(message: Int) {
+        baseActivity?.showMessage(message)
     }
 
 

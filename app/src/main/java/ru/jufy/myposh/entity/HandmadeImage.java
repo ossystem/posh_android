@@ -157,7 +157,7 @@ public class HandmadeImage extends Image {
         StringBuilder filename = new StringBuilder("hm_");
         filename.append(id);
         filename.append(".");
-        filename.append(extension);
+        filename.append(getExtension());
 
         return filename.toString();
     }

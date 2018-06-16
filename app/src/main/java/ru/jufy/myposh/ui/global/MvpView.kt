@@ -7,6 +7,7 @@ interface MvpView {
     fun showProgress()
     fun hideProgress()
     fun showMessage(message: String)
+    fun showMessage(@StringRes message:Int)
     fun onError(@StringRes resId: Int)
     fun onError(message: String)
     fun hideKeyboard()

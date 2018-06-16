@@ -6,24 +6,37 @@
     tools:context=".ui.fragments.LibraryFragment">
 
 
-    <LinearLayout
-        android:id="@+id/libraryButtons"
+    <TextView
+        android:id="@+id/balanceView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/image_recycler_view_padding_top">
+        android:paddingTop="@dimen/image_recycler_view_padding_top"
+        android:background="@android:color/transparent"
+        android:layout_marginStart="@dimen/list_item_margin_start"
+        android:textColor="@android:color/black"
+        android:textAllCaps="false"
+        android:textSize="@dimen/header_item_font_size" />
+
+    <LinearLayout
+        android:id="@+id/libraryButtons"
+        android:layout_below="@id/balanceView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/buttonPurchased"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/list_item_margin_start"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:textAlignment="viewStart"
             android:background="@android:color/transparent"
             android:text="@string/title_purchases"
             android:textAllCaps="false"
             android:textSize="@dimen/header_item_font_size" />
 
         <Button
+            android:visibility="gone"
             android:id="@+id/buttonHandmade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -17,6 +17,7 @@ import java.util.List;
 
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.entity.Image;
+import ru.jufy.myposh.entity.MarketImage;
 
 /**
  * Created by Anna on 4/14/2017.
@@ -46,8 +47,8 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return -1;
     }
 
-    public Image getImage(final int position) {
-        return (Image) data.get(position);
+    public MarketImage getImage(final int position) {
+        return (MarketImage) data.get(position);
     }
 
     public void setSupportsDoubleClick(boolean supportsDoubleClick) {
@@ -62,6 +63,14 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.data = data;
         this.selected = new ArrayList<>(Collections.nCopies(data.size(), false));
         this.imgSize = imgSize;
+        this.supportsDoubleClick = supportsDoubleClick;
+    }
+
+    public ImageAdapter(Context context, int imgSize, boolean supportsDoubleClick) {
+        this.context = context;
+        this.imgSize = imgSize;
+        this.data = new ArrayList<>();
+        this.selected = new ArrayList<>();
         this.supportsDoubleClick = supportsDoubleClick;
     }
 

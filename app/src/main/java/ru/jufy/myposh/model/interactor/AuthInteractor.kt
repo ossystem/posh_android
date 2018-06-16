@@ -10,14 +10,14 @@ class AuthInteractor(val authRepository: AuthRepository) : BaseInteractor(authRe
     fun authenticate(phone: String) = authRepository.authenticate(phone)
 
     fun login(phone: String, code: String) = authRepository.login(phone, code)
-            .map(mapToTokenAndSave())
+            .map(saveToken())
 
     fun getAuthSocialLink(socialTypes: SocialTypes) = authRepository.getAuthSocialLink(socialTypes)
 
     fun loginSocial(url: String) = authRepository.loginSocial(url)
-            .map(mapToTokenAndSave())
+            .map(saveToken())
 
-    private fun mapToTokenAndSave(): (KulonToken) -> KulonToken {
+    private fun saveToken(): (KulonToken) -> KulonToken {
         return { t ->
             Observable.create<Any> { subscriber ->
                 authRepository.saveToken(t.token)

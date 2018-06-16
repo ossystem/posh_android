@@ -17,12 +17,6 @@ import android.view.View
 import android.widget.Toast
 import com.jufy.mgtshr.extensions.disableShiftMode
 import com.jufy.mgtshr.ui.base.BaseActivity
-
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
-
 import ru.jufy.myposh.R
 import ru.jufy.myposh.Screens
 import ru.jufy.myposh.presentation.global.RouterProvider
@@ -30,14 +24,18 @@ import ru.jufy.myposh.ui.activities.ConfirmPictureActivity
 import ru.jufy.myposh.ui.activities.IntentDispatcherActivity
 import ru.jufy.myposh.ui.fragments.FavoritesFragment
 import ru.jufy.myposh.ui.fragments.LibraryFragment
-import ru.jufy.myposh.ui.fragments.MarketFragment
 import ru.jufy.myposh.ui.fragments.SettingsFragment
 import ru.jufy.myposh.ui.global.BackButtonListener
 import ru.jufy.myposh.ui.launch.LaunchActivity
+import ru.jufy.myposh.ui.store.MarketFragment
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.commands.*
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), IntentDispatcherActivity, RouterProvider {

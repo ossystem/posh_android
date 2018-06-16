@@ -19,6 +19,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -26,7 +30,7 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.ogaclejapan.arclayout:library:1.1.0@aar'
+    implementation ('com.ogaclejapan.arclayout:library:1.1.0@aar')
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
     implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
@@ -36,7 +40,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.0.0-RC0'
     implementation 'jp.wasabeef:glide-transformations:2.0.2'
     testImplementation 'junit:junit:4.12'
-    implementation 'com.github.danielnilsson9:color-picker-view:1.4.0@aar'
+    implementation ('com.github.danielnilsson9:color-picker-view:1.4.0@aar')
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.eightbitlab:blurview:1.4.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

@@ -1306,7 +1306,7 @@ public abstract class DfuBaseService extends IntentService implements DfuProgres
     }
 
     /**
-     * Opens the binary input stream that returns the firmware image content. A resource id in the res/raw is given.
+     * Opens the binary input stream that returns the firmware image content. A resource oldId in the res/raw is given.
      *
      * @param resId    the if of the resource file
      * @param mimeType the file type

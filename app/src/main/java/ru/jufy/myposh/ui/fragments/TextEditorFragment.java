@@ -31,8 +31,6 @@ import android.widget.TextView;
 
 import com.almeros.android.multitouch.MoveGestureDetector;
 import com.almeros.android.multitouch.RotateGestureDetector;
-import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +43,7 @@ import ru.jufy.myposh.R;
 import ru.jufy.myposh.ui.main.MainActivity;
 import ru.jufy.myposh.ui.utils.HttpPostAsyncTask;
 import ru.jufy.myposh.ui.views.ClippingRelativeLayout;
+import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
 
 /**
  * Created by BorisDev on 16.08.2017.

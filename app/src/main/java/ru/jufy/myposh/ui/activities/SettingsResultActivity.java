@@ -13,7 +13,7 @@ public class SettingsResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_result);
-        TextView debugOutput = (TextView) findViewById(R.id.debugOutput);
+        TextView debugOutput = findViewById(R.id.debugOutput);
         if (null == MyPoshApplication.Companion.getCurrentToken()) {
             debugOutput.setText("No token available");
         } else {

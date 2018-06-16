@@ -19,11 +19,30 @@ import ru.jufy.myposh.ui.utils.GlideApp;
  */
 
 public abstract class Image {
-    protected String id;
+    public String id;
     protected int size;
     protected String extension;
 
-    protected File tempFile = null;
+    public File tempFile = null;
+    protected ru.jufy.myposh.entity.File image;
+
+    public int getSize() {
+        return size;
+    }
+
+    String getExtension() {
+        if (image.getMime().startsWith("image/")) {
+            String tempExtension = image.getMime().substring(image.getMime().indexOf("/")+1, image.getMime().length());
+            if (tempExtension.equals("gif")) extension = "mjpg";
+             else  extension = tempExtension;
+        }
+
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
 
     public Image(String id, String extension) {
         this.id = id;
@@ -124,7 +143,7 @@ public abstract class Image {
     }
 
     @NonNull
-    protected File createTempFile() {
+    public File createTempFile() {
         File cacheDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);//MyPoshApplication.getContext().getCacheDir();
         //File.createTempFile(filename.toString(), "jpeg", cacheDir);
         //return new File(getCacheFolder(), getTempFilename());

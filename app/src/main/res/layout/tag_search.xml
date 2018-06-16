@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/autocomplete"
-    style="?android:attr/dropDownItemStyle"
-    android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
     android:maxLines="1"
+    android:textSize="26sp"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:text="text"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:popupBackground="#ffffffff"
-    android:textColor="@color/accent"/>
+    android:popupBackground="@android:color/transparent"
+    android:textColor="@color/primary_dark"/>

@@ -2,20 +2,13 @@ package ru.jufy.myposh.ui.utils;
 
 import android.support.annotation.NonNull;
 
-import com.google.gson.JsonObject;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
-import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.entity.Category;
 import ru.jufy.myposh.entity.HandmadeImage;
 import ru.jufy.myposh.entity.Image;
@@ -65,8 +58,9 @@ public class JsonHelper {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
                 String imageParam = jsonobject.getJSONObject("image").getString("mime");
                 String link = jsonobject.getJSONObject("image").getString("link");
-                Image item = new MarketImage(jsonobject.getString("id"), imageParam,
-                        jsonobject.getBoolean("is_favorite"), jsonobject.getBoolean("is_purchased"), link);
+                Image item = null;
+                        /*new MarketImage(jsonobject.getString("oldId"), imageParam,
+                        jsonobject.getBoolean("is_favorite"), jsonobject.getBoolean("is_purchased"), link);*/
                 result.add(item);
             }
             return result;
@@ -86,7 +80,8 @@ public class JsonHelper {
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
                 String link = jsonobject.getJSONObject("image").getString("link");
-                Image item = new MarketImage(jsonobject.getString("id"), jsonobject.getString("extension"), true, false, link);
+                Image item = null;
+                        /*new MarketImage(jsonobject.getString("oldId"), jsonobject.getString("extension"), true, false, link);*/
                 result.add(item);
             }
             return result;
@@ -107,7 +102,7 @@ public class JsonHelper {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
                 result[i] = new Category();
                 result[i].name = jsonobject.getString("name");
-                result[i].id = jsonobject.getInt("id");
+                result[i].oldId = jsonobject.getInt("oldId");
             }
             return result;
         } catch (JSONException e) {
@@ -144,8 +139,8 @@ public class JsonHelper {
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
                 String link = jsonobject.getJSONObject("image").getString("link");
-                Image item = new MarketImage(jsonobject.getString("id"), jsonobject.getString("extension"),
-                        false, true, link);
+                Image item = null;/*new MarketImage(jsonobject.getString("oldId"), jsonobject.getString("extension"),
+                        false, true, link);*/
                 result.add(item);
             }
         } catch (JSONException e) {
@@ -163,7 +158,7 @@ public class JsonHelper {
             JSONArray jsonarray = new JSONArray(poshiksArray);
             for (int i = 0; i < jsonarray.length(); i++) {
                 JSONObject jsonobject = jsonarray.getJSONObject(i);
-                Image item = new HandmadeImage(jsonobject.getString("id"), jsonobject.getString("extension"));
+                Image item = new HandmadeImage(jsonobject.getString("oldId"), jsonobject.getString("extension"));
                 result.add(item);
             }
         } catch (JSONException e) {

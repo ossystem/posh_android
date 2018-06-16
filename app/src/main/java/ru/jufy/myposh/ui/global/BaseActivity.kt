@@ -32,7 +32,6 @@ import javax.inject.Inject
  */
 
 abstract class BaseActivity : AppCompatActivity(), MvpView, EmptyView, BaseFragment.Callback, HasSupportFragmentInjector {
-
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
@@ -113,6 +112,10 @@ abstract class BaseActivity : AppCompatActivity(), MvpView, EmptyView, BaseFragm
 
 
     override fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showMessage(message: Int) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 

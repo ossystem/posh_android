@@ -222,7 +222,7 @@ public class ScanFilter implements Parcelable {
     }
 
     /**
-     * Returns the manufacturer id. -1 if the manufacturer filter is not set.
+     * Returns the manufacturer oldId. -1 if the manufacturer filter is not set.
      */
     public int getManufacturerId() {
         return mManufacturerId;
@@ -508,7 +508,7 @@ public class ScanFilter implements Parcelable {
         }
 
         /**
-         * Set filter on on manufacturerData. A negative manufacturerId is considered as invalid id.
+         * Set filter on on manufacturerData. A negative manufacturerId is considered as invalid oldId.
          * <p>
          * Note the first two bytes of the {@code manufacturerData} is the manufacturerId.
          *
@@ -516,7 +516,7 @@ public class ScanFilter implements Parcelable {
          */
         public Builder setManufacturerData(int manufacturerId, byte[] manufacturerData) {
             if (manufacturerData != null && manufacturerId < 0) {
-                throw new IllegalArgumentException("invalid manufacture id");
+                throw new IllegalArgumentException("invalid manufacture oldId");
             }
             mManufacturerId = manufacturerId;
             mManufacturerData = manufacturerData;
@@ -538,7 +538,7 @@ public class ScanFilter implements Parcelable {
         public Builder setManufacturerData(int manufacturerId, byte[] manufacturerData,
                                            byte[] manufacturerDataMask) {
             if (manufacturerData != null && manufacturerId < 0) {
-                throw new IllegalArgumentException("invalid manufacture id");
+                throw new IllegalArgumentException("invalid manufacture oldId");
             }
             if (mManufacturerDataMask != null) {
                 if (mManufacturerData == null) {
