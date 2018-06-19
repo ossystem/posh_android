@@ -26,7 +26,7 @@ public class DfuService extends DfuBaseService {
     @Override
     protected boolean isDebug() {
         // return BuildConfig.DEBUG;
-        return true;
+        return false;
     }
 
 }

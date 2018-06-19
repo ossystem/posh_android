@@ -41,7 +41,7 @@ class DetailArtworkInteractor(val artworkRepository: ArtworkRepository) {
     fun loadArtwork():Single<MarketImage> {
         return artworkRepository.loadArtwork(artwork.id)
                 .map {
-                    artwork = artwork
+                    artwork.acqusitionParam = it.acqusitionParam
                     return@map it
                 }
     }

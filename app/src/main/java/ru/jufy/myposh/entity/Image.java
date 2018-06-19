@@ -33,7 +33,7 @@ public abstract class Image {
     String getExtension() {
         if (image.getMime().startsWith("image/")) {
             String tempExtension = image.getMime().substring(image.getMime().indexOf("/")+1, image.getMime().length());
-            if (tempExtension.equals("gif")) extension = "mjpg";
+            if (tempExtension.equals("gif")) extension = "mjpeg";
              else  extension = tempExtension;
         }
 

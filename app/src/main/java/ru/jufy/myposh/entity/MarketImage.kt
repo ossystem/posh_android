@@ -35,7 +35,7 @@ class MarketImage(id: String, extension: String, @field:SerializedName("is_favor
                   val artist: Artist,
                   var devices:List<DeviceInfo>,
                   @SerializedName("min_price") val minPrice:Int?,
-                  @SerializedName("acquisition_params") val acqusitionParam: AcqusitionParam?)
+                  @SerializedName("acquisition_params") var acqusitionParam: AcqusitionParam?)
     : Image(id, extension) {
     private val marketLinkCommonPart: StringBuilder
         get() = if (link != null) {
@@ -207,7 +207,7 @@ class MarketImage(id: String, extension: String, @field:SerializedName("is_favor
     }
 
     override fun getTempFilename(): String {
-        return "market_" + id +
+        return "market_100"+
                 "." + getExtension()
 
     }

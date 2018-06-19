@@ -55,7 +55,11 @@ class ArtworkRepository @Inject constructor(apiService: ApiService, preferences:
                 .map { it.data.purchases }
                 .toObservable()
                 .flatMapIterable { x->x }
-                .map { it.artwork }
+                .map {
+                    val result = it.artwork
+                    result.isPurchased = true
+                    return@map result
+                }
                 .toList()
     }
 

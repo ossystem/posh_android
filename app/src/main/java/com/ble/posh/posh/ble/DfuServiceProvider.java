@@ -36,7 +36,8 @@ import com.ble.posh.posh.ble.internal.internal.exception.UploadAbortedException;
 	private boolean mPaused;
 	private boolean mAborted;
 
-	/* package */ DfuService getServiceImpl(final Intent intent, final DfuBaseService service, final BluetoothGatt gatt) throws DfuException, DeviceDisconnectedException, UploadAbortedException {
+	/* package */ DfuService getServiceImpl(final Intent intent, final DfuBaseService service, final BluetoothGatt gatt)
+			throws DfuException, DeviceDisconnectedException, UploadAbortedException {
 		try {
 
 			int fileType = intent.getIntExtra(DfuBaseService.EXTRA_FILE_TYPE, DfuBaseService.TYPE_AUTO);

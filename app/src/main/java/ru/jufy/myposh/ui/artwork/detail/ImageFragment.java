@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -23,16 +22,13 @@ import android.widget.Toast;
 
 import com.ble.posh.posh.DfuService;
 import com.ble.posh.posh.ble.DfuServiceInitiator;
-import com.ble.posh.posh.scanner.BluetoothLeScannerCompat;
-import com.ble.posh.posh.scanner.ScanCallback;
-import com.ble.posh.posh.scanner.ScanResult;
-import com.ble.posh.posh.scanner.ScanSettings;
 import com.google.gson.Gson;
 import com.jufy.mgtshr.ui.base.BaseFragment;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -68,8 +64,6 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
     private Boolean isLiked = false;
     private MarketImage image;
 
-    private boolean mIsScanning = false;
-    private final Handler mHandler = new Handler();
     private BluetoothDevice device = null;
 
     @Inject
@@ -126,7 +120,7 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
     public void installImage() {
         if (getActivity() != null && ((MainActivity) getActivity()).isBLEEnabled()) {
             if (permissionGranted()) {
-                performAllBleInteractions();
+                presenter.performAllBleInteractions();
             }
         } else {
             ((MainActivity) getActivity()).showBLEDialog();
@@ -168,60 +162,6 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
 
     }
 
-    public void performAllBleInteractions() {
-        if (!mIsScanning) {
-            scan();
-        }
-    }
-
-    private boolean scan() {
-        final BluetoothLeScannerCompat scanner = BluetoothLeScannerCompat.getScanner();
-        final ScanSettings settings = new ScanSettings.Builder()
-                .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).setReportDelay(1000).setUseHardwareBatchingIfSupported(false).build();
-        scanner.startScan(null, settings, scanCallback);
-
-        mIsScanning = true;
-        mHandler.postDelayed(() -> {
-            stopScan();
-            if (null == device) {
-                Toast.makeText(getActivity(), R.string.no_device_scanned, Toast.LENGTH_SHORT).show();
-            }
-        }, SCAN_DURATION);
-        return false;
-    }
-
-    private void stopScan() {
-        if (mIsScanning) {
-            final BluetoothLeScannerCompat scanner = BluetoothLeScannerCompat.getScanner();
-            scanner.stopScan(scanCallback);
-            mIsScanning = false;
-        }
-    }
-
-    private ScanCallback scanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(final int callbackType, final ScanResult result) {
-            // do nothing
-        }
-
-        @Override
-        public void onBatchScanResults(final List<ScanResult> results) {
-            for (ScanResult result : results) {
-                if (null != result.getScanRecord() && null != result.getScanRecord().getDeviceName() && result.getScanRecord().getDeviceName().equals("Posh")) {
-                    device = result.getDevice();
-                    stopScan();
-                    Toast.makeText(getActivity(), R.string.device_scanned, Toast.LENGTH_SHORT).show();
-                    setPoshik();
-                    return;
-                }
-            }
-        }
-
-        @Override
-        public void onScanFailed(final int errorCode) {
-            // should never be called
-        }
-    };
 
     private void setPoshik() {
         final DfuServiceInitiator starter;
@@ -283,7 +223,7 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
             case REQUEST_PERMISSION_REQ_CODE: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // We have been granted the Manifest.permission.ACCESS_COARSE_LOCATION permission. Now we may proceed with image installation.
-                    performAllBleInteractions();
+                    presenter.performAllBleInteractions();
                 } else {
                     // We can also show the user explanations why we require this permission
                     Toast.makeText(getActivity(), R.string.no_required_permission, Toast.LENGTH_SHORT).show();
@@ -321,8 +261,9 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
 
         fabSet = rootView.findViewById(R.id.fab_set);
         fabSet.setOnClickListener(view -> {
-            showPoshik = true;
-            installImage();
+            presenter.buyDownloadClicked();
+            /*showPoshik = true;
+            installImage();*/
         });
 
         fabBuyDownload = rootView.findViewById(R.id.fab_buy_download);
@@ -382,5 +323,40 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
         updatePurchaseState(image.isPurchased());
         fabBuyDownload.setOnClickListener(view -> presenter.buyDownloadClicked());
         fabBuyDownload.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void sendPoshikToDevice(@Nullable File tempFile, @Nullable BluetoothDevice device, @NotNull String tempFilename) {
+        if (device == null || tempFile==null){
+            return;
+        }
+
+        final DfuServiceInitiator starter;
+        if (showPoshik) {
+            starter = new DfuServiceInitiator(device.getAddress())
+                    .setDeviceName(device.getName())
+                    .setKeepBond(true)
+                    .setForceDfu(false)
+                    .setPacketsReceiptNotificationsEnabled(true)
+                    .setPacketsReceiptNotificationsValue(12)
+                    .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
+                    .setCmdOrFile(true)
+                    .setFileName(tempFilename)
+                    .setCmd_op(1);
+        } else {
+            starter = new DfuServiceInitiator(device.getAddress())
+                    .setDeviceName(device.getName())
+                    .setKeepBond(true)
+                    .setForceDfu(false)
+                    .setPacketsReceiptNotificationsEnabled(true)
+                    .setPacketsReceiptNotificationsValue(12)
+                    .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
+                    .setCmdOrFile(false);
+            starter.setBinOrHex(DfuService.TYPE_SOFT_DEVICE, null, tempFile.getAbsolutePath())
+                    .setInitFile(null, null);
+        }
+
+        Log.d("BOOT", " send command ");
+        starter.start(getActivity(), DfuService.class);
     }
 }
