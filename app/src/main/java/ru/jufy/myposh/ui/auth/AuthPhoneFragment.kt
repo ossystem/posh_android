@@ -10,8 +10,8 @@ import eightbitlab.com.blurview.RenderScriptBlur
 import kotlinx.android.synthetic.main.fragment_login.*
 import ru.jufy.myposh.R
 import ru.jufy.myposh.entity.SocialTypes
-import ru.jufy.myposh.presentation.auth.phone.AuthPresenter
 import ru.jufy.myposh.presentation.auth.phone.AuthMvpView
+import ru.jufy.myposh.presentation.auth.phone.AuthPresenter
 import ru.jufy.myposh.ui.utils.ValidationUtils
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ import javax.inject.Inject
  * Created by BorisDev on 04.09.2017.
  */
 
-class AuthFragment : BaseFragment(), AuthMvpView {
+class AuthPhoneFragment : BaseFragment(), AuthMvpView {
     @Inject
     lateinit var presenter: AuthPresenter<AuthMvpView>
 
@@ -141,10 +141,10 @@ class AuthFragment : BaseFragment(), AuthMvpView {
     }
 
     companion object {
-        fun newInstance(): AuthFragment {
+        fun newInstance(): AuthPhoneFragment {
             val args = Bundle()
 
-            val fragment = AuthFragment()
+            val fragment = AuthPhoneFragment()
             fragment.arguments = args
             return fragment
         }

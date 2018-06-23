@@ -15,31 +15,34 @@ import java.io.InputStream;
 import java.util.Formatter;
 import java.util.UUID;
 
-public class FileLoadImpl extends  BaseCustomDfuImpl {
+public class FileLoadImpl extends BaseCustomDfuImpl {
 
     // UUIDs used by the UART
-    protected static UUID DEFAULT_UART_SERVICE_UUID       = new UUID(0x6e400001b5a3f393L ,0xe0a9e50e24dcca9eL);
+    protected static UUID DEFAULT_UART_SERVICE_UUID = new UUID(0x6e400001b5a3f393L, 0xe0a9e50e24dcca9eL);
 
-    protected static UUID DEFAULT_UART_RX_UUID            = new UUID(0x6e400002b5a3f393L ,0xe0a9e50e24dcca9eL);
-    protected static UUID DEFAULT_UART_TX_UUID            = new UUID(0x6e400003b5a3f393L ,0xe0a9e50e24dcca9eL);
-    protected static UUID DEFAULT_UART_CONTROL_UUID       = new UUID(0x6e400004b5a3f393L ,0xe0a9e50e24dcca9eL);
+    protected static UUID DEFAULT_UART_RX_UUID = new UUID(0x6e400002b5a3f393L, 0xe0a9e50e24dcca9eL);
+    protected static UUID DEFAULT_UART_TX_UUID = new UUID(0x6e400003b5a3f393L, 0xe0a9e50e24dcca9eL);
+    protected static UUID DEFAULT_UART_CONTROL_UUID = new UUID(0x6e400004b5a3f393L, 0xe0a9e50e24dcca9eL);
 
-    private static final UUID UART_SERVICE_UUID       = DEFAULT_UART_SERVICE_UUID;
+    private static final UUID UART_SERVICE_UUID = DEFAULT_UART_SERVICE_UUID;
 
-    private static final UUID UART_RX_UUID        = DEFAULT_UART_RX_UUID;
-    private static final UUID UART_TX_UUID        = DEFAULT_UART_TX_UUID;
-    private static final UUID UART_CONTROL_UUID   = DEFAULT_UART_CONTROL_UUID;
+    private static final UUID UART_RX_UUID = DEFAULT_UART_RX_UUID;
+    private static final UUID UART_TX_UUID = DEFAULT_UART_TX_UUID;
+    private static final UUID UART_CONTROL_UUID = DEFAULT_UART_CONTROL_UUID;
+
+    private static UUID DEFAULT_NOTIFICATIONS_UUID = UUID.fromString("6e400003-b5a3-f393-e0a9-e50e24dcca9e");
 
 
     private final byte[] mbinBuffer;
 
     private BluetoothGattCharacteristic mRXCharacteristic;
     private BluetoothGattCharacteristic mControlCharacteristic;
+    private BluetoothGattCharacteristic mNotificationCharacteristic;
 
     private volatile boolean mEnd = false;
     private volatile boolean mImageSizeInProgress;
 
-    private volatile  boolean mFirmwareUploadInProgress;
+    private volatile boolean mFirmwareUploadInProgress;
     private volatile int mNumberBlock;
 
     private int total = 0;
@@ -48,6 +51,9 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
     private final FileBluetoothCallback mBluetoothCallback = new FileBluetoothCallback();
     private String mFileName;
     private int rw_size;
+    private boolean mOpenImageInProgress;
+    private boolean isFileExist = false;
+
 
     protected class FileBluetoothCallback extends BaseCustomBluetoothCallback {
         @Override
@@ -68,16 +74,16 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
         public void onCharacteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final int status) {
             //Log.d("FILE_LOAD","Data was send from: "+characteristic.getUuid());
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                if (characteristic.getUuid().equals(getPacketCharacteristicUUID())){
-                   //Log.d("FILE_LOAD","Data was send");
+                if (characteristic.getUuid().equals(getPacketCharacteristicUUID())) {
+                    //Log.d("FILE_LOAD","Data was send");
                     synchronized (mLock) {
                         if (mFirmwareUploadInProgress) {
                             mFirmwareUploadInProgress = false;
                         }
                     }
                 }
-                if (characteristic.getUuid().equals(getControlPointCharacteristicUUID())){
-                    onPacketCharacteristicWrite(gatt,characteristic,status);
+                if (characteristic.getUuid().equals(getControlPointCharacteristicUUID())) {
+                    onPacketCharacteristicWrite(gatt, characteristic, status);
                     //Log.d("FILE_LOAD","Command was send");
                 }
 
@@ -89,16 +95,56 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
 
         @Override
         public void onCharacteristicChanged(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-
             final int op_code = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-            final int status = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1);
+            final int status = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1) - 256;
+            // handle command opening file
+            if (mOpenImageInProgress) {
+                handleOpeningFile(op_code, status);
+            }
+            // handle error
+            else {
+                if (op_code == 101) {
+                    synchronized (mLock) {
+                        switch (status) {
+                            case -1:
+                                mError = DfuBaseService.ERROR_FILE_NOT_FOUND;
+                                break;
+                            case -2:
+                                mError = DfuBaseService.ERROR_FILE_ERROR;
+                                break;
+                            case -3:
+                                mError = DfuBaseService.ERROR_FILE_INVALID;
+                                break;
+                            case -4:
+                                mError = DfuBaseService.ERROR_FILE_IO_EXCEPTION;
+                                break;
+                        }
+                    }
+                }
+            }
+
+
             notifyLock("onCharacteristicChanged");
+        }
+
+        private void handleOpeningFile(int op_code, int status) {
+            if (op_code == 101) {
+                if (status == -1) {
+                    isFileExist = false;
+                }
+            } else {
+                isFileExist = true;
+            }
+            Log.d("FILE_OPEN", "mOpenImageInProgress"+ mOpenImageInProgress);
+            synchronized (mLock) {
+                mOpenImageInProgress = false;
+            }
         }
 
         @Override
         public void onReliableWriteCompleted(BluetoothGatt gatt, int status) {
             super.onReliableWriteCompleted(gatt, status);
-            Log.d("GATT","FileBluetoothCallback");
+            Log.d("GATT", "FileBluetoothCallback");
         }
     }
 
@@ -111,12 +157,15 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
     @Override
     public boolean initialize(Intent intent, BluetoothGatt gatt, int fileType, InputStream firmwareStream, InputStream initPacketStream, int baseAddress) throws DfuException, DeviceDisconnectedException, UploadAbortedException {
         String mPathFile = intent.getStringExtra(DfuBaseService.EXTRA_FILE_PATH);
-        mPathFile +="#";
-        Log.d("FILE_LOAD","path file "+ mPathFile);
-        String [] names = mPathFile.split("/");
+        //mPathFile += "#";
+        Log.d("FILE_LOAD", "path file " + mPathFile);
+        String[] names = mPathFile.split("/");
         mFileName = names[names.length - 1];
-        Log.d("FILE_LOAD","path file "+names[names.length-1] + " "+mFileName);
-        return super.initialize(intent, gatt, fileType, firmwareStream, initPacketStream, baseAddress);
+        Log.d("FILE_LOAD", "path file " + names[names.length - 1] + " " + mFileName);
+
+        boolean result = super.initialize(intent, gatt, fileType, firmwareStream, initPacketStream, baseAddress);
+        enableCCCD(mNotificationCharacteristic, 1);
+        return result;
     }
 
     @Override
@@ -126,31 +175,77 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
 
     @Override
     public boolean isClientCompatible(Intent intent, BluetoothGatt gatt) throws DfuException, DeviceDisconnectedException, UploadAbortedException {
-        Log.d("FILE_LOAD","Data written to " + gatt.getServices());
-        for (BluetoothGattService service: gatt.getServices()){
-            Log.d("FILE_LOAD","UUID :"+service.getUuid());
+        Log.d("FILE_LOAD", "Data written to " + gatt.getServices());
+        for (BluetoothGattService service : gatt.getServices()) {
+            Log.d("FILE_LOAD", "UUID :" + service.getUuid());
         }
         final BluetoothGattService dfuService = gatt.getService(UART_SERVICE_UUID);
         if (dfuService == null)
             return false;
-        for (BluetoothGattCharacteristic ch: dfuService.getCharacteristics()){
-            Log.d("FILE_LOAD","Characteristic UUID: " + ch.getUuid());
+        for (BluetoothGattCharacteristic ch : dfuService.getCharacteristics()) {
+            Log.d("FILE_LOAD", "Characteristic UUID: " + ch.getUuid());
         }
         mRXCharacteristic = dfuService.getCharacteristic(UART_RX_UUID);
         BluetoothGattCharacteristic mTXCharacteristic = dfuService.getCharacteristic(UART_TX_UUID);
         mControlCharacteristic = dfuService.getCharacteristic(UART_CONTROL_UUID);
+        mNotificationCharacteristic = dfuService.getCharacteristic(DEFAULT_NOTIFICATIONS_UUID);
 
-        Log.d("FILE_LOAD","Characteristic RX: " + mRXCharacteristic);
-        Log.d("FILE_LOAD","Characteristic TX: " + mTXCharacteristic);
-        Log.d("FILE_LOAD","Characteristic Control: " + mControlCharacteristic);
 
-        return mRXCharacteristic != null && mTXCharacteristic != null && mControlCharacteristic != null;
+        Log.d("FILE_LOAD", "Characteristic RX: " + mRXCharacteristic);
+        Log.d("FILE_LOAD", "Characteristic TX: " + mTXCharacteristic);
+        Log.d("FILE_LOAD", "Characteristic Control: " + mControlCharacteristic);
+
+        return mRXCharacteristic != null && mTXCharacteristic != null && mControlCharacteristic != null && mNotificationCharacteristic != null;
     }
 
 
     @Override
     public void performDfu(Intent intent) throws DfuException, DeviceDisconnectedException, UploadAbortedException {
+        openImage();
+    }
 
+    private void openImage() throws DfuException, DeviceDisconnectedException, UploadAbortedException {
+        mService.waitFor(500);
+        final BluetoothGatt gatt = mGatt;
+        mService.waitFor(500);
+        Log.d("FILE_LOAD", "open " + mFileName + " " + mControlCharacteristic.getUuid());
+        cmdOpenFile(mControlCharacteristic, mFileName);
+    }
+
+    private void cmdOpenFile(BluetoothGattCharacteristic characteristic, String name)
+            throws UploadAbortedException, DfuException, DeviceDisconnectedException {
+
+        mOpenImageInProgress = true;
+
+        characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+        String cmd = "4".concat(name) + '#';
+        characteristic.setValue(cmd);
+        mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_VERBOSE, "Writing to characteristic " + characteristic.getUuid());
+        mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_DEBUG, "gatt.writeCharacteristic(" + characteristic.getUuid() + ")");
+        mGatt.writeCharacteristic(characteristic);
+        mService.waitFor(1000);
+        try {
+            synchronized (mLock) {
+                while ((mOpenImageInProgress && mConnected && mError == 0 && !mAborted) || mPaused) {
+                    mLock.wait();
+                }
+
+                Log.d("FILE_OPEN","isFileExist " + isFileExist);
+                // file exist is not exist then upload file
+                if (!isFileExist) uploadImage();
+            }
+        } catch (final InterruptedException e) {
+            loge("Sleeping interrupted", e);
+        }
+        if (mAborted)
+            throw new UploadAbortedException();
+        if (mError != 0)
+            throw new DfuException("Unable to write Image Sizes", mError);
+        if (!mConnected)
+            throw new DeviceDisconnectedException("Unable to write Image Sizes: device disconnected");
+    }
+
+    private void uploadImage() throws UploadAbortedException, DfuException, DeviceDisconnectedException {
         int send_byte = 0;
         mNumberBlock = 0;
         total = 0;
@@ -162,8 +257,8 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
         mService.waitFor(500);
         final BluetoothGatt gatt = mGatt;
         mService.waitFor(500);
-        Log.d("FILE_LOAD","create "+mFileName + " "+mControlCharacteristic.getUuid());
-        cmdCreateFile(mControlCharacteristic,mFileName);
+        Log.d("FILE_LOAD", "create " + mFileName + " " + mControlCharacteristic.getUuid());
+        cmdCreateFile(mControlCharacteristic, mFileName);
         mService.waitFor(10);
         try {
 
@@ -171,13 +266,13 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
                 while ((mConnected && mError == 0 && !mAborted) || mPaused || !mEnd) {
                     rw_size = 0;
                     uploadBlockImage(mRXCharacteristic);
-                    if ( rw_size == 0 ) break;
+                    if (rw_size == 0) break;
                     send_byte += rw_size;
                     mProgressInfo.setBytesSent(send_byte);
                     mLock.wait();
                 }
             }
-            Log.d("FILE_LOAD","PROGRESS_COMPLETED");
+            Log.d("FILE_LOAD", "PROGRESS_COMPLETED");
             mProgressInfo.setProgress(DfuBaseService.PROGRESS_COMPLETED);
             cmdCloseFile(mControlCharacteristic);
 
@@ -234,7 +329,7 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
         mImageSizeInProgress = true;
 
         characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-        String cmd  = "0".concat(name);
+        String cmd = "0".concat(name) + '#';
         characteristic.setValue(cmd);
         mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_VERBOSE, "Writing to characteristic " + characteristic.getUuid());
         mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_DEBUG, "gatt.writeCharacteristic(" + characteristic.getUuid() + ")");
@@ -263,7 +358,7 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
 
         characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
         characteristic.setValue(new byte[20]);
-        String cmd  = "2";
+        String cmd = "2";
         characteristic.setValue(cmd);
         mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_VERBOSE, "Writing to characteristic " + characteristic.getUuid());
         mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_DEBUG, "gatt.writeCharacteristic(" + characteristic.getUuid() + ")");
@@ -300,7 +395,7 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
             if (rw_size <= 0) { // This should never happen
                 synchronized (mLock) {
                     mEnd = true;
-                    Log.d("FILE_LOAD","send mEnd "+mEnd);
+                    Log.d("FILE_LOAD", "send mEnd " + mEnd);
                     mLock.notifyAll();
                 }
                 return;
@@ -309,7 +404,7 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
             packetCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
             packetCharacteristic.setValue(buffer);
             mGatt.writeCharacteristic(packetCharacteristic);
-            total +=rw_size;
+            total += rw_size;
         } catch (final IOException e) {
             throw new DfuException("Error while reading file", DfuBaseService.ERROR_FILE_IO_EXCEPTION);
         }
@@ -319,7 +414,7 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
         if (size <= 0) { // This should never happen
             synchronized (mLock) {
                 mEnd = true;
-                Log.d("FILE_LOAD","send mEnd "+mEnd);
+                Log.d("FILE_LOAD", "send mEnd " + mEnd);
                 mLock.notifyAll();
             }
             return;
@@ -327,8 +422,7 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
         characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
         characteristic.setValue(new byte[20]);
         int crc = (int) buffer[0];
-        synchronized (mLock)
-        {
+        synchronized (mLock) {
 
             for (int i = 1; i < buffer.length; i++) {
                 crc ^= (int) buffer[i];
@@ -347,8 +441,8 @@ public class FileLoadImpl extends  BaseCustomDfuImpl {
             characteristic.setValue(mNumberBlock, BluetoothGattCharacteristic.FORMAT_UINT16, 18);
         }
         gatt.writeCharacteristic(characteristic);
-        total +=size;
-        Log.d("FILE_LOAD","data size "+total);
+        total += size;
+        Log.d("FILE_LOAD", "data size " + total);
 
     }
 

@@ -1,7 +1,6 @@
 package ru.jufy.myposh.presentation.auth.social
 
 import io.reactivex.android.schedulers.AndroidSchedulers
-import ru.jufy.myposh.MyPoshApplication
 import ru.jufy.myposh.Screens
 import ru.jufy.myposh.entity.SocialTypes
 import ru.jufy.myposh.model.interactor.AuthInteractor
@@ -22,8 +21,6 @@ class AuthSocialPresenter<V:AuthSocialMvpView> @Inject constructor(val interacto
                 .doAfterTerminate { getMvpView()?.hideProgress() }
                 .subscribe(
                         {
-                            //TODO:Remove when finish to refactor legacy code
-                            MyPoshApplication.onNewTokenObtained(it)
                             router.newRootScreen(Screens.MAIN_ACTIVITY_SCREEN)
                         },
                         { errorHandler.proceed(it, { getMvpView()?.onError(it) }) })

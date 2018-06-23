@@ -1555,7 +1555,21 @@ public abstract class DfuBaseService extends IntentService implements DfuProgres
             builder.addAction(R.drawable.ic_action_notify_cancel, getString(R.string.dfu_action_abort), pendingAbortIntent);
         }
 
-        final NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        sendNotification(builder);
+    }
+
+    private void sendNotification(NotificationCompat.Builder builder) {
+        final NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);/*
+
+        // support oreo
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("notify_001",
+                    "Posh uploading",
+                    NotificationManager.IMPORTANCE_HIGH);
+            manager.createNotificationChannel(channel);
+        }*/
+
+
         manager.notify(NOTIFICATION_ID, builder.build());
     }
 
@@ -1593,8 +1607,7 @@ public abstract class DfuBaseService extends IntentService implements DfuProgres
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
 
-        final NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(NOTIFICATION_ID, builder.build());
+        sendNotification(builder);
     }
 
     /**

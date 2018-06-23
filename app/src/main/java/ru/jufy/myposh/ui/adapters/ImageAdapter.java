@@ -168,11 +168,11 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    public List<Image> getSelectedImages() {
-        List<Image> selected = new ArrayList<>();
+    public List<MarketImage> getSelectedImages() {
+        List<MarketImage> selected = new ArrayList<>();
         for (int i = 0; i < this.selected.size(); i++) {
             if (this.selected.get(i)) {
-                selected.add((Image)data.get(i));
+                selected.add((MarketImage)data.get(i));
             }
         }
         return selected;

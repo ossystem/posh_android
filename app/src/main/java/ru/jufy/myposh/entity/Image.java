@@ -83,6 +83,10 @@ public abstract class Image {
         return imgToCompare.id.equals(id);
     }
 
+    public boolean isMe(String id) {
+        return id.equals(this.id);
+    }
+
     public void setSize(int size) {
         this.size = (int)(size * 0.8);
     }
@@ -107,6 +111,7 @@ public abstract class Image {
                 .apply(RequestOptions.errorOf(R.drawable.error))
                 .into(view);
     }
+
 
     public boolean like() {
         return false;

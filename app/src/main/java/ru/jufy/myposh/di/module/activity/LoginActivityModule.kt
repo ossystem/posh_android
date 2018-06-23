@@ -9,7 +9,7 @@ import ru.jufy.myposh.di.module.fragment.LoginFragmentModule
 import ru.jufy.myposh.model.interactor.BaseInteractor
 import ru.jufy.myposh.presentation.launch.LaunchMvpView
 import ru.jufy.myposh.presentation.launch.LaunchPresenter
-import ru.jufy.myposh.ui.auth.AuthFragment
+import ru.jufy.myposh.ui.auth.AuthPhoneFragment
 import ru.terrakok.cicerone.Router
 
 /**
@@ -19,7 +19,7 @@ import ru.terrakok.cicerone.Router
 abstract class LoginActivityModule {
     @PerFragment
     @ContributesAndroidInjector(modules = arrayOf(LoginFragmentModule::class))
-    internal abstract fun authInjector(): AuthFragment
+    internal abstract fun authInjector(): AuthPhoneFragment
 
     @Module
     companion object {

@@ -15,15 +15,5 @@ import ru.jufy.myposh.presentation.library.LibraryPresenter
 
 @Module
 object BaseModule {
-    @JvmStatic
-    @Provides
-    @PerChildFragment
-    internal fun libraryPresenter(storeInteractor: LibraryInteractor, errorHandler: ErrorHandler)
-            : LibraryPresenter<LibraryMvpView> = LibraryPresenter(storeInteractor, errorHandler)
 
-    @JvmStatic
-    @Provides
-    @PerChildFragment
-    internal fun libraryInteractor(artworkRepository: ArtworkRepository)
-            : LibraryInteractor = LibraryInteractor(artworkRepository)
 }

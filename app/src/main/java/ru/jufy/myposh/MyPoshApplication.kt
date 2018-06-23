@@ -6,6 +6,7 @@ import android.content.Context
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.branch.referral.Branch
 import ru.jufy.myposh.di.component.DaggerApplicationComponent
 
 import ru.jufy.myposh.entity.KulonToken
@@ -23,6 +24,19 @@ class MyPoshApplication : Application() , HasActivityInjector {
         super.onCreate()
         app = this
         initDagger()
+
+        initBranch()
+    }
+
+    private fun initBranch() {
+        // Branch logging for debugging
+        if (BuildConfig.DEBUG) {
+            Branch.enableLogging()
+        //    Branch.enableTestMode()
+        }
+
+        // Branch object initialization
+        Branch.getAutoInstance(this)
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {

@@ -31,6 +31,10 @@ class UserPreferences(context: Context) {
         get() = preferences.getString(USER_LOGIN_KEY, "")
         set(id) = preferences.edit().putString(USER_LOGIN_KEY, id).apply()
 
+    var referralCode: String
+        get() = preferences.getString(REFERRAL_CODE, "")
+        set(referaal_code) = preferences.edit().putString(REFERRAL_CODE, referaal_code).apply()
+
     val uuid: String
         get() {
             val id = preferences.getString(PREFS_DEVICE_ID, null)
@@ -95,6 +99,7 @@ class UserPreferences(context: Context) {
     }
 
     companion object {
+        private val REFERRAL_CODE = "REFERRAL_CODE"
         private val USER_ID_KEY = "USER_ID_KEY"
         private val USER_LOGIN_KEY = "USER_LOGIN_KEY"
         private val PREFS_DEVICE_ID = "PREFS_DEVICE_ID"

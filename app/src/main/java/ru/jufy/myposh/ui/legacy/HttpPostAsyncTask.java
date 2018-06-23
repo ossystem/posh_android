@@ -1,4 +1,4 @@
-package ru.jufy.myposh.ui.utils;
+package ru.jufy.myposh.ui.legacy;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;

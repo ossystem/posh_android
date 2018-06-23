@@ -162,37 +162,6 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
 
     }
 
-
-    private void setPoshik() {
-        final DfuServiceInitiator starter;
-        if (showPoshik) {
-            starter = new DfuServiceInitiator(device.getAddress())
-                    .setDeviceName(device.getName())
-                    .setKeepBond(true)
-                    .setForceDfu(false)
-                    .setPacketsReceiptNotificationsEnabled(true)
-                    .setPacketsReceiptNotificationsValue(12)
-                    .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
-                    .setCmdOrFile(true)
-                    .setFileName(image.getTempFilename())
-                    .setCmd_op(1);
-        } else {
-            starter = new DfuServiceInitiator(device.getAddress())
-                    .setDeviceName(device.getName())
-                    .setKeepBond(true)
-                    .setForceDfu(false)
-                    .setPacketsReceiptNotificationsEnabled(true)
-                    .setPacketsReceiptNotificationsValue(12)
-                    .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
-                    .setCmdOrFile(false);
-            starter.setBinOrHex(DfuService.TYPE_SOFT_DEVICE, null, image.getDownloadedFile().getAbsolutePath())
-                    .setInitFile(null, null);
-        }
-
-        Log.d("BOOT", " send command ");
-        starter.start(getActivity(), DfuService.class);
-    }
-
     private void setLikedIcon() {
         setIcon(fabLikeTrash, R.drawable.icon_liked);
     }
@@ -258,13 +227,6 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
 
         fabLikeTrash = rootView.findViewById(R.id.fab_like_delete);
         setupLikeEvent();
-
-        fabSet = rootView.findViewById(R.id.fab_set);
-        fabSet.setOnClickListener(view -> {
-            presenter.buyDownloadClicked();
-            /*showPoshik = true;
-            installImage();*/
-        });
 
         fabBuyDownload = rootView.findViewById(R.id.fab_buy_download);
         updatePurchaseState(image.isPurchased());

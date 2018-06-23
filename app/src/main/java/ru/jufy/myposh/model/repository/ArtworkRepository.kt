@@ -49,6 +49,13 @@ class ArtworkRepository @Inject constructor(apiService: ApiService, preferences:
                 .map { it.data }
     }
 
+
+    fun getFavouritesArtworks():Single<MutableList<MarketImage>> {
+        return apiService.getFavourites()
+                .subscribeOn(Schedulers.io())
+                .map { it.data.artworks }
+    }
+
     fun getOwnedArtworks():Single<MutableList<MarketImage>>{
         return apiService.getOwnedArtworks()
                 .subscribeOn(Schedulers.io())

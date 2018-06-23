@@ -59,7 +59,7 @@ class DetailArtworkPresenter<V : DetailArtworkMvpView> @Inject constructor(val i
                 .subscribe({
                     // then download image to kulon
                     getMvpView()?.showMessage(resourceManager.getString(R.string.image_downloaded))
-                    // check permissions
+                    // check permissions again
                     getMvpView()?.installImage()
                 }, {
                     errorHandler.proceed(it, { getMvpView()?.onError(it) })

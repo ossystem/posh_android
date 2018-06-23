@@ -5,8 +5,9 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import ru.jufy.myposh.di.PerChildFragment
 import ru.jufy.myposh.ui.artwork.detail.ImageFragment
-import ru.jufy.myposh.ui.fragments.FavoritesFragment
+import ru.jufy.myposh.ui.favourites.FavoritesFragment
 import ru.jufy.myposh.ui.fragments.LibraryFragment
+import ru.jufy.myposh.ui.settings.SettingsFragment
 import ru.jufy.myposh.ui.store.MarketFragment
 
 /**
@@ -19,14 +20,18 @@ public abstract class TabContainerModule {
     internal abstract fun storeInjector(): MarketFragment
 
     @PerChildFragment
-    @ContributesAndroidInjector(modules = [(BaseModule::class)])
+    @ContributesAndroidInjector(modules = [(FavouritesModule::class)])
     internal abstract fun favouritesInjector(): FavoritesFragment
 
     @PerChildFragment
-    @ContributesAndroidInjector(modules = [(BaseModule::class)])
+    @ContributesAndroidInjector(modules = [(LibraryModule::class)])
     internal abstract fun libraryInjector(): LibraryFragment
 
     @PerChildFragment
     @ContributesAndroidInjector(modules = [(DetailArtworkModule::class)])
     internal abstract fun detailArtworkInjector(): ImageFragment
+
+    @PerChildFragment
+    @ContributesAndroidInjector(modules = [(SettingsModule::class)])
+    internal abstract fun settingsInjector(): SettingsFragment
 }

@@ -1,6 +1,6 @@
-package ru.jufy.myposh.ui.adapters;
+package ru.jufy.myposh.ui.settings;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.jufy.myposh.BuildConfig;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.ui.activities.SettingsResultActivity;
@@ -24,46 +25,44 @@ import ru.jufy.myposh.ui.global.WebViewActivity;
 
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.SettingsViewHolder> {
 
-    Activity mainActivity;
+    Context mainActivity;
+    private SettingsListener listener;
     List<SettingsItem> settingsItems;
 
-    public SettingsAdapter(Activity activity) {
+    public SettingsAdapter(Context activity, SettingsListener listener) {
         mainActivity = activity;
+        this.listener = listener;
         settingsItems = new ArrayList<>();
-        settingsItems.add(new SettingsItem(R.drawable.settings_unbind,
-                R.string.settings_unbind_label,
-                R.string.settings_unbind_comment));
         settingsItems.add(new SettingsItem(R.drawable.settings_contacts,
                 R.string.settings_contacts_label,
                 R.string.settings_contacts_comment,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openLinkInBrowser(MyPoshApplication.Companion.getDOMAIN() + "contacts");
-                    }
-                }));
+                v -> openLinkInBrowser(MyPoshApplication.Companion.getDOMAIN() + "contacts")));
         settingsItems.add(new SettingsItem(R.drawable.settings_qa,
                 R.string.settings_qa_label,
                 R.string.settings_qa_comment));
         settingsItems.add(new SettingsItem(R.drawable.settings_address,
                 R.string.settings_address_label,
                 R.string.settings_address_comment,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openLinkInBrowser(MyPoshApplication.Companion.getDOMAIN() + "address");
-                    }
-                }));
-        settingsItems.add(new SettingsItem(R.drawable.settings_address,
-                R.string.debug_info_label,
-                R.string.debug_info_comment,
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                v -> openLinkInBrowser(MyPoshApplication.Companion.getDOMAIN() + "address")));
+
+        if (BuildConfig.DEBUG) {
+            settingsItems.add(new SettingsItem(R.drawable.settings_address,
+                    R.string.debug_info_label,
+                    R.string.debug_info_comment,
+                    v -> {
                         Intent i = new Intent(v.getContext(), SettingsResultActivity.class);
                         v.getContext().startActivity(i);
-                    }
-                }));
+                    }));
+        }
+
+        settingsItems.add(new SettingsItem(R.drawable.ic_share,
+                R.string.share,
+                R.string.share_comment, v-> { listener.shareClicked();}
+                ));
+
+        settingsItems.add(new SettingsItem(R.drawable.ic_logout,
+                R.string.logout,
+                v -> listener.logoutClicked()));
     }
 
     private void openLinkInBrowser(String url) {
@@ -88,7 +87,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
         SettingsItem settingsItem = settingsItems.get(position);
         holder.icon.setImageResource(settingsItem.iconId);
         holder.label.setText(settingsItem.labelId);
-        holder.comment.setText(settingsItem.commentId);
+
+        if (settingsItem.commentId  != -1) holder.comment.setText(settingsItem.commentId);
+
         holder.itemView.setOnClickListener(settingsItem.clickListener);
         if (position == settingsItems.size() - 1) {
             holder.divider.setVisibility(View.GONE);
@@ -110,6 +111,14 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
         int labelId;
         int commentId;
         View.OnClickListener clickListener = null;
+
+
+        public SettingsItem(int iconId, int labelId, View.OnClickListener listener) {
+            this.iconId = iconId;
+            this.labelId = labelId;
+            commentId = -1;
+            clickListener = listener;
+        }
 
         public SettingsItem(int iconId, int labelId, int commentId) {
             this.iconId = iconId;

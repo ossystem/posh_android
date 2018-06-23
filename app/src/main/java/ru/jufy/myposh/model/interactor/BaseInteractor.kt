@@ -1,5 +1,6 @@
 package ru.jufy.myposh.model.interactor
 
+import io.branch.referral.Branch
 import ru.jufy.myposh.model.repository.BaseRepository
 import javax.inject.Inject
 
@@ -14,6 +15,11 @@ open class BaseInteractor @Inject constructor(internal var repository: BaseRepos
         get() = repository.isLoggedIn()
 
     fun logout() {
+        Branch.getInstance().logout()
         repository.logout()
+    }
+
+    fun saveReferral(referralCode: String) {
+        repository.setRefferalCode(referralCode)
     }
 }

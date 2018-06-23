@@ -12,6 +12,7 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(apiService: ApiService, preferences: UserPreferences) :
         BaseRepository(apiService, preferences) {
 
+
     fun authenticate(phone: String): Single<BaseResponse> {
         return apiService.authenticate(phone).map { it.data }
 
@@ -19,6 +20,10 @@ class AuthRepository @Inject constructor(apiService: ApiService, preferences: Us
 
     fun saveToken(token: String) {
         preferences.token = token
+    }
+
+    fun isFromReferral():Boolean {
+        return preferences.referralCode.isNotEmpty()
     }
 
     fun login(phone: String, code: String): Single<KulonToken> {

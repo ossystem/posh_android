@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.fragments.TextEditorFragment">
+    tools:context=".ui.legacy.TextEditorFragment">
 
     <ru.jufy.myposh.ui.views.ArcLayout
         android:id = "@id/arc_layout"

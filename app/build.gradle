@@ -4,11 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 26
     defaultConfig {
         applicationId "ru.jufy.myposh"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -67,6 +67,9 @@ dependencies {
 
     implementation "ru.terrakok.cicerone:cicerone:$rootProject.ciceroneVersion"
     implementation 'com.scottyab:secure-preferences-lib:0.1.4'
+
+    implementation 'io.branch.sdk.android:library:2.+'
+
 }
 repositories {
     mavenCentral()

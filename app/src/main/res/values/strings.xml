@@ -98,4 +98,7 @@
     <string name="balance_title">Balance: %d POSH</string>
     <string name="progress_message">Loading</string>
     <string name="artist">Artist</string>
+    <string name="logout">Logout</string>
+    <string name="share">Share</string>
+    <string name="share_comment">Share your personal link to achieve tokens</string>
 </resources>

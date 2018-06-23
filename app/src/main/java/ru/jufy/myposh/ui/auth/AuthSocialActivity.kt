@@ -9,6 +9,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.jufy.mgtshr.extensions.visible
 import kotlinx.android.synthetic.main.webview.*
+import ru.jufy.myposh.BuildConfig
 import ru.jufy.myposh.presentation.auth.social.AuthSocialMvpView
 import ru.jufy.myposh.presentation.auth.social.AuthSocialPresenter
 import ru.jufy.myposh.ui.global.WebViewActivity
@@ -21,6 +22,8 @@ class AuthSocialActivity : WebViewActivity(), AuthSocialMvpView {
 
     override fun setUp() {
         super.setUp()
+
+        val simpleCurrentDomain = if (BuildConfig.DEBUG) "posh.jwma.ru" else "art.posh.space"
         webview?.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 progressBar?.visible(true)
@@ -44,7 +47,7 @@ class AuthSocialActivity : WebViewActivity(), AuthSocialMvpView {
             }
 
             private fun handleUri(url: String): Boolean {
-                if (Uri.parse(url).host.contains("posh.jwma.ru")) {
+                if (Uri.parse(url).host.contains(simpleCurrentDomain)) {
                     presenter.loginSocial(url)
                     return true
                 }

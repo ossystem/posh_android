@@ -10,9 +10,13 @@ class ArtworkWrapper(val artworks:MutableList<MarketImage>)
 
 class PurchasesWrapper(val purchases:MutableList<Purchase>)
 
+class FavouritesWrapper(val purchases:MutableList<Purchase>)
+
 class Purchase(val id:String, val artwork:MarketImage)
 
 class SingleArtworkWrapper(val artwork:MarketImage)
+
+class Referral(val referral_code:String)
 
 class TagsWrapper(val tags:MutableList<BaseEntity>)
 

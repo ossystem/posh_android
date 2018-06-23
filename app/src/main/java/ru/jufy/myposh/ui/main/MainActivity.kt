@@ -9,8 +9,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.FileProvider
 import android.view.MenuItem
 import android.view.View
@@ -22,12 +20,8 @@ import ru.jufy.myposh.Screens
 import ru.jufy.myposh.presentation.global.RouterProvider
 import ru.jufy.myposh.ui.activities.ConfirmPictureActivity
 import ru.jufy.myposh.ui.activities.IntentDispatcherActivity
-import ru.jufy.myposh.ui.fragments.FavoritesFragment
-import ru.jufy.myposh.ui.fragments.LibraryFragment
-import ru.jufy.myposh.ui.fragments.SettingsFragment
 import ru.jufy.myposh.ui.global.BackButtonListener
 import ru.jufy.myposh.ui.launch.LaunchActivity
-import ru.jufy.myposh.ui.store.MarketFragment
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
@@ -39,13 +33,8 @@ import java.util.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), IntentDispatcherActivity, RouterProvider {
-    private lateinit var marketFragment: MarketFragment
-    private lateinit var libraryFragment: LibraryFragment
-    private lateinit var favoritesFragment: FavoritesFragment
-    private lateinit var settingsFragment: SettingsFragment
     private var currentPhotoPath: String? = null
     private var bottomNavigationView: BottomNavigationView? = null
-    private var currentFragment = MainFragments.MARKET
 
     @Inject
     lateinit var navigationHolder: NavigatorHolder
@@ -113,6 +102,8 @@ class MainActivity : BaseActivity(), IntentDispatcherActivity, RouterProvider {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
     override fun onBackPressed() {
         hideKeyboard()
         val fragment = tabs[tabKeys[currentTabIndex]]
@@ -194,35 +185,6 @@ class MainActivity : BaseActivity(), IntentDispatcherActivity, RouterProvider {
         startActivityForResult(enableIntent, ENABLE_BT_REQ)
     }
 
-    fun showCurrentFragment() {
-        when (currentFragment) {
-            MainFragments.MARKET -> showMarket()
-            MainFragments.LIBRARY -> showLibrary()
-            MainFragments.FAVORITES -> showFavorites()
-            MainFragments.SETTINGS -> showSettings()
-        }
-    }
-
-    fun showMarket() {
-        currentFragment = MainFragments.MARKET
-        showFragment(marketFragment)
-    }
-
-    fun showLibrary() {
-        currentFragment = MainFragments.LIBRARY
-        showFragment(libraryFragment)
-    }
-
-    fun showFavorites() {
-        currentFragment = MainFragments.FAVORITES
-        showFragment(favoritesFragment)
-    }
-
-    fun showSettings() {
-        currentFragment = MainFragments.SETTINGS
-        showFragment(settingsFragment)
-    }
-
     override fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
@@ -300,14 +262,6 @@ class MainActivity : BaseActivity(), IntentDispatcherActivity, RouterProvider {
 
     fun showBottomNav() {
         bottomNavigationView?.visibility = View.VISIBLE
-    }
-
-    private fun showFragment(fragment: Fragment?) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        transaction.replace(R.id.fragment_frame, fragment)
-        transaction.commit()
-        showBottomNav()
     }
 
     companion object {

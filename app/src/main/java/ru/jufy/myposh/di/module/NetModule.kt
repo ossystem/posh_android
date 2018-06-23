@@ -4,7 +4,6 @@ import android.app.Application
 import android.os.Build
 import android.util.Log
 import com.google.gson.*
-import ru.jufy.myposh.di.PerApplication
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -14,12 +13,14 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.jufy.myposh.BuildConfig
+import ru.jufy.myposh.di.PerApplication
 import ru.jufy.myposh.model.data.server.ApiService
 import ru.jufy.myposh.model.data.server.interceptors.AuthenticationInterceptor
 import ru.jufy.myposh.model.interactor.AuthInteractor
 import ru.jufy.myposh.model.storage.UserPreferences
 import ru.jufy.myposh.model.system.ResourceManager
 import ru.jufy.myposh.presentation.global.ErrorHandler
+import ru.terrakok.cicerone.Router
 import java.io.IOException
 import java.io.InputStream
 import java.lang.reflect.Type
@@ -46,7 +47,7 @@ import javax.net.ssl.TrustManagerFactory
 class NetModule {
 
     private val DEBUG_BASE_URL = "https://posh.jwma.ru/"
-    private val BASE_URL = ""
+    private val BASE_URL = "https://art.posh.space/"
     private var mApplication: Application? = null
 
     val androidVersion: String
@@ -74,8 +75,8 @@ class NetModule {
 
     @Provides
     @PerApplication
-    internal fun provideErrorHandler(interactor: AuthInteractor, resourceManager: ResourceManager)
-            = ErrorHandler(interactor, resourceManager)
+    internal fun provideErrorHandler(interactor: AuthInteractor, resourceManager: ResourceManager, router: Router)
+            = ErrorHandler(interactor, resourceManager, router)
 
     // loading CAs from Resources
     // saving your certificate.crt on raw package in your resources// FIXME:insert certificate for mgts when https will be available
@@ -173,8 +174,8 @@ class NetModule {
     @Provides
     @PerApplication
     internal fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
-        val url = DEBUG_BASE_URL
-
+        val url = if (BuildConfig.DEBUG )DEBUG_BASE_URL else BASE_URL
+        //val url = BASE_URL
         return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

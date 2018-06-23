@@ -19,4 +19,8 @@ class LaunchPresenter<V:LaunchMvpView> @Inject constructor(val interactor: BaseI
             }
         }
     }
+
+    fun saveReferrall(referralCode: String) {
+        interactor.saveReferral(referralCode)
+    }
 }

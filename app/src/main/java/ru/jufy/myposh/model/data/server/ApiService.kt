@@ -54,6 +54,9 @@ interface ApiService {
     @GET("api/v1/artworks/owned/")
     fun getOwnedArtworks():Single<DataWrapper<PurchasesWrapper>>
 
+    @GET("api/v1/artworks/favorites/")
+    fun getFavourites():Single<DataWrapper<ArtworkWrapper>>
+
     @GET("api/v1/artworks/owned/{artworkId}/download-stream")
     @Streaming
     fun downloadArtwork(@Path("artworkId")artworkId:String, @Query("device_id")deviceId:String ):Observable<Response<ResponseBody>>
@@ -63,4 +66,11 @@ interface ApiService {
 
     @GET("/api/v1/balance")
     fun getBalance(): Single<DataWrapper<BalanceWrapper>>
+
+    @GET("/api/v1/referral/code")
+    fun getReferralCode():Single<DataWrapper<Referral>>
+
+    @FormUrlEncoded
+    @POST("/api/v1/referral/perform")
+    fun performReferral(@Field("refferal_code") refferalCode:String):Single<DataWrapper<BaseResponse>>
 }

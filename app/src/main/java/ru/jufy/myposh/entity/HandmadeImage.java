@@ -24,9 +24,8 @@ import java.util.concurrent.ExecutionException;
 import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.ui.utils.GlideApp;
-import ru.jufy.myposh.ui.utils.PoshAppGlideModule;
-import ru.jufy.myposh.ui.utils.HttpDelAsyncTask;
-import ru.jufy.myposh.ui.utils.HttpGetAsyncTask;
+import ru.jufy.myposh.ui.legacy.HttpDelAsyncTask;
+import ru.jufy.myposh.ui.legacy.HttpGetAsyncTask;
 
 /**
  * Created by BorisDev on 28.08.2017.

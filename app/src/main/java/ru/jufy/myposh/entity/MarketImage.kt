@@ -15,10 +15,10 @@ import com.google.gson.annotations.SerializedName
 import ru.jufy.myposh.MyPoshApplication
 import ru.jufy.myposh.R
 import ru.jufy.myposh.model.data.server.response.AcqusitionParam
+import ru.jufy.myposh.ui.legacy.HttpDelAsyncTask
+import ru.jufy.myposh.ui.legacy.HttpGetAsyncTask
+import ru.jufy.myposh.ui.legacy.HttpPostAsyncTask
 import ru.jufy.myposh.ui.utils.GlideApp
-import ru.jufy.myposh.ui.utils.HttpDelAsyncTask
-import ru.jufy.myposh.ui.utils.HttpGetAsyncTask
-import ru.jufy.myposh.ui.utils.HttpPostAsyncTask
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
@@ -29,7 +29,7 @@ import java.util.concurrent.ExecutionException
  * Created by BorisDev on 04.08.2017.
  */
 
-class MarketImage(id: String, extension: String, @field:SerializedName("is_favorite")
+class MarketImage(id: String, val name:String, extension: String, @field:SerializedName("is_favorite")
      var isFavorite: Boolean, @field:SerializedName("is_purchased")
                    var isPurchased: Boolean, private val link: String?,
                   val artist: Artist,
@@ -207,8 +207,9 @@ class MarketImage(id: String, extension: String, @field:SerializedName("is_favor
     }
 
     override fun getTempFilename(): String {
-        return "market_100"+
-                "." + getExtension()
+        return name
+                .replace(" ", "_")
+                .replace("-", "_")+ "." + getExtension()
 
     }
 

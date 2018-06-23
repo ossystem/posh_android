@@ -1,7 +1,6 @@
 package ru.jufy.myposh.ui.fragments;
 
 import android.graphics.Point;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
@@ -11,7 +10,6 @@ import com.jufy.mgtshr.ui.base.BaseFragment;
 
 import java.util.List;
 
-import ru.jufy.myposh.MyPoshApplication;
 import ru.jufy.myposh.R;
 import ru.jufy.myposh.entity.MarketImage;
 import ru.jufy.myposh.ui.adapters.ImageAdapter;
@@ -165,18 +163,6 @@ public abstract class ImageGridFragment extends BaseFragment {
 
     protected void resetLastDisplayedPage() {
         lastDisplayedPage = 1;
-    }
-
-    @NonNull
-    protected static String[] getRequestAuthorized(String url) {
-        String[] result = new String[3];
-        result[0] = url;
-        result[1] = "Authorization";
-        StringBuilder token = new StringBuilder("Bearer ");
-        token.append(MyPoshApplication.Companion.getCurrentToken().getToken());
-        result[2] = new String(token);
-
-        return result;
     }
 
     public class ImageClickListener extends ImageAdapter.ClickListener {
