@@ -174,7 +174,7 @@ class NetModule {
     @Provides
     @PerApplication
     internal fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
-        val url = BASE_URL
+        val url = DEBUG_BASE_URL
                 //if (BuildConfig.DEBUG )DEBUG_BASE_URL else BASE_URL
         //val url = BASE_URL
         return Retrofit.Builder()
