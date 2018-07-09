@@ -75,6 +75,17 @@
             app:arc_angle = "130"
             app:srcCompat="@drawable/icon_like" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_format"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/accent"
+            app:backgroundTint = "@color/primary"
+            app:rippleColor="@color/white_fab_ripple"
+            app:arc_origin="center"
+            android:visibility="visible"
+            app:arc_angle = "90"
+            app:srcCompat="@drawable/icon_trash" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_buy_download"

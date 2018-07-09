@@ -55,7 +55,6 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
     private static String IMAGE = "IMAGE";
     FloatingActionButton fabCancel;
     FloatingActionButton fabLikeTrash;
-    FloatingActionButton fabSet;
     FloatingActionButton fabBuyDownload;
 
     private PublishSubject<Boolean> likeSubject = PublishSubject.create();
@@ -71,9 +70,11 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
 
     private final static int REQUEST_PERMISSION_REQ_CODE = 34;
     private final static int REQUEST_STORAGE_PERMISSION_REQ_CODE = 35;
+    private final static int REQUEST_PERMISSION_FORMAT = 36;
     private final static long SCAN_DURATION = 5000;
 
     private boolean showPoshik;
+    private View fabFormat;
 
     public static ImageFragment newInstance(Image image) {
         Bundle args = new Bundle();
@@ -119,7 +120,7 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
     @Override
     public void installImage() {
         if (getActivity() != null && ((MainActivity) getActivity()).isBLEEnabled()) {
-            if (permissionGranted()) {
+            if (isBlePermissionGranted(REQUEST_PERMISSION_REQ_CODE)) {
                 presenter.performAllBleInteractions();
             }
         } else {
@@ -127,14 +128,14 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
         }
     }
 
-    private boolean permissionGranted() {
+    private boolean isBlePermissionGranted(int requestCode) {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // When user pressed Deny and still wants to use this functionality, show the rationale
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 // Here we can show the user a message with explanation why we need this permission
                 return false;
             }
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_REQ_CODE);
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, requestCode);
             return false;
         }
         return true;
@@ -210,6 +211,16 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
                 }
                 break;
             }
+            case REQUEST_PERMISSION_FORMAT: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // We have been granted the Manifest.permission.ACCESS_COARSE_LOCATION permission. Now we may proceed with image installation.
+                    presenter.format();
+                } else {
+                    // We can also show the user explanations why we require this permission
+                    Toast.makeText(getActivity(), R.string.no_required_permission, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
         }
     }
 
@@ -228,11 +239,24 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
         fabLikeTrash = rootView.findViewById(R.id.fab_like_delete);
         setupLikeEvent();
 
+        fabFormat = rootView.findViewById(R.id.fab_format);
+        fabFormat.setOnClickListener(view -> formatKulon());
+
         fabBuyDownload = rootView.findViewById(R.id.fab_buy_download);
         updatePurchaseState(image.isPurchased());
         fabBuyDownload.setOnClickListener(view -> presenter.buyDownloadClicked());
 
         ((MainActivity) getActivity()).hideBottomNav();
+    }
+
+    private void formatKulon() {
+        if (getActivity() != null && ((MainActivity) getActivity()).isBLEEnabled()) {
+            if (isBlePermissionGranted(REQUEST_PERMISSION_FORMAT)) {
+                presenter.format();
+            }
+        } else {
+            ((MainActivity) getActivity()).showBLEDialog();
+        }
     }
 
     private void setupLikeEvent() {
@@ -289,11 +313,12 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
 
     @Override
     public void sendPoshikToDevice(@Nullable File tempFile, @Nullable BluetoothDevice device, @NotNull String tempFilename) {
-        if (device == null || tempFile==null){
+        if (device == null || tempFile == null) {
             return;
         }
 
         final DfuServiceInitiator starter;
+
         if (showPoshik) {
             starter = new DfuServiceInitiator(device.getAddress())
                     .setDeviceName(device.getName())
@@ -317,6 +342,33 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
             starter.setBinOrHex(DfuService.TYPE_SOFT_DEVICE, null, tempFile.getAbsolutePath())
                     .setInitFile(null, null);
         }
+
+        Log.d("BOOT", " send command ");
+        starter.start(getActivity(), DfuService.class);
+    }
+
+    @Override
+    public void formatDevice(@Nullable BluetoothDevice device) {
+        if (device == null ) {
+            return;
+        }
+
+        final DfuServiceInitiator starter;
+
+        // cmd_op and filename don't impact on anything
+        // this is broken service
+        // need to fix
+        starter = new DfuServiceInitiator(device.getAddress())
+                .setDeviceName(device.getName())
+                .setKeepBond(true)
+                .setForceDfu(false)
+                .setPacketsReceiptNotificationsEnabled(true)
+                .setPacketsReceiptNotificationsValue(12)
+                .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true)
+                .setCmdOrFile(true)
+                .setFileName("close")
+                .setCmd_op(1);
+
 
         Log.d("BOOT", " send command ");
         starter.start(getActivity(), DfuService.class);

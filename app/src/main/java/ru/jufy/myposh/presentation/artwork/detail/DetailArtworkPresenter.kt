@@ -27,6 +27,7 @@ class DetailArtworkPresenter<V : DetailArtworkMvpView> @Inject constructor(val i
     private var mIsScanning = false
     private val mHandler = Handler()
     private var device: BluetoothDevice? = null
+    private var isCommandFormat: Boolean = false
 
     fun init(artwork: MarketImage) {
         interactor.artwork = artwork
@@ -68,6 +69,14 @@ class DetailArtworkPresenter<V : DetailArtworkMvpView> @Inject constructor(val i
     }
 
     fun performAllBleInteractions() {
+        isCommandFormat = false
+        if (!mIsScanning) {
+            scan()
+        }
+    }
+
+    fun format(){
+        isCommandFormat = true
         if (!mIsScanning) {
             scan()
         }
@@ -109,9 +118,9 @@ class DetailArtworkPresenter<V : DetailArtworkMvpView> @Inject constructor(val i
                     device = result.device
                     stopScan()
                     getMvpView()?.showMessage(resourceManager.getString(R.string.device_scanned))
-                  //  Toast.makeText(getActivity(), R.string.device_scanned, Toast.LENGTH_SHORT).show()
-                    getMvpView()?.sendPoshikToDevice(interactor.artwork.downloadedFile, device, interactor.artwork.tempFilename)
-                    //setPoshik()
+                    if (isCommandFormat) getMvpView()?.formatDevice(device)
+                    else getMvpView()?.sendPoshikToDevice(interactor.artwork.downloadedFile, device, interactor.artwork.tempFilename)
+
                     return
                 }
             }
@@ -136,10 +145,10 @@ class DetailArtworkPresenter<V : DetailArtworkMvpView> @Inject constructor(val i
                 .subscribe({
                     getMvpView()?.showMessage(it.message!!)
                 }) {
-                    errorHandler.proceed(it, {
+                    errorHandler.proceed(it) {
                         getMvpView()?.updatePurchaseState(false)
                         getMvpView()?.showMessage(it)
-                    })
+                    }
                 }
     }
 
@@ -151,7 +160,7 @@ class DetailArtworkPresenter<V : DetailArtworkMvpView> @Inject constructor(val i
                 .doOnSubscribe { disposable.add(it) }
                 .subscribe({
                     getMvpView()?.showMessage(it.message!!)
-                }, { errorHandler.proceed(it, { getMvpView()?.showMessage(it) }) })
+                }) { errorHandler.proceed(it) { getMvpView()?.showMessage(it) } }
 
     }
 }

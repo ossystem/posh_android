@@ -3,17 +3,14 @@ package com.ble.posh.posh.ble;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
-import android.content.Context;
 import android.content.Intent;
 import android.telephony.SmsManager;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.ble.posh.posh.ble.internal.internal.exception.DeviceDisconnectedException;
 import com.ble.posh.posh.ble.internal.internal.exception.DfuException;
 import com.ble.posh.posh.ble.internal.internal.exception.UploadAbortedException;
 
-import java.lang.reflect.Method;
 import java.util.UUID;
 
 /**
@@ -122,11 +119,12 @@ public class CmdDfuImpl extends BaseDfuImpl {
 
     @Override
     public void performDfu(Intent intent) throws DfuException, DeviceDisconnectedException, UploadAbortedException {
+          final BluetoothGatt gatt = mGatt;
+        //writeCmd(mControlCharacteristic,'4',name);
 
-        final BluetoothGatt gatt = mGatt;
-        final String name = intent.getStringExtra(DfuBaseService.EXTRA_FILE_NAME);
-        writeCmd(mControlCharacteristic,'4',name);
-        Log.d("writeCmd","writeCmd: 4");
+        // format command
+        writeCmd(mControlCharacteristic, '7');
+        Log.d("writeCmd","writeCmd: 7");
         if (mWait){
             synchronized (mLock) {
                 while ((mConnected && mError == 0 && !mAborted) || mPaused || mCmdSend) {
@@ -161,6 +159,36 @@ public class CmdDfuImpl extends BaseDfuImpl {
 
         characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
         final String sendCmd = cmd + param + '#';
+        characteristic.setValue(sendCmd);
+        mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_VERBOSE, "Writing to characteristic " + characteristic.getUuid());
+        mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_DEBUG, "gatt.writeCharacteristic(" + characteristic.getUuid() + ")");
+
+        mGatt.writeCharacteristic(characteristic);
+
+        try {
+            synchronized (mLock) {
+                //Log.d("BIN_BOOT","WSaA: "+mImageSizeInProgress+" "+mConnected+" "+mError+" "+!mAborted+" "+mPaused);
+                while ((mCmdSend && mConnected && mError == 0 && !mAborted) || mPaused)
+                    mLock.wait();
+            }
+        } catch (final InterruptedException e) {
+            loge("Sleeping interrupted", e);
+        }
+        if (mAborted)
+            throw new UploadAbortedException();
+        if (mError != 0)
+            throw new DfuException("Unable to write Image Sizes", mError);
+        if (!mConnected)
+            throw new DeviceDisconnectedException("Unable to write Image Sizes: device disconnected");
+
+        //Log.d("BIN_BOOT","wait send imagesize 2");
+    }
+
+    private void writeCmd(final BluetoothGattCharacteristic characteristic, final char cmd)
+            throws DeviceDisconnectedException, DfuException, UploadAbortedException {
+
+        characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
+        final String sendCmd = cmd+"";
         characteristic.setValue(sendCmd);
         mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_VERBOSE, "Writing to characteristic " + characteristic.getUuid());
         mService.sendLogBroadcast(DfuBaseService.LOG_LEVEL_DEBUG, "gatt.writeCharacteristic(" + characteristic.getUuid() + ")");

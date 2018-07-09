@@ -13,4 +13,5 @@ interface DetailArtworkMvpView:MvpView, BackButtonListener {
     fun setupLikeState(favorite: Boolean)
     fun setupPurchaseState(purchased: Boolean)
     fun sendPoshikToDevice(tempFile: File?, device: BluetoothDevice?, tempFilename: String)
+    fun formatDevice(device: BluetoothDevice?)
 }
