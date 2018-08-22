@@ -16,14 +16,14 @@
     <uses-feature
         android:name="android.hardware.touchscreen.multitouch"
         android:required="true" />
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MyPoshApplication"
@@ -35,8 +35,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.launch.LaunchActivity"
-            android:launchMode="singleTask"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme">
             <intent-filter>
@@ -47,7 +47,9 @@
             <!-- Branch URI Scheme -->
             <intent-filter>
                 <data android:scheme="poshspace" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
@@ -55,10 +57,16 @@
             <!-- Branch App Links (optional) -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="h6cs.app.link" />
-                <data android:scheme="https" android:host="example-alternate.app.link" />
+
+                <data
+                    android:host="h6cs.app.link"
+                    android:scheme="https" />
+                <data
+                    android:host="example-alternate.app.link"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
@@ -66,9 +74,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activities.SplashActivity"
             android:exported="true"
@@ -113,20 +119,26 @@
             </intent-filter>
         </service>
 
+        <!-- Branch init -->
+        <meta-data
+            android:name="io.branch.sdk.BranchKey"
+            android:value="key_live_fgs8nNwGldzJgBTXlKaMCanmEEfghqJJ" />
+        <meta-data
+            android:name="io.branch.sdk.BranchKey.test"
+            android:value="key_test_hlxrWC5Zx16DkYmWu4AHiimdqugRYMr" />
+        <meta-data
+            android:name="io.branch.sdk.TestMode"
+            android:value="false" /> <!-- Set to true to use Branch_Test_Key -->
 
 
-
-    <!-- Branch init -->
-    <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_fgs8nNwGldzJgBTXlKaMCanmEEfghqJJ" />
-    <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="key_test_hlxrWC5Zx16DkYmWu4AHiimdqugRYMr" />
-    <meta-data android:name="io.branch.sdk.TestMode" android:value="false" /> <!-- Set to true to use Branch_Test_Key -->
-
-    <!-- Branch install referrer tracking (optional) -->
-    <receiver android:name="io.branch.referral.InstallListener" android:exported="true">
-        <intent-filter>
-            <action android:name="com.android.vending.INSTALL_REFERRER" />
-        </intent-filter>
-    </receiver>
+        <!-- Branch install referrer tracking (optional) -->
+        <receiver
+            android:name="io.branch.referral.InstallListener"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

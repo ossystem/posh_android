@@ -213,5 +213,7 @@ class MarketImage(id: String, val name:String, extension: String, @field:Seriali
 
     }
 
-
+    fun getLink(): String {
+        return marketLinkCommonPart.toString();
+    }
 }

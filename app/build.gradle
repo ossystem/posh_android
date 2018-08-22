@@ -7,7 +7,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "ru.jufy.myposh"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -67,6 +67,8 @@ dependencies {
 
     implementation "ru.terrakok.cicerone:cicerone:$rootProject.ciceroneVersion"
     implementation 'com.scottyab:secure-preferences-lib:0.1.4'
+
+    implementation 'com.google.android.gms:play-services-wearable:15.0.1'
 
     implementation 'io.branch.sdk.android:library:2.+'
 

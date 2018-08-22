@@ -46,6 +46,7 @@ import ru.jufy.myposh.presentation.artwork.detail.DetailArtworkMvpView;
 import ru.jufy.myposh.presentation.artwork.detail.DetailArtworkPresenter;
 import ru.jufy.myposh.presentation.global.RouterProvider;
 import ru.jufy.myposh.ui.main.MainActivity;
+import ru.jufy.myposh.ui.utils.DataLayer;
 
 /**
  * Created by BorisDev on 07.08.2017.
@@ -119,6 +120,8 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
 
     @Override
     public void installImage() {
+        DataLayer.sendImageURL(getActivity(), image.getLink());
+
         if (getActivity() != null && ((MainActivity) getActivity()).isBLEEnabled()) {
             if (isBlePermissionGranted(REQUEST_PERMISSION_REQ_CODE)) {
                 presenter.performAllBleInteractions();
