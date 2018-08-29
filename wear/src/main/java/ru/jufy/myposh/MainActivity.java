@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -91,11 +92,12 @@ public class MainActivity extends WearableActivity
             String path = event.getDataItem().getUri().getPath();
             if (path.equals("/image")) {
                 Log.w(TAG, "not implemented");
-            }
-            if (path.equals("/imageBinary")) {
-                Log.w(TAG, "not implemented");
-            }
-            if (path.equals("/imageURL")) {
+            } else if (path.equals("/imageBinary")) {
+                DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
+                Asset photoAsset = dataMapItem.getDataMap().getAsset("image");
+
+                new LoadImageFileAsyncTask().execute(photoAsset);
+            } else if (path.equals("/imageURL")) {
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
                 Asset photoAsset = dataMapItem.getDataMap().getAsset("image");
 
@@ -161,6 +163,79 @@ public class MainActivity extends WearableActivity
 
         @Override
         protected void onPostExecute(String image) {
+            if (image == null) {
+                Log.d(TAG, "argument is null. Cannot set it as background");
+                return;
+            }
+
+            GlideApp.with(getApplicationContext())
+                    .load(image)
+                    .into(imageView);
+        }
+    }
+
+    private class LoadImageFileAsyncTask extends AsyncTask<Asset, Void, File> {
+        @Override
+        protected File doInBackground(Asset... params) {
+            if (params.length > 0) {
+                Asset asset = params[0];
+
+                if (asset == null) {
+                    Log.e(TAG, "Asset is null.");
+                    return null;
+                }
+
+                Task<DataClient.GetFdForAssetResponse> getFdForAssetResponseTask =
+                        Wearable.getDataClient(getApplicationContext()).getFdForAsset(asset);
+
+                try {
+                    DataClient.GetFdForAssetResponse getFdForAssetResponse =
+                            Tasks.await(getFdForAssetResponseTask);
+
+                    InputStream assetInputStream = getFdForAssetResponse.getInputStream();
+
+                    if (assetInputStream != null) {
+                        File file = File.createTempFile("image", ".posh", getCacheDir());
+                        OutputStream output = new FileOutputStream(file);
+                        try {
+                            byte[] buffer = new byte[4 * 1024];
+                            int read;
+
+                            while ((read = assetInputStream.read(buffer)) != -1) {
+                                output.write(buffer, 0, read);
+                            }
+
+                            output.flush();
+                        } finally {
+                            output.close();
+                        }
+
+                        return file;
+                    } else {
+                        Log.w(TAG, "Requested an unknown Asset.");
+                        return null;
+                    }
+
+                } catch (ExecutionException exception) {
+                    Log.e(TAG, "Failed retrieving asset, Task failed: " + exception);
+                    return null;
+
+                } catch (InterruptedException exception) {
+                    Log.e(TAG, "Failed retrieving asset, interrupt occurred: " + exception);
+                    return null;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Log.e(TAG, "Asset must be non-null");
+                return null;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(File image) {
             if (image == null) {
                 Log.d(TAG, "argument is null. Cannot set it as background");
                 return;

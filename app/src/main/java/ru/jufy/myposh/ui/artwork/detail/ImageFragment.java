@@ -4,6 +4,7 @@ import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
@@ -22,13 +23,19 @@ import android.widget.Toast;
 
 import com.ble.posh.posh.DfuService;
 import com.ble.posh.posh.ble.DfuServiceInitiator;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.jufy.mgtshr.ui.base.BaseFragment;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -47,12 +54,14 @@ import ru.jufy.myposh.presentation.artwork.detail.DetailArtworkPresenter;
 import ru.jufy.myposh.presentation.global.RouterProvider;
 import ru.jufy.myposh.ui.main.MainActivity;
 import ru.jufy.myposh.ui.utils.DataLayer;
+import ru.jufy.myposh.ui.utils.GlideApp;
 
 /**
  * Created by BorisDev on 07.08.2017.
  */
 
 public class ImageFragment extends BaseFragment implements DetailArtworkMvpView {
+    private static String TAG = "ImageFragment";
     private static String IMAGE = "IMAGE";
     FloatingActionButton fabCancel;
     FloatingActionButton fabLikeTrash;
@@ -120,7 +129,43 @@ public class ImageFragment extends BaseFragment implements DetailArtworkMvpView 
 
     @Override
     public void installImage() {
-        DataLayer.sendImageURL(getActivity(), image.getLink());
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "going to download file");
+//                DataLayer.sendImageURL(getActivity(), image.getLink());
+                try {
+
+                    File file = GlideApp.with(getActivity())
+                            .load(image.getLink())
+                            .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .get();
+
+                    int size = (int) file.length();
+                    byte[] bytes = new byte[size];
+
+                    try {
+                        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+                        bis.read(bytes, 0, size);
+                        bis.close();
+
+                        DataLayer.sendImageBinary(getActivity(), bytes);
+                    } catch (FileNotFoundException e) {
+                        Log.d(TAG, "FileNotFoundException", e);
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        Log.d(TAG, "IOException", e);
+                        e.printStackTrace();
+                    }
+                } catch (InterruptedException e) {
+                    Log.d(TAG, "InterruptedException", e);
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    Log.d(TAG, "ExecutionException", e);
+                    e.printStackTrace();
+                }
+            }
+        });
 
         if (getActivity() != null && ((MainActivity) getActivity()).isBLEEnabled()) {
             if (isBlePermissionGranted(REQUEST_PERMISSION_REQ_CODE)) {
