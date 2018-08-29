@@ -14,6 +14,7 @@ import android.support.wearable.activity.WearableActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.DataSource;
@@ -56,6 +57,7 @@ public class MainActivity extends WearableActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         imageView = findViewById(R.id.imageView);
 
